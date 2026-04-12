@@ -1,0 +1,30 @@
+<%- include("partials/header") %>
+
+<section class="admin-page">
+
+  <h2>Admin Panel 🛠️</h2>
+
+  <a href="/admin/add" class="btn chat-btn">+ Add Article</a>
+
+  <div class="admin-list">
+    <% articles.forEach(a => { %>
+      <div class="admin-card">
+        <div>
+          <h3><%= a.title %></h3>
+          <p style="font-size:12px;color:#777;">
+            <%= new Date(a.date).toDateString() %>
+          </p>
+        </div>
+
+        <div class="admin-actions">
+          <a href="/article/<%= a._id %>" class="btn">View</a>
+          <a href="/admin/edit/<%= a._id %>" class="btn">Edit</a>
+          <a href="/admin/delete/<%= a._id %>" class="btn delete-btn">Delete</a>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+</section>
+
+<%- include("partials/footer") %>

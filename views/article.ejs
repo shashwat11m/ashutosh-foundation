@@ -1,0 +1,48 @@
+<%- include("partials/header") %>
+
+<section class="article-page">
+
+  <div class="article-card-container">
+
+    <% if(article.image){ %>
+      <img src="/uploads/<%= article.image %>" class="article-cover">
+    <% } %>
+
+    <h1 class="article-title"><%= article.title %></h1>
+
+    <p class="article-date">
+      <%= new Date(article.date).toDateString() %>
+    </p>
+
+    <div class="article-content">
+      <%- article.content %>
+    </div>
+
+        <!-- SHARE BUTTON -->
+    <div class="article-actions">
+      <a 
+        href="https://wa.me/?text=<%= encodeURIComponent(article.title + ' - http://localhost:3000/article/' + article._id) %>" 
+        target="_blank"
+        class="btn chat-btn"
+      >
+        <i class="fab fa-whatsapp"></i> Share on WhatsApp
+      </a>
+    </div>
+
+  </div>
+
+  <!-- COMMENT SECTION -->
+  <div class="comment-card">
+    <h3>Leave a Comment 💬</h3>
+
+    <form class="comment-form">
+      <input type="text" placeholder="Your Name">
+      <input type="email" placeholder="Your Email">
+      <textarea placeholder="Write your comment..." rows="4"></textarea>
+      <button class="btn call-btn" style="width:170px; margin-top: 10px;">Post Comment</button>
+    </form>
+  </div>
+
+</section>
+
+<%- include("partials/footer") %>

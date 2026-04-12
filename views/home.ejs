@@ -1,0 +1,178 @@
+<%- include("partials/header") %>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  
+  <!-- Animated Background -->
+  <div class="hero-bg"></div>
+  <div class="hero-bg hero-bg2"></div>
+  <div class="hero-bg hero-bg3"></div>
+
+  <!-- Content -->
+  <div class="hero-content">
+    <h1>Discover Your Destiny</h1>
+    <p>Talk to India's Trusted Astrologer</p>
+
+    <div class="hero-buttons">
+      <a href="https://wa.me/918707718561" class="btn chat-btn">
+        <i class="fas fa-comments"></i> Chat Now
+      </a>
+      <a href="tel:+918707718561" class="btn call-btn">
+        <i class="fas fa-phone"></i> Book a Call
+      </a>
+    </div>
+  </div>
+
+</section>
+
+<!-- SERVICES -->
+<section class="services">
+  <h2>Our Services 🔮</h2>
+
+  <div class="service-grid">
+    <div class="card">
+      <i class="fas fa-user-astronaut"></i>
+      <h3>Astrology Consultation</h3>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-heart"></i>
+      <h3>Love & Marriage</h3>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-briefcase"></i>
+      <h3>Career Guidance</h3>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-gem"></i>
+      <h3>Rudraksha</h3>
+    </div>
+  </div>
+</section>
+
+<!-- HOROSCOPE -->
+<section class="horoscope-wrapper">
+
+  <!-- LEFT: Horoscope -->
+<div class="horoscope-box">
+  <h2>Today's Horoscope ♈</h2>
+
+  <div class="rashi-grid">
+    <% const rashis = ["aries","taurus","gemini","cancer","leo","virgo","libra","scorpio","sagittarius","capricorn","aquarius","pisces"]; %>
+
+    <% rashis.forEach((r, index) => { %>
+      <div 
+        class="rashi-card <%= index === 0 ? 'active' : '' %>" 
+        onclick="changeRashi('<%= r %>')"
+      >
+        <h3><%= r.toUpperCase() %></h3>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- Dynamic Horoscope -->
+  <div id="rashiContent" class="rashi-content">
+
+  <!-- TOP CONTENT -->
+  <div class="rashi-top">
+    <p id="todayText"><%= rashiDataAll["aries"].today %></p>
+
+    <div class="lucky-box">
+      <span>🎨 Color: <b id="color"><%= rashiDataAll["aries"].lucky.color %></b></span>
+      <span>🔢 Number: <b id="number"><%= rashiDataAll["aries"].lucky.number %></b></span>
+      <span>😊 Mood: <b id="mood"><%= rashiDataAll["aries"].lucky.mood %></b></span>
+    </div>
+  </div>
+
+  <!-- BUTTON ALWAYS BOTTOM -->
+  <a id="viewBtn" href="/rashi/aries" class="btn call-btn">
+    View Full Horoscope →
+  </a>
+
+</div>
+</div>
+
+  <!-- RIGHT: Panchang -->
+  <div class="panchang-box">
+    <h2>Today's Panchang 📅</h2>
+
+    <p class="panchang-location">
+      New Delhi, India (<%= new Date().toLocaleDateString("en-IN") %>)
+    </p>
+
+    <div class="panchang-section">
+      <p><b>Tithi:</b> Krishna Saptami upto 21:22:56</p>
+      <p><b>Month Amanta:</b> Chaitra</p>
+      <p><b>Month Purnimanta:</b> Vaisakha</p>
+      <p><b>Day:</b> Guruvara | <b>Samvat:</b> 2083</p>
+    </div>
+
+    <div class="panchang-section">
+      <p><b>Nakshatra:</b> Moola upto 08:49:16</p>
+      <p><b>Yoga:</b> Parigha upto 17:56:52</p>
+      <p><b>Karan:</b> Vishti upto 08:16:01, Bhav upto 21:22:56</p>
+    </div>
+
+    <a href="#" class="btn call-btn panchang-btn">
+      Detailed Panchang →
+    </a>
+  </div>
+
+</section>
+
+<!-- ARTICLES -->
+<section class="articles">
+  <h2>Recent Articles 📰</h2>
+
+  <div class="article-grid">
+    <% articles.forEach(a => { %>
+      <div class="article-card">
+        <% if(a.image){ %>
+          <img src="/uploads/<%= a.image %>" class="article-img">
+        <% } %>
+        <h3><%= a.title %></h3>
+        <p>
+          <%= a.content
+              .replace(/<[^>]*>?/gm, '')
+              .replace(/&nbsp;/g, ' ')
+              .substring(0,300)
+          %>...
+        </p>
+        <a href="/article/<%= a._id %>" class="btn readMore-btn">Read More</a>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Talk to Astrologer Now</h2>
+  <a href="https://wa.me/918707718561" class="btn chat-btn">
+    Chat Instantly
+  </a>
+</section>
+
+<script>
+const rashiData = JSON.parse(`<%- JSON.stringify(rashiDataAll) %>`);
+
+function changeRashi(rashi) {
+
+  const data = rashiData[rashi] || rashiData["aries"];
+
+  // update text
+  document.getElementById("todayText").innerText = data.today;
+  document.getElementById("color").innerText = data.lucky.color;
+  document.getElementById("number").innerText = data.lucky.number;
+  document.getElementById("mood").innerText = data.lucky.mood;
+
+  document.getElementById("viewBtn").href = "/rashi/" + rashi;
+
+  // active button highlight
+  document.querySelectorAll(".rashi-card").forEach(el => el.classList.remove("active"));
+  event.currentTarget.classList.add("active");
+}
+</script>
+
+<%- include("partials/footer") %>

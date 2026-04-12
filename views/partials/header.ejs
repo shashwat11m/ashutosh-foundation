@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Astrology</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Top Bar (Rashis) -->
+<div class="topbar">
+  <% const rashis = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"]; %>
+  <% rashis.forEach(r => { %>
+    <a href="/rashi/<%= r %>"><%= r %></a>
+  <% }) %>
+</div>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo"><img src="/images/logo-100.png" width="50px"> <a>Ashutosh Foundation</a></div>
+
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <div class="nav-links" id="navLinks">
+    <a href="/">Home</a>
+    <a href="#">Horoscope</a>
+    <a href="#">Astrology</a>
+    <a href="#">2026</a>
+    <a href="#">Free Reports</a>
+    <a href="#">Panchang</a>
+    <a href="#">Compatibility</a>
+    <a href="#">Calculators</a>
+    <a href="/articles">Articles</a>
+  </div>
+
+  <div class="nav-buttons">
+    <a class="btn chat-btn" href="https://wa.me/918707718561">Chat</a>
+    <a class="btn call-btn" href="tel:+918707718561">Call</a>
+  </div>
+</div>
+
+<script>
+function toggleMenu() {
+  document.getElementById("navLinks").classList.toggle("active");
+}
+</script>

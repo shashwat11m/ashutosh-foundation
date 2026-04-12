@@ -1,0 +1,72 @@
+<%- include("partials/header") %>
+
+<section class="rashi-page">
+
+  <!-- HEADER -->
+  <div class="rashi-header">
+    <h1><%= rashi.charAt(0).toUpperCase() + rashi.slice(1) %> Horoscope</h1>
+    <p class="date">
+      <%= new Date().toLocaleDateString("en-IN", { 
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+      }) %>
+    </p>
+  </div>
+
+  <!-- TODAY -->
+  <div class="rashi-section">
+    <h2>Today's Horoscope 🌞</h2>
+
+    <div class="rashi-card-box">
+      <p><%= rashiData.today %></p>
+
+      <div class="lucky-box">
+        <span>🎨 Color: <b><%= rashiData.lucky.color %></b></span>
+        <span>🔢 Number: <b><%= rashiData.lucky.number %></b></span>
+        <span>😊 Mood: <b><%= rashiData.lucky.mood %></b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- YEARLY -->
+  <div class="rashi-section">
+    <h2>Yearly Horoscope 2026 ✨</h2>
+
+    <div class="year-grid">
+
+      <div class="year-card">
+        <h3>💼 Career</h3>
+        <p><%= rashiData.yearly.career %></p>
+      </div>
+
+      <div class="year-card">
+        <h3>❤️ Love</h3>
+        <p><%= rashiData.yearly.love %></p>
+      </div>
+
+      <div class="year-card">
+        <h3>🏥 Health</h3>
+        <p><%= rashiData.yearly.health %></p>
+      </div>
+
+      <div class="year-card">
+        <h3>📚 Education</h3>
+        <p><%= rashiData.yearly.education %></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SHARE -->
+  <div class="share-section">
+    <a 
+      href="https://wa.me/?text=Check%20your%20horoscope%20here:%20http://localhost:3000/rashi/<%= rashi %>" 
+      target="_blank"
+      class="btn chat-btn"
+    >
+      <i class="fab fa-whatsapp"></i> Share on WhatsApp
+    </a>
+  </div>
+
+</section>
+
+<%- include("partials/footer") %>

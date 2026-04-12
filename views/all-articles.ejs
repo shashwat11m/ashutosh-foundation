@@ -1,0 +1,26 @@
+<%- include("partials/header") %>
+
+<section class="articles-page">
+  <h2>All Articles 📰</h2>
+
+  <div class="article-grid">
+    <% articles.forEach(a => { %>
+      <div class="article-card">
+        <% if(a.image){ %>
+          <img src="/uploads/<%= a.image %>" class="article-img">
+        <% } %>
+        <h3><%= a.title %></h3>
+        <p>
+          <%= a.content
+              .replace(/<[^>]*>?/gm, '')
+              .replace(/&nbsp;/g, ' ')
+              .substring(0,450)
+          %>...
+        </p>
+        <a href="/article/<%= a._id %>" class="btn readMore-btn">Read More</a>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
+<%- include("partials/footer") %>
