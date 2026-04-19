@@ -1,6 +1,5 @@
 <%- include("partials/header") %>
 <!-- YELLOW SECTION -->
-<div class="section-yellow">
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
@@ -14,31 +13,68 @@
   </div>
 </section>
 
+
   <!-- HOROSCOPE WRAPPER -->
   <section class="horoscope-wrapper">
 
     <!-- LEFT: FORM -->
-    <div class="kundali-box">
-      <h2>Get Your Free Kundali 📜</h2>
+ <div class="kundali-box">
+  <h2>Get Your Free Kundali</h2>
 
-      <form class="kundali-form">
-        <input type="text" placeholder="Full Name" required>
+  <div class="jyotisham-form-container">
+    <form id="free-kundali" class="jyotisham-form">
 
-        <div class="form-row">
-          <input type="date" required>
-          <input type="time" required>
+      <!-- NAME -->
+      <div class="jyotisham-form-group">
+        <label>Name</label>
+        <input type="text" name="name" required>
+      </div>
+
+      <!-- DOB + TIME (SAME LINE) -->
+      <div class="jyotisham-form-row">
+        <div class="jyotisham-form-group">
+          <label>Date of Birth</label>
+          <input type="date" name="dob" required>
         </div>
 
-        <input type="text" placeholder="Place of Birth" required>
-        <input type="tel" placeholder="Whatsapp Number" required>
+        <div class="jyotisham-form-group">
+          <label>Time of Birth</label>
+          <input type="time" name="tob" required>
+        </div>
+      </div>
 
-        <button class="btn chat-btn">Get Free Report</button>
-      </form>
-    </div>
+      <!-- PHONE + LANGUAGE -->
+      <div class="jyotisham-form-row">
+        <div class="jyotisham-form-group">
+          <label>Place of Birth</label>
+        <div class="location-input-wrapper">
+            <input 
+              type="text" 
+              id="placeInput"
+              placeholder="Search your city..." 
+              autocomplete="off"
+              required
+            >
+            <div id="suggestionsBox" class="suggestions-box"></div>
+          </div>
+        </div>
+
+        <div class="jyotisham-form-group">
+          <label>Whatsapp Number</label>
+          <input type="tel" name="phone" required>
+        </div>
+      </div>
+
+      <!-- BUTTON -->
+      <center><a href="#" class="btn call-btn" onclick="submitGetKundali()"> Generate Kundli  →</a></center>
+    </form>
+  </div>
+</div>
+
 
     <!-- RIGHT: PANCHANG -->
     <div class="panchang-box">
-      <h2>Today's Panchang 📅</h2>
+      <h2>Today's Panchang</h2>
 
       <p class="panchang-location">
         New Delhi, India (<%= new Date().toLocaleDateString("en-IN") %>)
@@ -55,16 +91,15 @@
         <p><b>Yoga:</b> Parigha upto 17:56:52</p>
       </div>
 
-      <a href="#" class="btn call-btn">Detailed Panchang →</a>
+      <center><a href="#" class="btn call-btn">Detailed Panchang →</a></center>
     </div>
 
   </section>
-</div>
 
 <!-- WHITE SECTION (RASHI) -->
 <section class="rashi-section">
 
-  <h2>Select Your Rashi 🔮</h2>
+  <h2>Select Your Rashi</h2>
 
   <% const rashis = [
     {name:"aries", symbol:"♈"},
@@ -108,22 +143,37 @@
   </div>
 </section>
 
-<!-- YELLOW -->
 <div class="section-yellow">
-  <section class="services">
-    <h2>Our Services 🔮</h2>
-    <div class="service-grid">
-      <div class="card"><h3>Astrology Consultation</h3></div>
-      <div class="card"><h3>Love & Marriage</h3></div>
-      <div class="card"><h3>Career Guidance</h3></div>
-      <div class="card"><h3>Rudraksha</h3></div>
+<section class="services">
+  <h2>Our Services</h2>
+
+  <div class="service-grid">
+    <div class="card">
+      <i class="fas fa-user-astronaut"></i>
+      <h3>Astrology Consultation</h3>
     </div>
-  </section>
+
+    <div class="card">
+      <i class="fas fa-heart"></i>
+      <h3>Love & Marriage</h3>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-briefcase"></i>
+      <h3>Career Guidance</h3>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-gem"></i>
+      <h3>Rudraksha</h3>
+    </div>
+  </div>
+</section>
 </div>
 
 <!-- WHITE -->
 <section class="articles">
-  <h2>Recent Articles 📰</h2>
+  <h2>Recent Articles</h2>
 
   <div class="article-grid">
     <% articles.forEach(a => { %>
@@ -147,6 +197,10 @@
 </section>
 
 <script>
+  function submitGetKundali() {
+                document.getElementById("free-kundali").submit();
+            }
+
 const rashiData = JSON.parse(`<%- JSON.stringify(rashiDataAll) %>`);
 
 function showHoroscope(rashi){
@@ -164,6 +218,45 @@ function showHoroscope(rashi){
   section.style.display = "block";
   section.scrollIntoView({ behavior: "smooth" });
 }
+</script>
+<script>
+const input = document.getElementById("placeInput");
+const box = document.getElementById("suggestionsBox");
+
+input.addEventListener("input", async () => {
+  const query = input.value;
+
+  if(query.length < 3){
+    box.style.display = "none";
+    return;
+  }
+
+  const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
+  const data = await res.json();
+
+  box.innerHTML = "";
+  box.style.display = "block";
+
+  data.slice(0,5).forEach(place => {
+    const div = document.createElement("div");
+    div.classList.add("suggestion-item");
+    div.innerText = place.display_name;
+
+    div.onclick = () => {
+      input.value = place.display_name;
+      box.style.display = "none";
+    };
+
+    box.appendChild(div);
+  });
+});
+
+/* CLICK OUTSIDE CLOSE */
+document.addEventListener("click", (e) => {
+  if(!e.target.closest(".location-input-wrapper")){
+    box.style.display = "none";
+  }
+});
 </script>
 
 <%- include("partials/footer") %>

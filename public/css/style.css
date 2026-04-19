@@ -4,12 +4,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&display=swap');
 
 :root{
- --primary-color:#fdc533;
- --heading-color:#0B2038;
+ --primary-color:#f5ae2a;
+ --heading-color:#0f2e52;
  --text-color:#454545;
  --white-color:#fff;
  --primary-lite:#fff9e9;
  --secondary-color:#0e1422;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body{
@@ -32,6 +38,7 @@ h1,h2,h3{
   position: relative;
   display: inline-block;
   padding: 14px 24px;
+  margin: 5px;
   border-radius: 10px;
   background: var(--primary-color);
   color: var(--heading-color);
@@ -48,12 +55,13 @@ h1,h2,h3{
 
 
 .hero{
-  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+  background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)),
               url('/images/solar1.gif') center/cover no-repeat;
   color: white; 
   text-align: center;
   padding: 120px 20px;
   border-radius: 0 0 15px 15px;
+  max-width: 1400px;
 }
 
 .hero h1{
@@ -119,7 +127,8 @@ section h2{
 }
 
 .rashi-btn:hover{
-  background: var(--primary-lite);
+  background: var(--primary-color);
+  color: white;
 }
 
 /* .rashi-btn {
@@ -136,6 +145,7 @@ section h2{
 
 .panchang-box,
 .card{
+  text-align: center;
   background: white;
   border-radius: 16px;
   padding: 25px;
@@ -147,6 +157,19 @@ section h2{
   transform: translateY(-5px);
 }
 
+.panchang-box {
+  padding: 20px 25px 35px 25px;
+}
+
+.panchang-box .btn,.kundali-box .btn {
+  margin-top: 15px;
+}
+
+.panchang-box p {
+  text-align: center;
+  padding: 0px 14px;
+}
+
 
 .cta{
   text-align: center;
@@ -154,6 +177,7 @@ section h2{
   color: white;
   padding: 80px 20px;
   border-radius: 15px 15px 0 0;
+  max-width: 1400px;
 }
 
 .cta h2{
@@ -177,13 +201,13 @@ section {
 
 /* TOPBAR */
 .topbar {
-  background: #32418a;
+  background: var(--primary-lite);
   text-align: center;
   padding: 6px;
 }
 
 .topbar a {
-  color: white;
+  color: black;
   margin: 5px;
   font-size: 13px;
   text-decoration: none;
@@ -241,7 +265,7 @@ section {
 }
 
 .nav-links a:hover {
-  color: #ff7a00;
+  color: var(--primary-color);
 }
 
 /* MOBILE MENU */
@@ -308,17 +332,17 @@ section {
 }*/
 
 .chat-btn {
-  background: #ff7a00;
+  background: var(--primary-color);
   color: white;
 }
 
 .call-btn {
-  background: #32418a;
+  background: var(--heading-color);
   color: white;
 }
 
 .readMore-btn {
-  background: #32418a;
+  background: var(--heading-color);
   color: white;
   margin: 10px 5px 10px 5px;
 }
@@ -345,7 +369,7 @@ section {
 
 .card i {
   font-size: 25px;
-  color: #ff7a00;
+  color: var(--primary-color);
 }
 
 /* .card:hover {
@@ -400,7 +424,8 @@ section {
   gap: 20px;
   max-width: 1200px;
   margin: auto;
-  padding: 30px;
+  padding: 0px 30px;
+  margin-top: -60px;
 }
 
 /* BOXES */
@@ -458,7 +483,7 @@ section {
 
 /* PANCHANG */
 .panchang-box h2 {
-  color: #32418a;
+  color: var(--heading-color);
   margin-bottom: 10px;
 }
 
@@ -551,7 +576,7 @@ footer {
 }
 
 .rashi-section h2 {
-  color: #32418a;
+  color: var(--heading-color);
   margin-bottom: 10px;
 }
 
@@ -562,11 +587,11 @@ footer {
   border-radius: 12px;
   line-height: 1.7;
   box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-  border-left: 4px solid #ff7a00;
+  border-left: 4px solid var(--primary-color);
 }
 
 .rashi-card.active {
-  background: #32418a;
+  background: var(--heading-color);
   color: white;
   font-weight: 600;
 }
@@ -630,7 +655,7 @@ footer {
 
 .zodiac-card:hover {
   transform: translateY(-5px);
-  border-color: #ff7a00;
+  border-color: var(--primary-color);
   box-shadow: 0 5px 20px rgba(0,0,0,0.08);
 }
 
@@ -702,7 +727,7 @@ footer {
 .article-content h2,
 .article-content h3 {
   margin-top: 25px;
-  color: #32418a;
+  color: var(--heading-color);
 }
 
 /* paragraphs */
@@ -718,7 +743,7 @@ footer {
 
 /* links */
 .article-content a {
-  color: #ff7a00;
+  color: var(--primary-color);
   text-decoration: none;
 }
 
@@ -874,6 +899,7 @@ footer {
 /* NEW RASHI GRID */
 .rashi-grid-new {
   display: grid;
+  margin-top: 40px;
   grid-template-columns: repeat(6, 1fr);
   gap: 15px;
 }
@@ -894,10 +920,125 @@ footer {
   text-align: center;
 }
 
+/* ===== PREMIUM FORM FIX ===== */
+.kundali-box h2 {
+  color: var(--heading-color);
+  margin-bottom: 30px;
+}
+
+.kundali-box .btn {
+  margin-top: 20px;
+}
+
+.jyotisham-form-group{
+  margin-bottom: 16px;
+}
+
+/* LABELS */
+.jyotisham-form-group label{
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #374151;
+}
+
+/* INPUTS */
+.jyotisham-form-group input,
+.jyotisham-form-group select{
+  width: 100%;
+  background: #fff;
+  margin: 0;
+  outline: 0;
+  box-shadow: none;
+  color: #717171;
+  font-weight: 400;
+  border: 1px solid #d8d8d8;
+  transition: 0.3s;
+  border-radius: 50px !important;
+  padding: 12px 14px;
+  font-size: 14px;
+  box-sizing: border-box; /* 🔥 MUST */
+}
+
+/* FOCUS EFFECT */
+.jyotisham-form-group input:focus,
+.jyotisham-form-group select:focus{
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(253,197,51,0.2);
+}
+
+/* SELECT ARROW */
+.jyotisham-form-group select{
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+
+/* TWO INPUTS IN ONE ROW */
+.jyotisham-form-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.jyotisham-form-row .jyotisham-form-group {
+  flex: 1;
+  min-width: 0; /* 🔥 IMPORTANT FIX */
+}
+
+/* MOBILE FIX */
+@media(max-width:600px){
+  .jyotisham-form-row{
+    flex-direction: column;
+  }
+}
+
+/* LOCATION INPUT */
+.location-input-wrapper{
+  position: relative;
+}
+
+/* DROPDOWN */
+.suggestions-box{
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+/* SUGGESTION ITEM */
+.suggestion-item{
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.suggestion-item:hover{
+  background: #f5f5f5;
+}
 
 
 /* MOBILE */
 @media(max-width:1150px){
+
+  .logo a {
+    display: none;
+  }
 
   .topbar {
     display: grid;
@@ -971,7 +1112,7 @@ footer {
     font-size: 28px;
   }
 
-  .rashi-grid {
+  .rashi-grid-new {
     grid-template-columns: repeat(3, 1fr); /* 3 per row */
   }
 
