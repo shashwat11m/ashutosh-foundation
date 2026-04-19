@@ -1,19 +1,179 @@
-body {
+/* ===== ASTROCARE DESIGN SYSTEM ===== */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&display=swap');
+
+:root{
+ --primary-color:#fdc533;
+ --heading-color:#0B2038;
+ --text-color:#454545;
+ --white-color:#fff;
+ --primary-lite:#fff9e9;
+ --secondary-color:#0e1422;
+}
+
+body{
   margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: #fff8f0;
+  font-family: 'DM Sans', sans-serif;
+  background: #ffffff;
+  color: var(--text-color);
 }
 
 button {
   border: none;
 }
 
-/* CONTAINER (IMPORTANT) */
+h1,h2,h3{
+  font-family: 'Philosopher', sans-serif;
+  color: var(--heading-color);
+}
+
+.btn{
+  position: relative;
+  display: inline-block;
+  padding: 14px 24px;
+  border-radius: 10px;
+  background: var(--primary-color);
+  color: var(--heading-color);
+  font-weight: 600;
+  text-decoration: none;
+  overflow: hidden;
+  transition: 0.4s;
+}
+
+.btn:hover{
+  color: white;
+  transform: translateY(-2px);
+}
+
+
+.hero{
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+              url('/images/solar1.gif') center/cover no-repeat;
+  color: white; 
+  text-align: center;
+  padding: 120px 20px;
+  border-radius: 0 0 15px 15px;
+}
+
+.hero h1{
+  color: white; 
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.hero p{
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+
+section{
+  max-width: 1200px;
+  margin: auto;
+  padding: 60px 20px 80px 20px;
+}
+
+section h2{
+  text-align: center;
+  font-size: 34px;
+  margin-bottom: 40px;
+}
+
+.section-yellow{
+  background: var(--primary-lite);
+}
+
+
+.kundali-box{
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.kundali-form input{
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: 0.3s;
+}
+
+.kundali-form input:focus{
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.rashi-btn{
+  padding: 18px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 10px;
+  border: 1px solid var(--primary-color);
+  text-align: center;
+  overflow: hidden;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.rashi-btn:hover{
+  background: var(--primary-lite);
+}
+
+/* .rashi-btn {
+  text-align: center;
+  padding: 15px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.rashi-btn:hover {
+  background: #f3f3f3;
+} */
+
+.panchang-box,
+.card{
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  border: 1px solid #eee;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.card:hover{
+  transform: translateY(-5px);
+}
+
+
+.cta{
+  text-align: center;
+  background: url('/images/spacebg.gif') center/cover no-repeat;
+  color: white;
+  padding: 80px 20px;
+  border-radius: 15px 15px 0 0;
+}
+
+.cta h2{
+  color: white; 
+}
+
+
+/* OLD STYLES */
+
+/* body {
+  font-family: 'Poppins', sans-serif;
+  background: #ffffff;
+} */
+
+/* CONTAINER (IMPORTANT) 
 section {
   max-width: 1200px;
   margin: auto;
   padding: 30px 30px 60px 30px;
-}
+}*/
 
 /* TOPBAR */
 .topbar {
@@ -91,7 +251,7 @@ section {
   cursor: pointer;
 }
 
-/* HERO */
+/* HERO
 .hero {
   position: relative;
   overflow: hidden;
@@ -101,7 +261,6 @@ section {
   border-radius: 0 0 30px 30px;
 }
 
-/* Animated layers */
 .hero {
   position: relative;
   overflow: hidden;
@@ -113,13 +272,11 @@ section {
   background: url('/images/solar1.gif') center/cover no-repeat;
 }
 
-/* Keep content above animation */
 .hero-content {
   position: relative;
   z-index: 2;
 }
 
-/* Animation */
 @keyframes slide {
   0% {
     transform: translateX(-25%);
@@ -135,20 +292,20 @@ section {
 
 .hero p {
   font-size: 18px;
-}
+} */
 
 .hero-buttons {
   margin-top: 30px;
 }
 
-/* BUTTONS */
+/* BUTTONS 
 .btn {
   padding: 10px 20px;
   border-radius: 15px;
   text-decoration: none;
   font-size: 14px;
   margin: 5px;
-}
+}*/
 
 .chat-btn {
   background: #ff7a00;
@@ -177,23 +334,23 @@ section {
   gap: 20px;
 }
 
-.card {
+/* .card {
   background: white;
   padding: 25px;
   border-radius: 12px;
   text-align: center;
   box-shadow: 0 5px 15px rgba(0,0,0,0.05);
   transition: 0.3s;
-}
+} */
 
 .card i {
   font-size: 25px;
   color: #ff7a00;
 }
 
-.card:hover {
+/* .card:hover {
   transform: translateY(-5px);
-}
+} */
 
 /* HOROSCOPE */
 .horoscope {
@@ -247,8 +404,7 @@ section {
 }
 
 /* BOXES */
-.horoscope-box,
-.panchang-box {
+.horoscope-box {
   background: white;
   border-radius: 20px;
   padding: 20px;
@@ -350,13 +506,13 @@ section {
   line-height: 1.5;
 }
 
-/* CTA */
+/* CTA 
 .cta {
   text-align: center;
   background: url('/images/spacebg.gif') center/cover no-repeat;
   color: white;
   border-radius: 30px 30px 0 0;
-}
+}*/
 
 /* FOOTER */
 footer {
@@ -443,6 +599,68 @@ footer {
 .share-section {
   text-align: center;
   margin-top: 30px;
+}
+
+
+/* Horoscope section Home page */
+/* ZODIAC GRID */
+.zodiac-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+/* CARD STYLE (PREMIUM) */
+.zodiac-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 72px;
+}
+
+.zodiac-card:hover {
+  transform: translateY(-5px);
+  border-color: #ff7a00;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* SYMBOL */
+.zodiac-symbol {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: #32418a;
+}
+
+/* NAME */
+.zodiac-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* SELECTED SECTION */
+.selected-horoscope {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0px 20px 80px 20px;
+}
+
+.selected-card {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  text-align: center;
 }
 
 /* ARTICLE PAGE */
@@ -623,6 +841,61 @@ footer {
 }
 
 
+/* SECTION COLORS 
+.section-yellow {
+  background: #fff8f0;
+  padding: 0;
+}*/
+
+/* FORM 
+.kundali-box {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.kundali-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kundali-form input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+*/
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+/* NEW RASHI GRID */
+.rashi-grid-new {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 15px;
+}
+
+.rashi-btn .symbol {
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
+/* DYNAMIC CARD */
+.selected-card {
+  background: white;
+  max-width: 1200px;
+  margin: auto;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+
+
 /* MOBILE */
 @media(max-width:1150px){
 
@@ -709,4 +982,8 @@ footer {
   .horoscope-wrapper {
     grid-template-columns: 1fr;
   }
+
+  .zodiac-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
 }
