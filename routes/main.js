@@ -31,6 +31,11 @@ router.get("/", async (req, res) => {
   });
 });
 
+// Panchang Page
+router.get("/panchang", (req, res) => {
+  res.render("panchang");
+});
+
 // Rashi page
 router.get("/rashi/:name", (req, res) => {
   const rashi = req.params.name.toLowerCase();

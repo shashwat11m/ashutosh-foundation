@@ -8,7 +8,7 @@
 
     <div class="hero-buttons">
       <a href="https://wa.me/918707718561" class="btn chat-btn">Chat Now</a>
-      <a href="tel:+918707718561" class="btn call-btn">Book a Call</a>
+      <a href="tel:+918707718561" class="btn call-btn">Call Now</a>
     </div>
   </div>
 </section>
@@ -91,7 +91,7 @@
         <p><b>Yoga:</b> Parigha upto 17:56:52</p>
       </div>
 
-      <center><a href="#" class="btn call-btn">Detailed Panchang →</a></center>
+      <center><a href="/panchang" class="btn call-btn">Detailed Panchang →</a></center>
     </div>
 
   </section>
@@ -116,14 +116,21 @@
     {name:"pisces", symbol:"♓"}
   ]; %>
 
-  <div class="rashi-grid-new">
-    <% rashis.forEach(r => { %>
-      <div class="rashi-btn" onclick="showHoroscope('<%= r.name %>')">
-        <div class="symbol"><%= r.symbol %></div>
-        <div><%= r.name.toUpperCase() %></div>
+<div class="rashi-grid-new">
+  <% rashis.forEach(r => { %>
+    <div class="rashi-btn" onclick="showHoroscope('<%= r.name %>')">
+
+      <div class="rashi-icon">
+        <img src="/images/zodiac/<%= r.name %>.png" alt="<%= r.symbol %>">
       </div>
-    <% }) %>
-  </div>
+
+      <div class="rashi-name">
+        <%= r.name.toUpperCase() %>
+      </div>
+
+    </div>
+  <% }) %>
+</div>
 
 </section>
 
@@ -148,25 +155,63 @@
   <h2>Our Services</h2>
 
   <div class="service-grid">
-    <div class="card">
-      <i class="fas fa-user-astronaut"></i>
-      <h3>Astrology Consultation</h3>
+
+    <div class="service-card">
+      <a href="#">
+        <img src="/images/services/service1.jpg" alt="Free Astrology">
+      </a>
+      <p>Free Astrology</p>
     </div>
 
-    <div class="card">
-      <i class="fas fa-heart"></i>
-      <h3>Love & Marriage</h3>
+    <div class="service-card">
+      <a href="#">
+        <img src="/images/services/service2.jpg" alt="Sun Signs">
+      </a>
+      <p>Sun Signs</p>
     </div>
 
-    <div class="card">
-      <i class="fas fa-briefcase"></i>
-      <h3>Career Guidance</h3>
+    <div class="service-card">
+      <a href="#">
+        <img src="/images/services/service3.jpg" alt="Love">
+      </a>
+      <p>Love</p>
     </div>
 
-    <div class="card">
-      <i class="fas fa-gem"></i>
-      <h3>Rudraksha</h3>
+    <div class="service-card">
+      <a href="#">
+        <img src="/images/services/service4.jpg" alt="Marriage">
+      </a>
+      <p>Marriage</p>
     </div>
+
+    <div class="service-card">
+      <a href="#">
+        <img src="/images/services/service5.jpg" alt="Career">
+      </a>
+      <p>Career</p>
+    </div>
+
+    <div class="service-card">
+      <a href="#">
+        <img src="/images/services/service6.jpg" alt="Finance">
+      </a>
+      <p>Finance</p>
+    </div>
+
+        <div class="service-card">
+      <a href="#">
+        <img src="/images/services/service7.jpg" alt="Career">
+      </a>
+      <p>Child Astro</p>
+    </div>
+
+    <div class="service-card">
+      <a href="#">
+        <img src="/images/services/service8.jpg" alt="Finance">
+      </a>
+      <p>Education</p>
+    </div>
+
   </div>
 </section>
 </div>
@@ -183,7 +228,13 @@
         <% } %>
         <h3><%= a.title %></h3>
         <p>
-          <%= a.content.replace(/<[^>]*>?/gm,'').substring(0,200) %>...
+          <%= a.content
+                .replace(/<[^>]*>?/gm,'')
+                .replace(/&nbsp;|&amp;|&quot;|&#39;/g,' ')
+                .replace(/\s+/g,' ')   // remove extra spaces
+                .trim()
+                .substring(0,270)
+          %>...
         </p>
         <a href="/article/<%= a._id %>" class="btn readMore-btn">Read More</a>
       </div>
@@ -193,7 +244,7 @@
 
 <section class="cta">
   <h2>Talk to Astrologer Now</h2>
-  <a href="#" class="btn chat-btn">Chat Instantly</a>
+  <a href="https://wa.me/918707718561" class="btn chat-btn">Chat Instantly</a>
 </section>
 
 <script>
@@ -204,6 +255,7 @@
 const rashiData = JSON.parse(`<%- JSON.stringify(rashiDataAll) %>`);
 
 function showHoroscope(rashi){
+
   const data = rashiData[rashi];
 
   document.getElementById("todayText").innerText = data.today;
@@ -213,6 +265,12 @@ function showHoroscope(rashi){
 
   document.getElementById("selectedTitle").innerText = rashi.toUpperCase();
   document.getElementById("viewBtn").href = "/rashi/" + rashi;
+
+  // REMOVE ACTIVE
+  document.querySelectorAll(".rashi-btn").forEach(el => el.classList.remove("active"));
+
+  // ADD ACTIVE
+  event.currentTarget.classList.add("active");
 
   const section = document.getElementById("selectedHoroscope");
   section.style.display = "block";
