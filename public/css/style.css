@@ -1,4 +1,4 @@
-/* ===== ASTROCARE DESIGN SYSTEM ===== */
+/* style.css */
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&display=swap');
@@ -1286,6 +1286,219 @@ footer {
 @media(max-width:570px){
   .panchang-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+.kundli-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.kundli-tabs button{
+  padding:10px 15px;
+  border:none;
+  background:#eee;
+  cursor:pointer;
+  border-radius:8px;
+}
+
+.kundli-tabs button:hover{
+  background:#fdc533;
+}
+
+.tab{
+  display:none;
+}
+
+.tab.active{
+  display:block;
+}
+
+/* Kundali Generator */
+/* ================= CONTAINER ================= */
+.kundli-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  line-height: 1.6;
+}
+
+/* ================= HEADINGS ================= */
+.kundli-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #0d3b66;
+  font-size: 24px;
+}
+
+.kundli-container h3 {
+  margin-top: 20px;
+  margin-bottom: 12px;
+  font-size: 18px;
+  color: #32418a;
+  border-left: 4px solid #ff7a00;
+  padding-left: 8px;
+}
+
+/* ================= CARD ================= */
+.kundli-card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 14px;
+  margin-top: 16px;
+  border: 1px solid #eee;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+/* ================= TEXT ================= */
+.kundli-container p {
+  margin: 5px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.kundli-container p b {
+  color: #222;
+}
+
+.kundli-container ul {
+  margin-top: 8px;
+  padding-left: 18px;
+}
+
+.kundli-container ul li {
+  margin-bottom: 5px;
+  color: #444;
+  font-size: 14px;
+}
+
+/* ================= TABLE ================= */
+.planet-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  display: block;              /* ✅ KEY MOBILE FIX */
+  overflow-x: auto;            /* ✅ horizontal scroll */
+}
+
+.planet-table thead {
+  background: #32418a;
+}
+
+.planet-table th {
+  color: white;
+  padding: 12px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.planet-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+  color: #444;
+}
+
+.planet-table tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.planet-table tr:hover {
+  background: #eef2ff;
+}
+
+.planet-table td,
+.planet-table th {
+  min-width: 110px;   /* slightly smaller for mobile */
+  white-space: nowrap;
+}
+
+/* ================= CHART ================= */
+.chart-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap; /* default mobile safe */
+}
+
+.chart-item {
+  text-align: center;
+}
+
+.chart-box {
+  width: 330px;       /* FIXED REQUIRED */
+  height: 330px;
+  background: #f9fafc;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.chart-box svg {
+  width: 100%;
+  height: 100%;
+}
+
+.chart-label {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* ================= TABLET ================= */
+@media (min-width: 768px) {
+
+  .kundli-container {
+    padding: 25px;
+  }
+
+  .kundli-container h2 {
+    font-size: 26px;
+  }
+
+  .kundli-container h3 {
+    font-size: 19px;
+  }
+
+  .planet-table th,
+  .planet-table td {
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .chart-row {
+    flex-wrap: nowrap; /* side by side */
+  }
+}
+
+/* ================= DESKTOP ================= */
+@media (min-width: 1024px) {
+
+  .kundli-container {
+    padding: 30px;
+  }
+
+  .kundli-container h2 {
+    font-size: 28px;
+  }
+
+  .kundli-container h3 {
+    font-size: 20px;
+  }
+
+  .planet-table th,
+  .planet-table td {
+    padding: 16px;
   }
 }
 

@@ -1,4 +1,7 @@
+<!-- home.ejs -->
+
 <%- include("partials/header") %>
+
 <!-- YELLOW SECTION -->
 <!-- HERO -->
 <section class="hero">
@@ -24,13 +27,11 @@
   <div class="jyotisham-form-container">
     <form id="free-kundali" class="jyotisham-form">
 
-      <!-- NAME -->
       <div class="jyotisham-form-group">
         <label>Name</label>
         <input type="text" name="name" required>
       </div>
 
-      <!-- DOB + TIME (SAME LINE) -->
       <div class="jyotisham-form-row">
         <div class="jyotisham-form-group">
           <label>Date of Birth</label>
@@ -43,7 +44,6 @@
         </div>
       </div>
 
-      <!-- PHONE + LANGUAGE -->
       <div class="jyotisham-form-row">
         <div class="jyotisham-form-group">
           <label>Place of Birth</label>
@@ -55,6 +55,9 @@
               autocomplete="off"
               required
             >
+            <input type="hidden" id="latitude">
+            <input type="hidden" id="longitude">
+            <input type="hidden" id="timezone">
             <div id="suggestionsBox" class="suggestions-box"></div>
           </div>
         </div>
@@ -65,9 +68,11 @@
         </div>
       </div>
 
-      <!-- BUTTON -->
       <center><a href="#" class="btn call-btn" onclick="submitGetKundali()"> Generate Kundli  →</a></center>
     </form>
+
+    <div id="kundliResult"></div>
+    <div id="loader" style="display:none;">Loading...</div>
   </div>
 </div>
 
@@ -277,44 +282,225 @@ function showHoroscope(rashi){
   section.scrollIntoView({ behavior: "smooth" });
 }
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrzMJQ5YawLcaktUpkzHR7bVzg-_Sl4RM&libraries=places"></script>
+
 <script>
-const input = document.getElementById("placeInput");
-const box = document.getElementById("suggestionsBox");
+function initAutocomplete() {
+  const input = document.getElementById("placeInput");
 
-input.addEventListener("input", async () => {
-  const query = input.value;
+  const autocomplete = new google.maps.places.Autocomplete(input, {
+    types: ["(cities)"],
+  });
 
-  if(query.length < 3){
-    box.style.display = "none";
-    return;
-  }
+  autocomplete.addListener("place_changed", () => {
+    const place = autocomplete.getPlace();
 
-  const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
+    if (!place.geometry) return;
+
+    const lat = place.geometry.location.lat();
+    const lng = place.geometry.location.lng();
+
+    document.getElementById("latitude").value = lat;
+    document.getElementById("longitude").value = lng;
+
+    // timezone
+    fetch(`https://maps.googleapis.com/maps/api/timezone/json?location=${lat},${lng}&timestamp=${Math.floor(Date.now()/1000)}&key=AIzaSyCrzMJQ5YawLcaktUpkzHR7bVzg-_Sl4RM`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("timezone").value = data.rawOffset / 3600;
+    });
+  });
+}
+
+window.onload = initAutocomplete;
+</script>
+
+<script>
+async function submitGetKundali() {
+
+  document.getElementById("loader").style.display = "block";
+
+  const name = document.querySelector("[name='name']").value;
+  const dob = document.querySelector("[name='dob']").value;
+  const tob = document.querySelector("[name='tob']").value;
+
+  const lat = document.getElementById("latitude").value;
+  const lon = document.getElementById("longitude").value;
+  const tz = document.getElementById("timezone").value;
+
+  const res = await fetch("/api/kundli", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ name, dob, tob, lat, lon, tz })
+  });
+
   const data = await res.json();
 
-  box.innerHTML = "";
-  box.style.display = "block";
+  document.getElementById("loader").style.display = "none";
 
-  data.slice(0,5).forEach(place => {
-    const div = document.createElement("div");
-    div.classList.add("suggestion-item");
-    div.innerText = place.display_name;
+  renderKundli(data, name);
+}
+function renderKundli(data, name){
 
-    div.onclick = () => {
-      input.value = place.display_name;
-      box.style.display = "none";
-    };
+  const planet = data.planet?.response || {};
+  const sade = data.sade?.response || {};
+  const dasha = data.mahadasha?.response || {};
+  const panchang = planet.panchang || {};
 
-    box.appendChild(div);
-  });
-});
+  document.getElementById("kundliResult").innerHTML = `
 
-/* CLICK OUTSIDE CLOSE */
-document.addEventListener("click", (e) => {
-  if(!e.target.closest(".location-input-wrapper")){
-    box.style.display = "none";
-  }
-});
+  <div class="kundli-container">
+
+    <h2>${name}'s Kundli Report</h2>
+
+    <!-- ================= CHARTS ================= -->
+    <div class="kundli-card">
+
+      <div class="chart-row">
+
+        <div class="chart-item">
+          <div class="chart-box">${data.d1 || ""}</div>
+          <div class="chart-label">D1 Chart (Birth Chart)</div>
+        </div>
+
+        <div class="chart-item">
+          <div class="chart-box">${data.d9 || ""}</div>
+          <div class="chart-label">D9 Chart (Navamsha)</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ================= PLANETS ================= -->
+    <div class="kundli-card">
+      <h3>Planet Details</h3>
+
+      <table class="planet-table">
+        <thead>
+          <tr>
+            <th>Planet</th>
+            <th>Sign</th>
+            <th>Nakshatra</th>
+            <th>House</th>
+            <th>Avastha</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        ${
+          Object.values(planet)
+            .filter(p => p?.full_name)
+            .map(p => `
+              <tr>
+                <td>${p.full_name}</td>
+                <td>${p.zodiac}</td>
+                <td>${p.nakshatra}</td>
+                <td>${p.house}</td>
+                <td>${p.basic_avastha}</td>
+              </tr>
+            `).join("")
+        }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ================= BASIC INFO ================= -->
+    <div class="kundli-card">
+      <h3>Basic Astrology</h3>
+
+      <p><b>Rashi:</b> ${planet.rasi || "-"}</p>
+      <p><b>Nakshatra:</b> ${planet.nakshatra || "-"}</p>
+    </div>
+
+    <!-- ================= LUCKY ================= -->
+    <div class="kundli-card">
+      <h3>Lucky Details</h3>
+
+      <p><b>Gem:</b> ${planet.lucky_gem?.join(", ") || "-"}</p>
+      <p><b>Numbers:</b> ${planet.lucky_num?.join(", ") || "-"}</p>
+      <p><b>Colors:</b> ${planet.lucky_colors?.join(", ") || "-"}</p>
+      <p><b>Letters:</b> ${planet.lucky_letters?.join(", ") || "-"}</p>
+    </div>
+
+    <!-- ================= PANCHANG ================= -->
+    <div class="kundli-card">
+      <h3>Panchang Details</h3>
+
+      <table class="planet-table">
+        <tbody>
+          <tr>
+            <td><b>Ayanamsa</b></td>
+            <td>${panchang.ayanamsa || "-"}</td>
+          </tr>
+          <tr>
+            <td><b>Karana</b></td>
+            <td>${panchang.karana || "-"}</td>
+          </tr>
+          <tr>
+            <td><b>Yoga</b></td>
+            <td>${panchang.yoga || "-"}</td>
+          </tr>
+          <tr>
+            <td><b>Sunrise</b></td>
+            <td>${panchang.sunrise_at_birth || "-"}</td>
+          </tr>
+          <tr>
+            <td><b>Sunset</b></td>
+            <td>${panchang.sunset_at_birth || "-"}</td>
+          </tr>
+          <tr>
+            <td><b>Tithi</b></td>
+            <td>${panchang.tithi || "-"}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ================= SADE SATI ================= -->
+    <div class="kundli-card">
+      <h3>Sade Sati</h3>
+
+      <p>${sade.description || "No data available"}</p>
+
+      ${
+        sade.remedies
+          ? `<ul>${sade.remedies.map(r => `<li>${r}</li>`).join("")}</ul>`
+          : ""
+      }
+    </div>
+
+    <!-- ================= MAHADASHA ================= -->
+    <div class="kundli-card">
+      <h3>Mahadasha</h3>
+
+      <p><b>Start Year:</b> ${dasha.start_year || "-"}</p>
+      <p><b>Dasha Start:</b> ${dasha.dasha_start_date || "-"}</p>
+
+      <table class="planet-table">
+        <thead>
+          <tr>
+            <th>Planet</th>
+            <th>Start Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        ${
+          dasha.mahadasha?.map((p, i) => `
+            <tr>
+              <td>${p}</td>
+              <td>${dasha.mahadasha_order?.[i] || "-"}</td>
+            </tr>
+          `).join("") || ""
+        }
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  `;
+}
 </script>
 
 <%- include("partials/footer") %>
