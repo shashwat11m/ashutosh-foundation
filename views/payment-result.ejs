@@ -1,0 +1,15 @@
+<%- include("partials/header") %>
+
+<section>
+  <div class="auth-box">
+    <h2><%= success ? "Payment Successful 🎉" : "Payment Not Completed" %></h2>
+    <p class="auth-subtitle"><%= message %></p>
+
+    <a href="/dashboard" class="btn chat-btn">Go to Dashboard</a>
+    <% if (!success) { %>
+      <p class="auth-switch"><a href="/dashboard/buy">Try again</a></p>
+    <% } %>
+  </div>
+</section>
+
+<%- include("partials/footer") %>

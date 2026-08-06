@@ -1,0 +1,41 @@
+<%- include("partials/header") %>
+
+<section>
+  <div class="auth-box">
+    <h2>Redirecting to Payment 💳</h2>
+    <p class="auth-subtitle">
+      <%= qty %> question(s) — ₹<%= amount %>. You'll be taken to Cashfree's
+      secure checkout in a moment.
+    </p>
+    <p class="empty-note" id="checkoutFallback" style="display:none;">
+      If nothing happens automatically, <a href="#" id="checkoutRetry">click here to continue</a>.
+    </p>
+  </div>
+</section>
+
+<script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+<script>
+  (function () {
+    var cashfree = Cashfree({ mode: "<%= cfMode %>" });
+
+    function openCheckout() {
+      cashfree.checkout({
+        paymentSessionId: "<%= paymentSessionId %>",
+        redirectTarget: "_self"
+      });
+    }
+
+    openCheckout();
+
+    // Fallback in case the SDK is blocked or slow to init.
+    setTimeout(function () {
+      document.getElementById("checkoutFallback").style.display = "block";
+    }, 3000);
+    document.getElementById("checkoutRetry").addEventListener("click", function (e) {
+      e.preventDefault();
+      openCheckout();
+    });
+  })();
+</script>
+
+<%- include("partials/footer") %>

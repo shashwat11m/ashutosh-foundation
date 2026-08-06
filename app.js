@@ -12,7 +12,18 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static("public"));
-app.use(express.json());
+
+// The `verify` hook stashes the exact raw bytes of every JSON request body
+// onto req.rawBody. The Cashfree webhook handler needs this — Cashfree
+// signs the raw, unparsed payload, and re-serializing req.body after
+// JSON.parse can shift number formatting (e.g. 170 vs 170.00) and break
+// signature verification. Harmless overhead for every other route.
+app.use(express.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf;
+  }
+}));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
@@ -35,12 +46,14 @@ const adminRoutes = require("./routes/admin");
 const kundliRoutes = require("./routes/kundli");
 const authRoutes = require("./routes/auth");
 const dashboardRoutes = require("./routes/dashboard");
+const webhookRoutes = require("./routes/webhooks");
 
 app.use("/", mainRoutes);
 app.use("/", authRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/admin", adminRoutes);
 app.use("/api", kundliRoutes);
+app.use("/webhooks", webhookRoutes);
 
 // MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI)
