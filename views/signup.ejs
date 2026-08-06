@@ -1,0 +1,23 @@
+<%- include("partials/header") %>
+
+<section>
+  <div class="auth-box">
+    <h2>Create Your Account!</h2>
+    <p class="auth-subtitle">Sign up to ask our astrologer your questions.<br> You get 1 free question to ask.</p>
+
+    <% if (error) { %>
+      <div class="alert-error"><%= error %></div>
+    <% } %>
+
+    <form action="/signup" method="POST" class="admin-form auth-form">
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="email" name="email" placeholder="Email Address" required>
+      <input type="password" name="password" placeholder="Password" required minlength="6">
+      <button class="btn chat-btn">Sign Up</button>
+    </form>
+
+    <p class="auth-switch">Already have an account? <a href="/login">Log in</a></p>
+  </div>
+</section>
+
+<%- include("partials/footer") %>

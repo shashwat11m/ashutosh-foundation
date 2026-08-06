@@ -1,0 +1,19 @@
+<%- include("partials/header") %>
+
+<section>
+  <div class="auth-box">
+    <h2>Buy Questions 🛒</h2>
+    <p class="auth-subtitle">You currently have <strong><%= user.questionsLeft %></strong> question(s) left.</p>
+
+    <form action="/dashboard/buy" method="POST" class="admin-form auth-form">
+      <label for="quantity" class="form-label">Number of questions</label>
+      <input type="number" name="quantity" id="quantity" min="1" max="100" value="3" required>
+      <p class="price-note">₹<%= pricePerQuestion %> per question</p>
+      <button class="btn chat-btn">Continue to Payment</button>
+    </form>
+
+    <p class="auth-switch"><a href="/dashboard">&larr; Back to dashboard</a></p>
+  </div>
+</section>
+
+<%- include("partials/footer") %>

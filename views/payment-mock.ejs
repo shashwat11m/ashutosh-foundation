@@ -1,0 +1,25 @@
+<%- include("partials/header") %>
+
+<section>
+  <div class="auth-box">
+    <h2>Confirm Payment 💳</h2>
+
+    <div class="payment-summary">
+      <div class="payment-row"><span>Questions</span><span><%= qty %></span></div>
+      <div class="payment-row"><span>Price per question</span><span>₹<%= pricePerQuestion %></span></div>
+      <div class="payment-row payment-total"><span>Total Amount</span><span>₹<%= amount %></span></div>
+    </div>
+
+    <p class="mock-note">⚠️ This is a placeholder payment screen — no real payment gateway is connected yet. Clicking "Pay Now" will simulate a successful payment and add these questions to your account.</p>
+
+    <form action="/dashboard/buy/confirm" method="POST" class="admin-form auth-form">
+      <input type="hidden" name="qty" value="<%= qty %>">
+      <input type="hidden" name="amount" value="<%= amount %>">
+      <button class="btn chat-btn">Pay Now — ₹<%= amount %></button>
+    </form>
+
+    <p class="auth-switch"><a href="/dashboard/buy">&larr; Change quantity</a></p>
+  </div>
+</section>
+
+<%- include("partials/footer") %>

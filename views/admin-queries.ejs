@@ -1,0 +1,53 @@
+<%- include("partials/header") %>
+
+<section class="admin-page">
+
+  <h2>Manage Queries 📩</h2>
+
+  <div class="admin-subnav">
+    <a href="/admin" class="btn">Articles</a>
+    <a href="/admin/queries" class="btn chat-btn">Queries</a>
+    <a href="/admin/users" class="btn">Users</a>
+  </div>
+
+  <h3>Pending (<%= pending.length %>)</h3>
+
+  <% if (pending.length === 0) { %>
+    <p class="empty-note">No pending questions right now 🎉</p>
+  <% } %>
+
+  <div class="admin-list">
+    <% pending.forEach(q => { %>
+      <div class="query-card">
+        <div class="query-meta">
+          <strong><%= q.user ? q.user.name : "Unknown user" %></strong>
+          <span class="query-meta-sub"><%= q.user ? q.user.email : "" %> • <%= new Date(q.createdAt).toLocaleString() %></span>
+        </div>
+        <p class="query-text"><%= q.questionText %></p>
+
+        <form action="/admin/queries/<%= q._id %>/answer" method="POST" class="admin-form">
+          <textarea name="answerText" placeholder="Write your answer..." required></textarea>
+          <button class="btn chat-btn">Send Answer</button>
+        </form>
+      </div>
+    <% }) %>
+  </div>
+
+  <h3 class="section-gap">Already Answered (<%= answered.length %>)</h3>
+
+  <div class="admin-list">
+    <% answered.forEach(q => { %>
+      <div class="query-card answered-card">
+        <div class="query-meta">
+          <strong><%= q.user ? q.user.name : "Unknown user" %></strong>
+          <span class="query-meta-sub"><%= q.user ? q.user.email : "" %> • answered <%= new Date(q.answeredAt).toLocaleString() %></span>
+        </div>
+        <p class="query-text"><b>Q:</b> <%= q.questionText %></p>
+        <p class="query-text"><b>A:</b> <%= q.answerText %></p>
+      </div>
+    <% }) %>
+  </div>
+
+</section>
+
+<%- include("partials/footer") %>

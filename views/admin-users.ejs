@@ -1,0 +1,41 @@
+<%- include("partials/header") %>
+
+<section class="admin-page">
+
+  <h2>Users 👥</h2>
+
+  <div class="admin-subnav">
+    <a href="/admin" class="btn">Articles</a>
+    <a href="/admin/queries" class="btn">Queries</a>
+    <a href="/admin/users" class="btn chat-btn">Users</a>
+  </div>
+
+  <% if (users.length === 0) { %>
+    <p class="empty-note">No users have signed up yet.</p>
+  <% } %>
+
+  <div class="admin-list">
+    <% users.forEach(u => { %>
+      <div class="admin-card user-card">
+        <div>
+          <h3><%= u.name %></h3>
+          <p class="query-meta-sub"><%= u.email %></p>
+          <p class="user-quota-line">
+            Questions left: <strong><%= u.questionsLeft %></strong>
+            <% if (pendingByUser[u._id.toString()]) { %>
+              • <span class="pending-tag"><%= pendingByUser[u._id.toString()] %> pending</span>
+            <% } %>
+          </p>
+        </div>
+
+        <form action="/admin/users/<%= u._id %>/add-quota" method="POST" class="quota-form">
+          <input type="number" name="amount" min="1" value="3" required>
+          <button class="btn chat-btn">Add Quota</button>
+        </form>
+      </div>
+    <% }) %>
+  </div>
+
+</section>
+
+<%- include("partials/footer") %>

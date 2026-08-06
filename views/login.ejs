@@ -1,0 +1,22 @@
+<%- include("partials/header") %>
+
+<section>
+  <div class="auth-box">
+    <h2>Welcome Back!</h2>
+    <p class="auth-subtitle">Log in to continue your conversation with the astrologer.</p>
+
+    <% if (error) { %>
+      <div class="alert-error"><%= error %></div>
+    <% } %>
+
+    <form action="/login" method="POST" class="admin-form auth-form">
+      <input type="email" name="email" placeholder="Email Address" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button class="btn chat-btn">Log In</button>
+    </form>
+
+    <p class="auth-switch">Don't have an account? <a href="/signup">Sign up</a></p>
+  </div>
+</section>
+
+<%- include("partials/footer") %>

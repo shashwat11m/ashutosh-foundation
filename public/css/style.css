@@ -1455,6 +1455,27 @@ footer {
   color: #333;
 }
 
+/* Add to style.css (or dashboard.css) — styles the policy links added to
+   footer.ejs so they're legible on the dark footer background instead of
+   falling back to default blue/underlined browser link styling. */
+.footer-links {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--primary-color);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
 /* ================= TABLET ================= */
 @media (min-width: 768px) {
 

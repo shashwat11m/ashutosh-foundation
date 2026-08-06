@@ -1,0 +1,114 @@
+<%- include("partials/header") %>
+
+<section class="dashboard-section">
+
+  <div class="dashboard-top">
+    <div>
+      <h2>Welcome, <%= user.name %> 🙏</h2>
+      <p class="questions-left">Questions left: <span class="quota-badge"><%= user.questionsLeft %></span></p>
+    </div>
+    <a href="/dashboard/buy" class="btn chat-btn">+ Buy Questions</a>
+  </div>
+
+  <div class="dashboard-grid">
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+
+      <div class="card sidebar-card">
+        <h3>Your Quota</h3>
+        <p class="quota-big"><%= user.questionsLeft %></p>
+        <p class="sidebar-subtext">questions remaining</p>
+        <a href="/dashboard/buy" class="btn">Buy More</a>
+      </div>
+
+      <div class="card sidebar-card">
+        <h3>Suggested Remedies</h3>
+        <ul class="remedy-list">
+          <li>Chant "Om Namah Shivaya" 108 times daily</li>
+          <li>Offer water to the Sun every morning</li>
+          <li>Keep a Tulsi plant at your home entrance</li>
+        </ul>
+      </div>
+
+      <div class="card sidebar-card">
+        <h3>Suggested Gemstones</h3>
+        <ul class="remedy-list">
+          <li>Yellow Sapphire (Pukhraj) — for Jupiter</li>
+          <li>Red Coral (Moonga) — for Mars</li>
+        </ul>
+        <a href="#" class="btn chat-btn sidebar-buy-btn">Buy Now</a>
+      </div>
+
+      <div class="card sidebar-card">
+        <h3>Suggested Rudraksh</h3>
+        <ul class="remedy-list">
+          <li>5 Mukhi Rudraksh — for peace & health</li>
+          <li>7 Mukhi Rudraksh — for wealth</li>
+        </ul>
+        <a href="#" class="btn chat-btn sidebar-buy-btn">Buy Now</a>
+      </div>
+
+    </aside>
+
+    <!-- Chat -->
+    <div class="chat-panel">
+
+      <div class="chat-window" id="chatWindow">
+        <% if (questions.length === 0) { %>
+          <p class="chat-empty">You haven't asked anything yet. Ask your first question below 👇</p>
+        <% } %>
+
+        <% questions.forEach(q => { %>
+          <div class="chat-bubble chat-question">
+            <p><%= q.questionText %></p>
+            <span class="chat-time"><%= new Date(q.createdAt).toLocaleString() %></span>
+          </div>
+
+          <% if (q.status === "answered") { %>
+            <div class="chat-bubble chat-answer">
+              <p><%= q.answerText %></p>
+              <span class="chat-time">Astrologer • <%= new Date(q.answeredAt).toLocaleString() %></span>
+            </div>
+          <% } else { %>
+            <div class="chat-bubble chat-pending">
+              <p>⏳ Awaiting astrologer's response...</p>
+            </div>
+          <% } %>
+        <% }) %>
+      </div>
+
+      <% if (error) { %>
+        <div class="alert-error"><%= error %></div>
+      <% } %>
+
+      <form action="/dashboard/ask" method="POST" class="chat-input-form">
+        <textarea name="questionText" placeholder="Type your question for the astrologer..." required></textarea>
+        <button class="btn chat-btn" <%= user.questionsLeft <= 0 ? "disabled" : "" %>>Send</button>
+      </form>
+
+      <% if (user.questionsLeft <= 0) { %>
+        <p class="quota-warning">You're out of questions. <a href="/dashboard/buy">Buy more</a> to keep asking.</p>
+      <% } %>
+
+    </div>
+
+  </div>
+
+  <!-- Store Banner -->
+  <a href="#" class="store-banner">
+    <div>
+      <h3>Gemstones & Rudraksh Store</h3>
+      <p>Certified, energized products handpicked by our astrologer.</p>
+    </div>
+    <span class="btn chat-btn">Visit Store</span>
+  </a>
+
+</section>
+
+<script>
+  var chatWindow = document.getElementById("chatWindow");
+  if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight;
+</script>
+
+<%- include("partials/footer") %>

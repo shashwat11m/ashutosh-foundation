@@ -4,6 +4,14 @@
 
   <h2>Admin Panel 🛠️</h2>
 
+  <div class="admin-subnav">
+    <a href="/admin" class="btn chat-btn">Articles</a>
+    <a href="/admin/queries" class="btn">
+      Queries<% if (pendingCount > 0) { %> <span class="pending-badge"><%= pendingCount %></span><% } %>
+    </a>
+    <a href="/admin/users" class="btn">Users</a>
+  </div>
+
   <a href="/admin/add" class="btn chat-btn">+ Add Article</a>
 
   <div class="admin-list">

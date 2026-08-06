@@ -54,59 +54,28 @@ router.get("/articles", async (req, res) => {
   res.render("all-articles", { articles });
 });
 
-router.get("/admin", async (req, res) => {
-  const articles = await Article.find().sort({ date: -1 });
-  res.render("admin", { articles });
+router.get("/contact-us", (req, res) => {
+  res.render("contact-us");
 });
 
-router.get("/admin/add", (req, res) => {
-  res.render("add-article");
+router.get("/terms-and-conditions", (req, res) => {
+  res.render("terms-and-conditions");
 });
 
-router.post("/admin/add", upload.single("image"), async (req, res) => {
-
-  const { title, content } = req.body;
-
-  const newArticle = new Article({
-    title,
-    content,
-    image: req.file ? req.file.filename : null
-  });
-
-  await newArticle.save();
-
-  res.redirect("/admin");
+router.get("/cancellation-and-refund", (req, res) => {
+  res.render("cancellation-and-refund");
 });
 
-router.get("/admin/delete/:id", async (req, res) => {
-  await Article.findByIdAndDelete(req.params.id);
-  res.redirect("/admin");
-});
-
-// Edit page
-router.get("/admin/edit/:id", async (req, res) => {
-  const article = await Article.findById(req.params.id);
-  res.render("edit-article", { article });
-});
-
-// Handle edit
-router.post("/admin/edit/:id", upload.single("image"), async (req, res) => {
-
-  const { title, content } = req.body;
-
-  const updateData = { title, content };
-
-  if (req.file) {
-    updateData.image = req.file.filename;
-  }
-
-  await Article.findByIdAndUpdate(req.params.id, updateData);
-
-  res.redirect("/admin");
-});
+// NOTE: all /admin* routes (article management + the new queries/users
+// management) now live in routes/admin.js, protected by requireAdmin.
+// They used to be duplicated here and in routes/admin.js, which meant
+// routes/admin.js's versions were silently unreachable since this router
+// was mounted first in app.js. Removed here to fix that and to make sure
+// the admin area is actually behind login.
 
 router.get("/add-article", async (req, res) => {
-
+  // Leftover test route from development — safe to delete once you don't
+  // need it anymore. Left untouched here.
   const newArticle = new Article({
     title: "Importance of Kundli in Modern Life",
     content: "Kundli plays a crucial role in understanding personality, career, and relationships. In today's fast-paced world, astrology helps individuals make better decisions by aligning actions with cosmic energies..."
@@ -120,7 +89,7 @@ router.get("/add-article", async (req, res) => {
 const rashiDataAll = {
 
   aries: {
-    today: "Today brings a surge of confidence and motivation. You may feel ready to take initiative in both personal and professional matters. Career-wise, it’s a great day to start something new or take leadership. Financially, avoid impulsive spending despite opportunities. In love, honest communication will strengthen bonds. Health remains good, but avoid overexertion. Overall, a productive and energetic day awaits you.",
+    today: "Today brings a surge of confidence and motivation. You may feel ready to take initiative in both personal and professional matters. Career-wise, it's a great day to start something new or take leadership. Financially, avoid impulsive spending despite opportunities. In love, honest communication will strengthen bonds. Health remains good, but avoid overexertion. Overall, a productive and energetic day awaits you.",
     yearly: {
       career: "Career growth is strong this year with new opportunities.",
       love: "Romantic life improves, communication is key.",
@@ -131,7 +100,7 @@ const rashiDataAll = {
   },
 
   taurus: {
-    today: "A calm and steady day is ahead. You may feel more focused on stability and long-term planning. Career matters require patience, but your consistency will pay off. Financially, it’s a good day to save or invest wisely. In relationships, emotional understanding will strengthen bonds. Health-wise, take care of diet and avoid laziness. Trust the process and stay grounded.",
+    today: "A calm and steady day is ahead. You may feel more focused on stability and long-term planning. Career matters require patience, but your consistency will pay off. Financially, it's a good day to save or invest wisely. In relationships, emotional understanding will strengthen bonds. Health-wise, take care of diet and avoid laziness. Trust the process and stay grounded.",
     yearly: {
       career: "Stable growth, avoid risky decisions.",
       love: "Relationships deepen with trust.",
@@ -142,7 +111,7 @@ const rashiDataAll = {
   },
 
   gemini: {
-    today: "Your communication skills will shine today. It’s a great day for networking, meetings, or expressing your ideas. Career opportunities may come through conversations. Financially, be cautious with quick decisions. In love, playful interactions bring joy. Health is stable, but mental rest is important. Stay adaptable and open-minded throughout the day.",
+    today: "Your communication skills will shine today. It's a great day for networking, meetings, or expressing your ideas. Career opportunities may come through conversations. Financially, be cautious with quick decisions. In love, playful interactions bring joy. Health is stable, but mental rest is important. Stay adaptable and open-minded throughout the day.",
     yearly: {
       career: "Growth through networking and communication.",
       love: "Exciting connections and emotional growth.",
