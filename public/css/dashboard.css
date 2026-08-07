@@ -196,6 +196,23 @@
   line-height: 1.6;
 }
 
+.profile-list { margin: 0 0 12px; padding-left: 18px; font-size: 13px; line-height: 1.5; }
+.profile-list li { margin-bottom: 8px; }
+.birth-card details summary, .recommendation-editor summary, .details-panel summary { cursor: pointer; list-style: none; }
+.compact-form { margin-top: 12px; gap: 8px; }
+.compact-form label { font-size: 12px; color: #666; }
+.compact-form label input { margin-top: 3px; }
+.chat-person { display: block; font-size: 11px; opacity: .75; margin-top: 6px; }
+.chat-bubble p, .query-text { white-space: pre-wrap; }
+.question-form { flex-wrap: wrap; }
+.question-fields { width: 100%; display: flex; gap: 10px; }
+.question-fields select { flex: 1; min-width: 0; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+.plan-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+.plan-option input { position: absolute; opacity: 0; }
+.plan-option span { display: flex; flex-direction: column; gap: 2px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; text-align: center; }
+.plan-option input:checked + span { border-color: var(--primary-color); background: var(--primary-lite); }
+.plan-option small { color: #666; }
+
 /* ---------- CHAT PANEL ---------- */
 .chat-panel {
   background: white;
@@ -420,6 +437,20 @@
   border: 1px solid #ddd;
 }
 
+.query-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.inbox-user-card { display: flex; flex-direction: column; gap: 4px; background: white; color: var(--heading-color); text-decoration: none; padding: 16px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,.05); }
+.inbox-user-card.completed { background: var(--primary-lite); }
+.inbox-user-card span, .inbox-user-card small { color: #777; font-size: 12px; }
+.admin-chat-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; margin: 14px 0; }
+.details-panel { max-width: 290px; }
+.details-panel .profile-list { margin-top: 10px; }
+.admin-chat-window { min-height: 250px; max-height: 600px; overflow-y: auto; background: white; border: 1px solid #eee; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+.admin-answer-form { align-self: flex-start; width: min(78%, 560px); display: flex; flex-direction: column; gap: 8px; }
+.admin-answer-form textarea { min-height: 90px; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font: inherit; resize: vertical; }
+.recommendation-editor { margin-top: 18px; }
+.recommendation-editor form { margin-top: 12px; max-width: 620px; }
+.back-link { color: var(--heading-color); text-decoration: none; }
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 800px) {
   .dashboard-grid {
@@ -434,4 +465,8 @@
     flex-direction: column;
     text-align: center;
   }
+  .query-columns { grid-template-columns: 1fr; }
+  .admin-chat-head { flex-direction: column; }
+  .question-fields { flex-direction: column; }
+  .plan-options { grid-template-columns: 1fr; }
 }

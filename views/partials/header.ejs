@@ -41,11 +41,11 @@
   <div class="nav-buttons">
     <% if (typeof sessionUser !== "undefined" && sessionUser) { %>
       <% if (sessionUser.role === "admin") { %>
-        <a class="btn" href="/admin">Admin Panel</a>
+        <a class="btn chat-btn" href="/admin">Admin Panel</a>
       <% } else { %>
-        <a class="btn" href="/dashboard">Dashboard</a>
+        <a class="btn chat-btn" href="/dashboard">Dashboard</a>
       <% } %>
-      <a class="btn" href="/logout">Logout</a>
+      <a class="btn call-btn" href="/logout">Logout</a>
     <% } else { %>
       <a class="btn chat-btn" href="/login">Login</a>
       <a class="btn call-btn" href="/signup">Sign Up</a>

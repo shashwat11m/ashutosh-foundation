@@ -282,7 +282,7 @@ function showHoroscope(rashi){
   section.scrollIntoView({ behavior: "smooth" });
 }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrzMJQ5YawLcaktUpkzHR7bVzg-_Sl4RM&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqaYLNzkwWachxqTiORsykPTSocb5YbZU&libraries=places"></script>
 
 <script>
 function initAutocomplete() {
@@ -304,7 +304,7 @@ function initAutocomplete() {
     document.getElementById("longitude").value = lng;
 
     // timezone
-    fetch(`https://maps.googleapis.com/maps/api/timezone/json?location=${lat},${lng}&timestamp=${Math.floor(Date.now()/1000)}&key=AIzaSyCrzMJQ5YawLcaktUpkzHR7bVzg-_Sl4RM`)
+    fetch(`https://maps.googleapis.com/maps/api/timezone/json?location=${lat},${lng}&timestamp=${Math.floor(Date.now()/1000)}&key=AIzaSyBqaYLNzkwWachxqTiORsykPTSocb5YbZU`)
     .then(res => res.json())
     .then(data => {
       document.getElementById("timezone").value = data.rawOffset / 3600;

@@ -57,10 +57,30 @@ router.post("/edit/:id", upload.single("image"), async (req, res) => {
 
 // ---------- QUERY / QUESTION MANAGEMENT ----------
 router.get("/queries", async (req, res) => {
-  const pending = await Question.find({ status: "pending" }).populate("user").sort({ createdAt: 1 });
-  const answered = await Question.find({ status: "answered" }).populate("user").sort({ answeredAt: -1 });
+  const [pending, answered] = await Promise.all([
+    Question.find({ status: "pending" }).populate("user").sort({ createdAt: 1 }),
+    Question.find({ status: "answered" }).populate("user").sort({ answeredAt: -1 })
+  ]);
+  const groupByUser = questions => {
+    const groups = new Map();
+    questions.forEach(q => {
+      if (!q.user) return;
+      const key = q.user._id.toString();
+      const group = groups.get(key) || { user: q.user, count: 0, latest: q.createdAt };
+      group.count += 1;
+      if (q.createdAt > group.latest) group.latest = q.createdAt;
+      groups.set(key, group);
+    });
+    return [...groups.values()];
+  };
+  res.render("admin-queries", { pendingUsers: groupByUser(pending), answeredUsers: groupByUser(answered) });
+});
 
-  res.render("admin-queries", { pending, answered });
+router.get("/queries/user/:userId", async (req, res) => {
+  const user = await User.findOne({ _id: req.params.userId, role: "user" });
+  if (!user) return res.redirect("/admin/queries");
+  const questions = await Question.find({ user: user._id }).sort({ createdAt: 1 });
+  res.render("admin-user-chat", { user, questions });
 });
 
 router.post("/queries/:id/answer", async (req, res) => {
@@ -74,7 +94,16 @@ router.post("/queries/:id/answer", async (req, res) => {
     });
   }
 
-  res.redirect("/admin/queries");
+  res.redirect(`/admin/queries/user/${req.body.userId || ""}`);
+});
+
+router.post("/users/:id/recommendations", async (req, res) => {
+  const lines = value => (value || "").split(/\r?\n/).map(item => item.trim()).filter(Boolean);
+  await User.findByIdAndUpdate(req.params.id, {
+    suggestedRemedies: lines(req.body.suggestedRemedies),
+    suggestedGemstones: lines(req.body.suggestedGemstones)
+  });
+  res.redirect(`/admin/queries/user/${req.params.id}`);
 });
 
 // ---------- USER MANAGEMENT (quota top-ups) ----------
