@@ -1476,6 +1476,22 @@ footer {
   text-decoration: underline;
 }
 
+.coming-soon {
+  color: #aaa;
+  font-style: italic;
+}
+
+.panchang-nav a {
+  padding: 10px 15px;
+  border-radius: 8px;
+  background: #32418a;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+
 /* ================= TABLET ================= */
 @media (min-width: 768px) {
 

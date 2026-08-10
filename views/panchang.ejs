@@ -4,61 +4,60 @@
 
   <h1>Today Panchang 📅</h1>
   <p class="panchang-sub">
-    Monday, April 20, 2026 Panchang for Lucknow, India
+    <%= panchang.date.toLocaleDateString("en-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric", timeZone: "Asia/Kolkata" }) %>
+    Panchang for New Delhi, India
   </p>
 
   <!-- CONTROLS -->
-  <div class="panchang-controls">
-    <input type="date">
-
-    <input type="text" placeholder="Enter City">
+  <form class="panchang-controls" method="GET" action="/panchang">
+    <input type="date" name="date" value="<%= dateInputValue %>" onchange="this.form.submit()">
 
     <div class="panchang-nav">
-      <button>&lt;&lt;</button>
-      <button class="today-btn">TODAY</button>
-      <button>&gt;&gt;</button>
+      <a href="/panchang?date=<%= prevDate %>">&lt;&lt;</a>
+      <a class="today-btn" href="/panchang">TODAY</a>
+      <a href="/panchang?date=<%= nextDate %>">&gt;&gt;</a>
     </div>
-  </div>
+  </form>
 
   <!-- CARD -->
   <div class="panchang-card">
 
     <!-- SECTION -->
     <div class="panchang-page-section">
-        <h2>Panchang For Today</h2>
+        <h2>Panchang For This Day</h2>
 
         <div class="panchang-grid">
-        
+
           <div class="panchang-row">
             <span class="label">Tithi</span>
-            <span class="value">Tritiya upto 07:30:31, Chaturthi upto 28:17:56</span>
+            <span class="value"><%= panchang.tithi.name %> upto <%= panchang.tithi.endsAt %></span>
           </div>
-      
+
           <div class="panchang-row">
             <span class="label">Paksha</span>
-            <span class="value">Shukla</span>
+            <span class="value"><%= panchang.tithi.paksha %></span>
           </div>
-      
+
           <div class="panchang-row">
             <span class="label">Nakshatra</span>
-            <span class="value">Rohini upto 26:09:37</span>
+            <span class="value"><%= panchang.nakshatra.name %> upto <%= panchang.nakshatra.endsAt %></span>
           </div>
-      
+
           <div class="panchang-row">
-            <span class="label">Day</span>
-            <span class="value">Somavara</span>
+            <span class="label">Week Day</span>
+            <span class="value"><%= panchang.weekdaySanskrit %></span>
           </div>
-      
+
           <div class="panchang-row">
             <span class="label">Karana</span>
-            <span class="value">Gar upto 07:30:31, Vanij upto 17:52:32</span>
+            <span class="value"><%= panchang.karna.name %> upto <%= panchang.karna.endsAt %></span>
           </div>
-      
+
           <div class="panchang-row">
             <span class="label">Yoga</span>
-            <span class="value">Saubhagya upto 16:10:59</span>
+            <span class="value"><%= panchang.yoga.name %> upto <%= panchang.yoga.endsAt %></span>
           </div>
-      
+
         </div>
     </div>
 
@@ -66,68 +65,48 @@
         <h2>Sun And Moon Calculations</h2>
 
         <div class="panchang-grid">
-        
+
           <div class="panchang-row">
             <span class="label">Sun Rise</span>
-            <span class="value">05:38:18</span>
+            <span class="value"><%= panchang.sunrise %></span>
           </div>
-      
+
           <div class="panchang-row">
             <span class="label">Sun Set</span>
-            <span class="value">18:32:50</span>
+            <span class="value"><%= panchang.sunset %></span>
           </div>
-      
+
           <div class="panchang-row">
             <span class="label">Moon Rise</span>
-            <span class="value">07:29:00</span>
+            <span class="value"><%= panchang.moonrise %></span>
           </div>
-      
+
           <div class="panchang-row">
             <span class="label">Moon Set</span>
-            <span class="value">22:03:59</span>
+            <span class="value"><%= panchang.moonset %></span>
           </div>
 
           <div class="panchang-row">
             <span class="label">Moon Sign</span>
-            <span class="value">Vrishabha</span>
+            <span class="value"><%= panchang.raasi %></span>
           </div>
-      
+
           <div class="panchang-row">
-            <span class="label">Ritu</span>
-            <span class="value">Vasanta</span>
+            <span class="label">Ayanamsa</span>
+            <span class="value"><%= panchang.ayanamsa %></span>
           </div>
-      
+
         </div>
     </div>
 
     <div class="panchang-page-section">
-      <h2>Hindu Month And Year</h2>
+      <h2>Day Length</h2>
 
       <div class="panchang-grid">
 
         <div class="panchang-row">
-          <span class="label">Shaka Samvat</span>
-          <span class="value">1948 Parābhava</span>
-        </div>
-
-        <div class="panchang-row">
-          <span class="label">Vikram Samvat</span>
-          <span class="value">2083</span>
-        </div>
-
-        <div class="panchang-row">
-          <span class="label">Kali Samvat</span>
-          <span class="value">5127</span>
-        </div>
-
-        <div class="panchang-row">
-          <span class="label">Month</span>
-          <span class="value">Vaisakha</span>
-        </div>
-
-        <div class="panchang-row">
           <span class="label">Day Duration</span>
-          <span class="value">12:54:32</span>
+          <span class="value"><%= panchang.dayDuration %></span>
         </div>
 
       </div>
@@ -140,65 +119,30 @@
 
         <div class="panchang-row">
           <span class="label">Rahu Kaal</span>
-          <span class="value">07:15:07 – 08:51:56</span>
+          <span class="value"><%= panchang.rahuKaal.start %> – <%= panchang.rahuKaal.end %></span>
         </div>
 
         <div class="panchang-row">
           <span class="label">Yamaganda</span>
-          <span class="value">10:28:45 – 12:05:34</span>
+          <span class="value coming-soon">Coming soon</span>
         </div>
 
         <div class="panchang-row">
           <span class="label">Gulika Kaal</span>
-          <span class="value">13:42:23 – 15:19:12</span>
+          <span class="value coming-soon">Coming soon</span>
         </div>
 
       </div>
     </div>
 
     <div class="panchang-page-section">
-      <h2>Auspicious Timings</h2>
+      <h2>Hindu Month And Year</h2>
 
       <div class="panchang-grid">
 
         <div class="panchang-row">
-          <span class="label">Abhijit Muhurat</span>
-          <span class="value">11:39:45 – 12:31:23</span>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="panchang-page-section">
-      <h2>Disha Shoola</h2>
-
-      <div class="panchang-grid">
-
-        <div class="panchang-row">
-          <span class="label">Direction</span>
-          <span class="value">East</span>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="panchang-page-section">
-      <h2>Chandrabalam & Tarabalam</h2>
-
-      <div class="panchang-grid">
-
-        <div class="panchang-row">
-          <span class="label">Tara Bala</span>
-          <span class="value">
-            Ashwini, Kritika, Rohini, Mrigashirsha, Ardra, Pushya, Magha...
-          </span>
-        </div>
-
-        <div class="panchang-row">
-          <span class="label">Chandra Bala</span>
-          <span class="value">
-            Vrishabha, Karka, Simha, Vrishchika, Dhanu, Meena
-          </span>
+          <span class="label">Vikram Samvat / Month</span>
+          <span class="value coming-soon">Coming soon</span>
         </div>
 
       </div>

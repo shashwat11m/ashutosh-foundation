@@ -1,3 +1,5 @@
+process.env.TZ = "Asia/Kolkata";
+
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");

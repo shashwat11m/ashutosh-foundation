@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { getPanchangForDate } = require("../services/panchangService");
 const Article = require("../models/Article");
 
 const multer = require("multer");
@@ -24,16 +25,39 @@ const rashis = [
 // Homepage
 router.get("/", async (req, res) => {
   const articles = await Article.find().sort({ date: -1 }).limit(5);
+  const panchang = getPanchangForDate(new Date()); // "today" — correct as
+  // long as process.env.TZ = "Asia/Kolkata" is set (see app.js)
 
-  res.render("home", {
-    articles,
-    rashiDataAll
-  });
+  res.render("home", { articles, rashiDataAll, panchang });
 });
 
 // Panchang Page
 router.get("/panchang", (req, res) => {
-  res.render("panchang");
+  let date = new Date(); // defaults to "now" in IST, per process.env.TZ
+
+  if (req.query.date) {
+    const parsed = new Date(`${req.query.date}T12:00:00`); // noon avoids
+    // any DST/rounding edge cases when parsing a bare YYYY-MM-DD string —
+    // moot for India (no DST) but a harmless safety margin regardless.
+    if (!Number.isNaN(parsed.getTime())) {
+      date = parsed;
+    }
+  }
+
+  const panchang = getPanchangForDate(date);
+  const dateInputValue = date.toISOString().slice(0, 10); // for the <input type="date"> value
+
+  const prev = new Date(date);
+  prev.setDate(prev.getDate() - 1);
+  const next = new Date(date);
+  next.setDate(next.getDate() + 1);
+
+  res.render("panchang", {
+    panchang,
+    dateInputValue,
+    prevDate: prev.toISOString().slice(0, 10),
+    nextDate: next.toISOString().slice(0, 10)
+  });
 });
 
 // Rashi page

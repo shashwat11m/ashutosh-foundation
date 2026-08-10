@@ -82,20 +82,20 @@
       <h2>Today's Panchang</h2>
 
       <p class="panchang-location">
-        New Delhi, India (<%= new Date().toLocaleDateString("en-IN") %>)
+        New Delhi, India (<%= panchang.date.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }) %>)
       </p>
-
+    
       <div class="panchang-section">
-        <p><b>Tithi:</b> Krishna Saptami upto 21:22:56</p>
-        <p><b>Month:</b> Chaitra / Vaisakha</p>
-        <p><b>Day:</b> Guruvara | Samvat 2083</p>
+        <p><b>Tithi:</b> <%= panchang.tithi.paksha %> <%= panchang.tithi.name %> upto <%= panchang.tithi.endsAt %></p>
+        <p><b>Week Day:</b> <%= panchang.weekdaySanskrit %></p>
+        <p><b>Rahu Kaal:</b> <%= panchang.rahuKaal.start %> – <%= panchang.rahuKaal.end %></p>
       </div>
-
+    
       <div class="panchang-section">
-        <p><b>Nakshatra:</b> Moola upto 08:49:16</p>
-        <p><b>Yoga:</b> Parigha upto 17:56:52</p>
+        <p><b>Nakshatra:</b> <%= panchang.nakshatra.name %> upto <%= panchang.nakshatra.endsAt %></p>
+        <p><b>Yoga:</b> <%= panchang.yoga.name %> upto <%= panchang.yoga.endsAt %></p>
       </div>
-
+    
       <center><a href="/panchang" class="btn call-btn">Detailed Panchang →</a></center>
     </div>
 
