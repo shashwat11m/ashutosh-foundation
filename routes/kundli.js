@@ -3,14 +3,24 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
+// Import the Lead model for database saving
+const Lead = require("../models/Lead");
+
 const API_KEY = "2a10acqqgQOrw69cs9IrLNhyaOylGf";
 
 router.post("/kundli", async (req, res) => {
   try {
-    const { dob, tob, lat, lon, tz } = req.body;
+    const { name, dob, tob, lat, lon, tz, phone, placeOfBirth } = req.body;
 
     if (!dob || !tob || !lat || !lon || !tz) {
       return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    // Save the lead to the database in the background — never let this
+    // block or fail the actual kundli generation the user is waiting on.
+    if (phone) {
+      Lead.create({ name, phone, dateOfBirth: dob, timeOfBirth: tob, placeOfBirth })
+        .catch(err => console.error("Lead save failed:", err));
     }
 
     const [yyyy, mm, dd] = dob.split("-");

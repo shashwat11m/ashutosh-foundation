@@ -6,7 +6,16 @@ const Question = require("../models/Question");
 const Transaction = require("../models/Transaction");
 const { createOrder, getOrder } = require("../services/cashfree");
 
-const QUESTION_PLANS = { 3: 251, 5: 351, 8: 501 };
+// wasQty is purely a display number for the "limited time offer" framing
+// on buy-questions.ejs (struck-through) — it has no effect on price or on
+// how many questions are actually credited. price/qty below are what's
+// actually charged and credited; never derive either from wasQty.
+const QUESTION_PLANS = {
+  3: { price: 251, wasQty: 2 },
+  5: { price: 351, wasQty: 3 },
+  8: { price: 501, wasQty: 5 }
+};
+
 const dashboardData = async (user, error = null) => ({
   user, error, googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || "",
   questions: await Question.find({ user: user._id }).sort({ createdAt: 1 })
@@ -17,6 +26,29 @@ router.get("/", requireLogin, async (req, res) => {
   res.render("dashboard", await dashboardData(user));
 });
 
+// ---------- PROFILE (name + phone only — email is left alone since it's
+// tied to login and Cashfree customer records; changing it safely would
+// need its own verification flow, out of scope here) ----------
+router.post("/profile", requireLogin, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  const { name, phone } = req.body;
+
+  if (!name?.trim()) {
+    return res.render("dashboard", await dashboardData(user, "Name can't be empty."));
+  }
+  if (phone && !/^[6-9]\d{9}$/.test(phone.trim())) {
+    return res.render("dashboard", await dashboardData(user, "Please enter a valid 10-digit Indian mobile number, or leave it blank."));
+  }
+
+  user.name = name.trim();
+  user.phone = phone?.trim() || user.phone;
+  await user.save();
+  req.session.name = user.name; // keep session (used by header.ejs) in sync
+
+  res.redirect("/dashboard");
+});
+
+// ---------- BIRTH PROFILES ----------
 router.post("/birth-profiles", requireLogin, async (req, res) => {
   const user = await User.findById(req.session.userId);
   const { label, dateOfBirth, timeOfBirth, placeOfBirth, placeId } = req.body;
@@ -26,6 +58,40 @@ router.post("/birth-profiles", requireLogin, async (req, res) => {
   }
   user.birthProfiles.push({ label: label.trim(), dateOfBirth: dob, timeOfBirth: timeOfBirth.trim(), placeOfBirth: placeOfBirth.trim(), placeId: placeId?.trim() || "" });
   await user.save();
+  res.redirect("/dashboard");
+});
+
+router.post("/birth-profiles/:profileId/edit", requireLogin, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  const profile = user.birthProfiles.id(req.params.profileId);
+  if (!profile) return res.redirect("/dashboard");
+
+  const { label, dateOfBirth, timeOfBirth, placeOfBirth, placeId } = req.body;
+  const dob = new Date(`${dateOfBirth}T00:00:00`);
+  if (!label?.trim() || !timeOfBirth || !placeOfBirth?.trim() || Number.isNaN(dob.getTime())) {
+    return res.render("dashboard", await dashboardData(user, "Please complete valid birth details."));
+  }
+
+  profile.label = label.trim();
+  profile.dateOfBirth = dob;
+  profile.timeOfBirth = timeOfBirth.trim();
+  profile.placeOfBirth = placeOfBirth.trim();
+  profile.placeId = placeId?.trim() || "";
+
+  await user.save();
+  res.redirect("/dashboard");
+});
+
+router.post("/birth-profiles/:profileId/delete", requireLogin, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  const profile = user.birthProfiles.id(req.params.profileId);
+  if (profile) {
+    profile.deleteOne();
+    await user.save();
+  }
+  // Note: past questions that reference this profile keep working — both
+  // dashboard.ejs and admin-user-chat.ejs already fall back to "Saved
+  // profile" when the referenced birthProfile no longer resolves.
   res.redirect("/dashboard");
 });
 
@@ -52,8 +118,9 @@ router.get("/buy", requireLogin, async (req, res) => {
 router.post("/buy", requireLogin, async (req, res) => {
   const user = await User.findById(req.session.userId);
   const qty = parseInt(req.body.quantity, 10);
-  const amount = QUESTION_PLANS[qty];
-  if (!amount) return res.render("buy-questions", { user, plans: QUESTION_PLANS, error: "Please select one of the available question packs." });
+  const plan = QUESTION_PLANS[qty];
+  if (!plan) return res.render("buy-questions", { user, plans: QUESTION_PLANS, error: "Please select one of the available question packs." });
+  const amount = plan.price;
   const phone = (req.body.phone || user.phone || "").trim();
   if (!/^[6-9]\d{9}$/.test(phone)) return res.render("buy-questions", { user, plans: QUESTION_PLANS, error: "Please enter a valid 10-digit Indian mobile number — Cashfree requires this to process the payment." });
   if (!user.phone) { user.phone = phone; await user.save(); }

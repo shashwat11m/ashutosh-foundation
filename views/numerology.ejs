@@ -1,0 +1,288 @@
+<!-- numerology.ejs — Chaldean Name Numerology Calculator -->
+
+<%- include("partials/header") %>
+
+<div class="numerology-page">
+
+  <!-- INTRO 
+  <section class="numerology-intro">
+    <h1>Chaldean Name Numerology Calculator</h1>
+    <p>
+      Chaldean numerology is one of the oldest known numerology systems, tracing back to ancient
+      Babylon. Instead of assigning numbers in simple alphabetical order, it links each letter to a
+      number based on its sound vibration — how the letter is felt and pronounced rather than where
+      it sits in the alphabet. Because of this, Chaldean numerology is often considered more
+      intuitive and vibration-based than other systems.
+    </p>
+    <p>
+      Every letter is given a value from 1 to 8. The number 9 is treated as sacred and is
+      deliberately left off the letter chart — it's considered complete and powerful enough that it
+      is only ever allowed to appear as a final result, never as a building block.
+    </p>
+
+    <div class="chaldean-chart-wrap">
+      <table class="chaldean-chart">
+        <thead>
+          <tr><th>Number</th><th>Letters</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num-cell">1</td><td class="letters-cell">A · I · J · Q · Y</td></tr>
+          <tr><td class="num-cell">2</td><td class="letters-cell">B · K · R</td></tr>
+          <tr><td class="num-cell">3</td><td class="letters-cell">C · G · L · S</td></tr>
+          <tr><td class="num-cell">4</td><td class="letters-cell">D · M · T</td></tr>
+          <tr><td class="num-cell">5</td><td class="letters-cell">E · H · N · X</td></tr>
+          <tr><td class="num-cell">6</td><td class="letters-cell">U · V · W</td></tr>
+          <tr><td class="num-cell">7</td><td class="letters-cell">O · Z</td></tr>
+          <tr><td class="num-cell">8</td><td class="letters-cell">F · P</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sacred-note">
+      🔯 <b>9 is sacred:</b> it has no letters of its own, but your final total can still land on 9 —
+      when that happens it's considered an especially powerful result.
+    </div>
+
+    <p>
+      <b>To calculate a name:</b> write the name out, match every letter to its number using the
+      chart above, add all the numbers together, and then reduce the total to a single digit by
+      adding its digits together (for example, 23 → 2 + 3 → 5).
+    </p>
+  </section>
+-->
+  <!-- WHICH NAME TO USE -->
+  <section>
+    <h2>Which Name Should You Calculate?</h2>
+    <p style="text-align:center; max-width:760px; margin:-10px auto 30px auto; color:var(--text-color); line-height:1.7;">
+      In Chaldean numerology, different versions of your name reveal different layers of who you are.
+      It's worth calculating all three below to see the fuller picture.
+    </p>
+
+    <div class="name-types-grid">
+      <div class="card name-type-card">
+        <span class="name-type-label">The Blueprint</span>
+        <h3>Legal Full Name</h3>
+        <p>
+          The exact name on your birth certificate. This reveals your destiny, your natural talents,
+          and your life purpose — the core energies you were born with.
+        </p>
+      </div>
+
+      <div class="card name-type-card">
+        <span class="name-type-label">Daily Energy</span>
+        <h3>Common / Everyday Name</h3>
+        <p>
+          The name you actually go by day to day — first name and current last name, or a nickname.
+          This shows how the world sees you right now, and the energy you project to coworkers,
+          friends, and family.
+        </p>
+      </div>
+
+      <div class="card name-type-card">
+        <span class="name-type-label">Inner Self</span>
+        <h3>First Name Only</h3>
+        <p>
+          Just your first name on its own. This reveals your innermost desires, your private habits,
+          and who you are when you're completely alone.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section>
+    <div class="numerology-calc">
+      <h2>Calculate Your Numbers</h2>
+      <p class="numerology-calc-subtitle">Fill in as many as you'd like — you don't need all three.</p>
+
+      <form id="numerologyForm" class="numerology-form" onsubmit="return false;">
+        <div class="numerology-field">
+          <label for="legalName">Legal Full Name
+            <span class="field-hint">Exactly as it appears on your birth certificate</span>
+          </label>
+          <input type="text" id="legalName" placeholder="e.g. Ashutosh Kumar Sharma">
+        </div>
+
+        <div class="numerology-field">
+          <label for="commonName">Common / Daily Name
+            <span class="field-hint">What you actually go by day to day</span>
+          </label>
+          <input type="text" id="commonName" placeholder="e.g. Ashu Sharma">
+        </div>
+
+        <div class="numerology-field">
+          <label for="firstName">First Name Only
+            <span class="field-hint">Just your first name</span>
+          </label>
+          <input type="text" id="firstName" placeholder="e.g. Ashutosh">
+        </div>
+
+        <div class="numerology-form-actions">
+          <a href="#" class="btn call-btn" onclick="calculateNumerology()">Calculate My Numbers →</a>
+        </div>
+        <div class="numerology-error" id="numerologyError">Please enter at least one name to calculate.</div>
+      </form>
+
+      <div class="numerology-results" id="numerologyResults"></div>
+    </div>
+  </section>
+
+  <!-- NUMBER MEANINGS REFERENCE -->
+  <section>
+    <h2>What Each Number Means</h2>
+    <p style="text-align:center; max-width:760px; margin:-10px auto 30px auto; color:var(--text-color); line-height:1.7;">
+      Once you have your number, look it up here to understand what it says about you.
+    </p>
+
+    <div class="number-meanings-grid" id="numberMeaningsGrid"></div>
+  </section>
+
+</div>
+
+<script>
+/* ================= CHALDEAN NUMEROLOGY ENGINE ================= */
+
+const chaldeanMap = {
+  A:1, I:1, J:1, Q:1, Y:1,
+  B:2, K:2, R:2,
+  C:3, G:3, L:3, S:3,
+  D:4, M:4, T:4,
+  E:5, H:5, N:5, X:5,
+  U:6, V:6, W:6,
+  O:7, Z:7,
+  F:8, P:8
+};
+
+const numberMeanings = {
+  1: { title: "The Leader", planet: "Ruled by the Sun", text: "Independence, originality, courage and self-reliance. A 1 pushes forward with ambition and a pioneering spirit, and prefers to lead rather than follow — though it can be impatient with slower company." },
+  2: { title: "The Diplomat", planet: "Ruled by the Moon", text: "Sensitivity, cooperation and intuition. A 2 works best in partnership, reads moods easily, and brings gentleness and balance to relationships — sometimes at the cost of its own needs." },
+  3: { title: "The Communicator", planet: "Ruled by Jupiter", text: "Creativity, optimism and self-expression. A 3 is drawn to art, words and connection, and radiates warmth wherever it goes — occasionally scattering its energy across too many things at once." },
+  4: { title: "The Builder", planet: "Ruled by Rahu", text: "Discipline, practicality and steady effort. A 4 values order and structure, and builds things — careers, homes, systems — that last, though it can feel rigid or overly cautious at times." },
+  5: { title: "The Adventurer", planet: "Ruled by Mercury", text: "Freedom, change and quick thinking. A 5 thrives on variety, travel and conversation, and adapts fast to new situations — restless if it feels boxed in for too long." },
+  6: { title: "The Nurturer", planet: "Ruled by Venus", text: "Harmony, responsibility and love of beauty. A 6 is drawn to home, family and relationships, and often puts others first — sometimes to the point of self-sacrifice." },
+  7: { title: "The Seeker", planet: "Ruled by Ketu", text: "Introspection, wisdom and a pull toward the spiritual. A 7 is comfortable with solitude, drawn to study and analysis, and often finds answers by looking inward rather than outward." },
+  8: { title: "The Achiever", planet: "Ruled by Saturn", text: "Ambition, authority and material success. An 8 is built for accomplishment and power, and often carries a karmic weight — big rewards paired with equally big lessons in patience and fairness." },
+  9: { title: "The Humanitarian", planet: "Ruled by Mars", text: "Compassion, idealism and a sense of completion. Considered the most powerful and sacred number in Chaldean numerology, a 9 gives generously and thinks in terms of the whole world rather than just itself — though it can run emotionally intense." }
+};
+
+function renderMeaningsGrid() {
+  const grid = document.getElementById("numberMeaningsGrid");
+  grid.innerHTML = Object.keys(numberMeanings).map(num => {
+    const m = numberMeanings[num];
+    return `
+      <div class="card number-meaning-card" id="meaning-card-${num}">
+        <div class="number-meaning-head">
+          <div class="number-meaning-num">${num}</div>
+          <div>
+            <h3>${m.title}</h3>
+            <span class="number-meaning-planet">${m.planet}</span>
+          </div>
+        </div>
+        <p>${m.text}</p>
+      </div>
+    `;
+  }).join("");
+}
+renderMeaningsGrid();
+
+function reduceToSingleDigit(num) {
+  const steps = [num];
+  while (num > 9) {
+    num = String(num).split("").reduce((sum, d) => sum + parseInt(d, 10), 0);
+    steps.push(num);
+  }
+  return { final: num, steps };
+}
+
+function calculateChaldeanName(name) {
+  const letters = [];
+  let total = 0;
+
+  name.toUpperCase().split("").forEach(ch => {
+    if (chaldeanMap[ch]) {
+      letters.push({ letter: ch, value: chaldeanMap[ch] });
+      total += chaldeanMap[ch];
+    }
+  });
+
+  return { letters, total, reduction: reduceToSingleDigit(total) };
+}
+
+function buildResultCard(label, name, result) {
+  const finalNum = result.reduction.final;
+  const meaning = numberMeanings[finalNum];
+  const reductionText = result.reduction.steps.length > 1
+    ? result.reduction.steps.join(" → ")
+    : `${finalNum}`;
+
+  return `
+    <div class="numerology-result-card">
+      <div class="numerology-result-head">
+        <h3>${label}: <span class="result-name">${name}</span></h3>
+        <div class="numerology-final-number">
+          <div class="numerology-number-badge">${finalNum}</div>
+        </div>
+      </div>
+
+      <div class="numerology-letters">
+        ${result.letters.map(l => `<span class="numerology-letter-chip">${l.letter}<b> ${l.value}</b></span>`).join("")}
+      </div>
+
+      <div class="numerology-reduction">
+        Total: <b>${result.total}</b> &nbsp;→&nbsp; Reduced: <b>${reductionText}</b>
+      </div>
+
+      <div class="numerology-meaning">
+        <h4>Number ${finalNum} — ${meaning.title}</h4>
+        <p>${meaning.text}</p>
+      </div>
+    </div>
+  `;
+}
+
+function calculateNumerology() {
+  const legalName = document.getElementById("legalName").value.trim();
+  const commonName = document.getElementById("commonName").value.trim();
+  const firstName = document.getElementById("firstName").value.trim();
+  const errorBox = document.getElementById("numerologyError");
+  const resultsBox = document.getElementById("numerologyResults");
+
+  if (!legalName && !commonName && !firstName) {
+    errorBox.style.display = "block";
+    resultsBox.style.display = "none";
+    return;
+  }
+  errorBox.style.display = "none";
+
+  let html = "";
+  let lastFinalNum = null;
+
+  if (legalName) {
+    const result = calculateChaldeanName(legalName);
+    lastFinalNum = result.reduction.final;
+    html += buildResultCard("Legal Full Name (Blueprint)", legalName, result);
+  }
+  if (commonName) {
+    const result = calculateChaldeanName(commonName);
+    lastFinalNum = result.reduction.final;
+    html += buildResultCard("Common Name (Daily Energy)", commonName, result);
+  }
+  if (firstName) {
+    const result = calculateChaldeanName(firstName);
+    lastFinalNum = result.reduction.final;
+    html += buildResultCard("First Name (Inner Self)", firstName, result);
+  }
+
+  resultsBox.innerHTML = html;
+  resultsBox.style.display = "block";
+  resultsBox.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  document.querySelectorAll(".number-meaning-card").forEach(el => el.classList.remove("is-highlighted"));
+  if (lastFinalNum !== null) {
+    const card = document.getElementById(`meaning-card-${lastFinalNum}`);
+    if (card) card.classList.add("is-highlighted");
+  }
+}
+</script>
+
+<%- include("partials/footer") %>

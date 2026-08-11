@@ -1,0 +1,30 @@
+<%- include("partials/header") %>
+
+<section class="admin-page">
+
+  <h2>Zodiac Sign Content 🔮</h2>
+
+  <div class="admin-subnav">
+    <a href="/admin" class="btn">Articles</a>
+    <a href="/admin/queries" class="btn">Queries</a>
+    <a href="/admin/users" class="btn">Users</a>
+    <a href="/admin/rashis" class="btn chat-btn">Rashis</a>
+  </div>
+
+  <div class="admin-list">
+    <% rashis.forEach(r => { %>
+      <div class="admin-card">
+        <div>
+          <h3><%= r.name %></h3>
+          <p class="query-meta-sub">Lucky: <%= r.lucky.color %> · #<%= r.lucky.number %> · <%= r.lucky.mood %></p>
+        </div>
+        <div class="admin-actions">
+          <a href="/admin/rashis/<%= r.key %>/edit" class="btn">Edit</a>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+</section>
+
+<%- include("partials/footer") %>

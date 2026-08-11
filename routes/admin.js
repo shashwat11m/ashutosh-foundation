@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
+const bcrypt = require("bcryptjs");
 
 const Article = require("../models/Article");
 const User = require("../models/User");
 const Question = require("../models/Question");
+const Rashi = require("../models/Rashi");
 
 const { requireAdmin } = require("../middleware/auth");
 
@@ -18,8 +20,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// ---------- ARTICLES (moved here from main.js/admin.js to remove the
-// duplicate /admin route both files used to define) ----------
+// ---------- ARTICLES ----------
 router.get("/", async (req, res) => {
   const articles = await Article.find().sort({ date: -1 });
   const pendingCount = await Question.countDocuments({ status: "pending" });
@@ -53,6 +54,40 @@ router.post("/edit/:id", upload.single("image"), async (req, res) => {
   if (req.file) updateData.image = req.file.filename;
   await Article.findByIdAndUpdate(req.params.id, updateData);
   res.redirect("/admin");
+});
+
+// ---------- ZODIAC SIGN CONTENT ----------
+router.get("/rashis", async (req, res) => {
+  const rashis = await Rashi.find().sort({ name: 1 });
+  res.render("admin-rashis", { rashis });
+});
+
+router.get("/rashis/:key/edit", async (req, res) => {
+  const rashi = await Rashi.findOne({ key: req.params.key });
+  if (!rashi) return res.redirect("/admin/rashis");
+  res.render("admin-rashi-edit", { rashi, error: null });
+});
+
+router.post("/rashis/:key/edit", async (req, res) => {
+  const { name, today, careerYearly, loveYearly, healthYearly, educationYearly, luckyColor, luckyNumber, luckyMood } = req.body;
+
+  await Rashi.findOneAndUpdate({ key: req.params.key }, {
+    name: (name || "").trim(),
+    today: (today || "").trim(),
+    yearly: {
+      career: (careerYearly || "").trim(),
+      love: (loveYearly || "").trim(),
+      health: (healthYearly || "").trim(),
+      education: (educationYearly || "").trim()
+    },
+    lucky: {
+      color: (luckyColor || "").trim(),
+      number: (luckyNumber || "").trim(),
+      mood: (luckyMood || "").trim()
+    }
+  });
+
+  res.redirect("/admin/rashis");
 });
 
 // ---------- QUERY / QUESTION MANAGEMENT ----------
@@ -106,7 +141,7 @@ router.post("/users/:id/recommendations", async (req, res) => {
   res.redirect(`/admin/queries/user/${req.params.id}`);
 });
 
-// ---------- USER MANAGEMENT (quota top-ups) ----------
+// ---------- USER MANAGEMENT ----------
 router.get("/users", async (req, res) => {
   const users = await User.find({ role: "user" }).sort({ createdAt: -1 });
 
@@ -121,11 +156,39 @@ router.get("/users", async (req, res) => {
   res.render("admin-users", { users, pendingByUser });
 });
 
-router.post("/users/:id/add-quota", async (req, res) => {
+// Add or subtract from a user's quota. `direction` is "add" or "subtract";
+// the result is clamped so it can never go below 0 (a subtract that would
+// take a user negative just brings them to exactly 0).
+router.post("/users/:id/adjust-quota", async (req, res) => {
   let amount = parseInt(req.body.amount, 10);
   if (!amount || amount < 1) amount = 1;
 
-  await User.findByIdAndUpdate(req.params.id, { $inc: { questionsLeft: amount } });
+  const direction = req.body.direction === "subtract" ? -1 : 1;
+
+  const user = await User.findById(req.params.id);
+  if (user) {
+    user.questionsLeft = Math.max(0, user.questionsLeft + amount * direction);
+    await user.save();
+  }
+
+  res.redirect("/admin/users");
+});
+
+// Reset a user's password — for when they've forgotten it and can't use a
+// normal self-service reset flow (the site doesn't have email-based
+// password reset yet; this is the manual fallback).
+router.post("/users/:id/set-password", async (req, res) => {
+  const newPassword = req.body.newPassword || "";
+
+  if (newPassword.length < 6) {
+    return res.redirect("/admin/users"); // silently no-ops on invalid input;
+    // the admin-users.ejs form already enforces minlength client-side, so
+    // reaching here means someone bypassed that — not worth a dedicated
+    // error page for an admin-only utility action.
+  }
+
+  const hashed = await bcrypt.hash(newPassword, 10);
+  await User.findByIdAndUpdate(req.params.id, { password: hashed });
 
   res.redirect("/admin/users");
 });

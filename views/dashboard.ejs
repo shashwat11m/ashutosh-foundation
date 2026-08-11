@@ -3,19 +3,52 @@
 <section class="dashboard-section">
   <div class="dashboard-top"><div><h2>Welcome, <%= user.name %></h2><p class="questions-left">Questions left: <span class="quota-badge"><%= user.questionsLeft %></span></p></div><a href="/dashboard/buy" class="btn chat-btn">+ Buy Questions</a></div>
   <div class="dashboard-grid">
-    <aside class="dashboard-sidebar">
-      <div class="card sidebar-card"><h3>Your Quota</h3><p class="quota-big"><%= user.questionsLeft %></p><p class="sidebar-subtext">questions remaining</p><a href="/dashboard/buy" class="btn">Buy More</a></div>
-      <div class="card sidebar-card birth-card"><h3>Birth Details</h3><% if (user.birthProfiles.length) { %><ul class="profile-list"><% user.birthProfiles.forEach(p => { %><li><strong><%= p.label %></strong><br><small><%= new Date(p.dateOfBirth).toLocaleDateString() %>, <%= p.timeOfBirth %><br><%= p.placeOfBirth %></small></li><% }) %></ul><% } else { %><p class="empty-note">Add a profile before asking a question.</p><% } %><details><summary class="btn">+ Add person</summary><form action="/dashboard/birth-profiles" method="POST" class="admin-form compact-form"><input name="label" placeholder="Name / relation (e.g. Me, Mother)" required><label>Date of birth<input type="date" name="dateOfBirth" required></label><label>Time of birth<input type="time" name="timeOfBirth" required></label><input id="placeOfBirth" name="placeOfBirth" placeholder="Place of birth" autocomplete="off" required><input id="placeId" name="placeId" type="hidden"><button class="btn chat-btn">Save details</button></form></details></div>
-      <% if (user.suggestedRemedies && user.suggestedRemedies.length) { %><div class="card sidebar-card"><h3>Suggested Remedies</h3><ul class="remedy-list"><% user.suggestedRemedies.forEach(item => { %><li><%= item %></li><% }) %></ul></div><% } %>
-      <% if (user.suggestedGemstones && user.suggestedGemstones.length) { %><div class="card sidebar-card"><h3>Suggested Gemstones</h3><ul class="remedy-list"><% user.suggestedGemstones.forEach(item => { %><li><%= item %></li><% }) %></ul></div><% } %>
-    </aside>
     <div class="chat-panel"><div class="chat-window" id="chatWindow"><% if (!questions.length) { %><p class="chat-empty">You haven't asked anything yet. Add birth details, then ask your first question below.</p><% } %><% questions.forEach(q => { const primary = user.birthProfiles.id(q.birthProfile); const secondary = q.secondBirthProfile && user.birthProfiles.id(q.secondBirthProfile); %><div class="chat-bubble chat-question"><p><%= q.questionText %></p><span class="chat-person">For: <%= primary ? primary.label : "Saved profile" %><%= secondary ? " & " + secondary.label : "" %></span><span class="chat-time" data-timestamp="<%= q.createdAt.toISOString() %>"><%= new Date(q.createdAt).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) %></span></div><% if (q.status === "answered") { %><div class="chat-bubble chat-answer"><p><%= q.answerText %></p><span class="chat-time">Astrologer • <time data-timestamp="<%= q.answeredAt.toISOString() %>"><%= new Date(q.answeredAt).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) %></time></span></div><% } else { %><div class="chat-bubble chat-pending"><p>Awaiting astrologer's response...</p></div><% } %><% }) %></div>
       <% if (error) { %><div class="alert-error"><%= error %></div><% } %>
       <form action="/dashboard/ask" method="POST" class="chat-input-form question-form"><div class="question-fields"><select name="birthProfileId" required <%= !user.birthProfiles.length ? "disabled" : "" %>><option value="">Who is this about?</option><% user.birthProfiles.forEach(p => { %><option value="<%= p._id %>" <%= p._id.toString() === selectedProfileId ? "selected" : "" %>><%= p.label %></option><% }) %></select><select name="secondBirthProfileId" <%= user.birthProfiles.length < 2 ? "disabled" : "" %>><option value="">Optional: second person (compatibility)</option><% user.birthProfiles.forEach(p => { %><option value="<%= p._id %>"><%= p.label %></option><% }) %></select></div><textarea name="questionText" placeholder="Type your question for the astrologer..." required></textarea><button class="btn chat-btn" <%= user.questionsLeft <= 0 || !user.birthProfiles.length ? "disabled" : "" %>>Send</button></form>
       <% if (!user.birthProfiles.length) { %><p class="quota-warning">Please add birth details first.</p><% } else if (user.questionsLeft <= 0) { %><p class="quota-warning">You're out of questions. <a href="/dashboard/buy">Buy more</a> to keep asking.</p><% } %>
     </div>
+    <aside class="dashboard-sidebar">
+      <div class="card sidebar-card"><h3>Your Quota</h3><p class="quota-big"><%= user.questionsLeft %></p><p class="sidebar-subtext">questions remaining</p><a href="/dashboard/buy" class="btn">Buy More</a></div>
+
+      <div class="card sidebar-card">
+        <h3>Your Details</h3>
+        <p class="empty-note"><%= user.name %> · <%= user.email %><% if (user.phone) { %> · <%= user.phone %><% } %></p>
+        <details>
+          <summary class="btn">Edit details</summary>
+          <form action="/dashboard/profile" method="POST" class="admin-form compact-form">
+            <label>Name<input name="name" value="<%= user.name %>" required></label>
+            <label>Mobile number<input name="phone" type="tel" pattern="[6-9][0-9]{9}" value="<%= user.phone || '' %>" placeholder="10-digit mobile number"></label>
+            <button class="btn chat-btn">Save details</button>
+          </form>
+        </details>
+      </div>
+
+      <div class="card sidebar-card birth-card"><h3>Birth Details</h3><% if (user.birthProfiles.length) { %><ul class="profile-list"><% user.birthProfiles.forEach(p => { %><li>
+        <strong><%= p.label %></strong><br><small><%= new Date(p.dateOfBirth).toLocaleDateString() %>, <%= p.timeOfBirth %><br><%= p.placeOfBirth %></small>
+        <div class="birth-profile-actions">
+          <details>
+            <summary class="link-btn">Edit</summary>
+            <form action="/dashboard/birth-profiles/<%= p._id %>/edit" method="POST" class="admin-form compact-form">
+              <input name="label" value="<%= p.label %>" placeholder="Name / relation (e.g. Me, Mother)" required>
+              <label>Date of birth<input type="date" name="dateOfBirth" value="<%= new Date(p.dateOfBirth).toISOString().slice(0,10) %>" required></label>
+              <label>Time of birth<input type="time" name="timeOfBirth" value="<%= p.timeOfBirth %>" required></label>
+              <input class="place-of-birth-input" name="placeOfBirth" value="<%= p.placeOfBirth %>" placeholder="Place of birth" autocomplete="off" required>
+              <input name="placeId" type="hidden" value="<%= p.placeId || '' %>">
+              <button class="btn chat-btn">Save changes</button>
+            </form>
+          </details>
+          <form action="/dashboard/birth-profiles/<%= p._id %>/delete" method="POST" onsubmit="return confirm('Remove this saved birth profile?');">
+            <button type="submit" class="link-btn link-btn-danger">Delete</button>
+          </form>
+        </div>
+      </li><% }) %></ul><% } else { %><p class="empty-note">Add a profile before asking a question.</p><% } %><details><summary class="btn">+ Add person</summary><form action="/dashboard/birth-profiles" method="POST" class="admin-form compact-form"><input name="label" placeholder="Name / relation (e.g. Me, Mother)" required><label>Date of birth<input type="date" name="dateOfBirth" required></label><label>Time of birth<input type="time" name="timeOfBirth" required></label><input class="place-of-birth-input" id="placeOfBirth" name="placeOfBirth" placeholder="Place of birth" autocomplete="off" required><input id="placeId" name="placeId" type="hidden"><button class="btn chat-btn">Save details</button></form></details></div>
+      <% if (user.suggestedRemedies && user.suggestedRemedies.length) { %><div class="card sidebar-card"><h3>Suggested Remedies</h3><ul class="remedy-list"><% user.suggestedRemedies.forEach(item => { %><li><%= item %></li><% }) %></ul></div><% } %>
+      <% if (user.suggestedGemstones && user.suggestedGemstones.length) { %><div class="card sidebar-card"><h3>Suggested Gemstones</h3><ul class="remedy-list"><% user.suggestedGemstones.forEach(item => { %><li><%= item %></li><% }) %></ul></div><% } %>
+    </aside>
   </div>
+  <p class="support-note">Having an issue with your account, a payment, or anything else? Email us at <a href="mailto:ashutoshfndn@gmail.com">ashutoshfndn@gmail.com</a>.</p>
 </section>
-<% if (googleMapsApiKey) { %><script>function initBirthPlace(){const input=document.getElementById('placeOfBirth');const placeId=document.getElementById('placeId');if(!input||!window.google)return;const autocomplete=new google.maps.places.Autocomplete(input,{types:['(cities)']});autocomplete.addListener('place_changed',function(){const place=autocomplete.getPlace();placeId.value=place.place_id||'';});}</script><script src="https://maps.googleapis.com/maps/api/js?key=<%= googleMapsApiKey %>&libraries=places&callback=initBirthPlace" async defer></script><% } %>
+<% if (googleMapsApiKey) { %><script>function initBirthPlace(){document.querySelectorAll('.place-of-birth-input').forEach(function(input){var hidden=input.parentElement.querySelector('input[name="placeId"]');if(!window.google)return;var autocomplete=new google.maps.places.Autocomplete(input,{types:['(cities)']});autocomplete.addListener('place_changed',function(){var place=autocomplete.getPlace();if(hidden)hidden.value=place.place_id||'';});});}</script><script src="https://maps.googleapis.com/maps/api/js?key=<%= googleMapsApiKey %>&libraries=places&callback=initBirthPlace" async defer></script><% } %>
 <script>document.querySelectorAll('[data-timestamp]').forEach(function(el){try{el.textContent=new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(new Date(el.dataset.timestamp));}catch(e){}});var chatWindow=document.getElementById("chatWindow");if(chatWindow)chatWindow.scrollTop=chatWindow.scrollHeight;</script>
 <%- include("partials/footer") %>

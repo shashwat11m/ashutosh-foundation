@@ -1,0 +1,51 @@
+<%- include("partials/header") %>
+
+<section class="admin-page">
+
+  <a href="/admin/rashis" class="back-link">&larr; Back to all signs</a>
+
+  <h2>Edit <%= rashi.name %></h2>
+
+  <form action="/admin/rashis/<%= rashi.key %>/edit" method="POST" class="admin-form rashi-edit-form">
+
+    <label>Display name
+      <input name="name" value="<%= rashi.name %>" required>
+    </label>
+
+    <label>Today's reading
+      <textarea name="today" required><%= rashi.today %></textarea>
+    </label>
+
+    <div class="rashi-edit-grid">
+      <label>Yearly — Career
+        <textarea name="careerYearly"><%= rashi.yearly.career %></textarea>
+      </label>
+      <label>Yearly — Love
+        <textarea name="loveYearly"><%= rashi.yearly.love %></textarea>
+      </label>
+      <label>Yearly — Health
+        <textarea name="healthYearly"><%= rashi.yearly.health %></textarea>
+      </label>
+      <label>Yearly — Education
+        <textarea name="educationYearly"><%= rashi.yearly.education %></textarea>
+      </label>
+    </div>
+
+    <div class="rashi-edit-grid">
+      <label>Lucky color
+        <input name="luckyColor" value="<%= rashi.lucky.color %>">
+      </label>
+      <label>Lucky number
+        <input name="luckyNumber" value="<%= rashi.lucky.number %>">
+      </label>
+      <label>Mood
+        <input name="luckyMood" value="<%= rashi.lucky.mood %>">
+      </label>
+    </div>
+
+    <button class="btn chat-btn">Save changes</button>
+  </form>
+
+</section>
+
+<%- include("partials/footer") %>

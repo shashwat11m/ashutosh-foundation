@@ -435,6 +435,14 @@ section {
   margin-top: -60px;
 }
 
+/* Grid items default to min-width: auto, which lets wide in-flow content
+   (like .planet-table's intrinsic min-content width) force this column —
+   and the whole page — wider than the viewport, even though the table
+   itself scrolls internally via .table-scroll. This closes that leak. */
+.horoscope-wrapper > * {
+  min-width: 0;
+}
+
 /* BOXES */
 .horoscope-box {
   background: white;
@@ -1332,7 +1340,7 @@ footer {
 .kundli-container h2 {
   text-align: center;
   margin-bottom: 20px;
-  color: #0d3b66;
+  color: var(--heading-color);
   font-size: 24px;
 }
 
@@ -1340,8 +1348,8 @@ footer {
   margin-top: 20px;
   margin-bottom: 12px;
   font-size: 18px;
-  color: #32418a;
-  border-left: 4px solid #ff7a00;
+  color: var(--heading-color);
+  border-left: 4px solid var(--primary-color);
   padding-left: 8px;
 }
 
@@ -1378,19 +1386,23 @@ footer {
 }
 
 /* ================= TABLE ================= */
+.table-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
 .planet-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 12px;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  display: block;              /* ✅ KEY MOBILE FIX */
-  overflow-x: auto;            /* ✅ horizontal scroll */
 }
 
 .planet-table thead {
-  background: #32418a;
+  background: var(--heading-color);
 }
 
 .planet-table th {
@@ -1409,11 +1421,11 @@ footer {
 }
 
 .planet-table tr:nth-child(even) {
-  background: #f8fafc;
+  background: #fafafa;
 }
 
 .planet-table tr:hover {
-  background: #eef2ff;
+  background: var(--primary-lite);
 }
 
 .planet-table td,
@@ -1432,6 +1444,9 @@ footer {
 
 .chart-item {
   text-align: center;
+  width: 100%;
+  max-width: 330px;
+  margin: 0 auto;
 }
 
 .chart-box {
@@ -1542,7 +1557,7 @@ footer {
 /* MOBILE */
 @media(max-width:1150px){
 
-  .logo a {
+  .logoText {
     display: none;
   }
 
@@ -1662,5 +1677,48 @@ footer {
   .service-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
+  }
+}
+
+/* ================= KUNDLI RESULT — SMALL PHONES ================= */
+@media (max-width: 480px) {
+
+  .horoscope-wrapper {
+    padding: 0 14px;
+  }
+
+  .kundali-box {
+    padding: 18px;
+  }
+
+  .kundli-container {
+    margin: 16px auto;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .kundli-container h2 {
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+
+  .kundli-container h3 {
+    font-size: 16px;
+  }
+
+  .kundli-card {
+    padding: 12px;
+    margin-top: 12px;
+  }
+
+  .chart-row {
+    gap: 14px;
+  }
+
+  .planet-table th,
+  .planet-table td {
+    padding: 10px;
+    font-size: 12px;
+    min-width: 92px;
   }
 }

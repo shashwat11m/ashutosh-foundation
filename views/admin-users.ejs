@@ -8,30 +8,49 @@
     <a href="/admin" class="btn">Articles</a>
     <a href="/admin/queries" class="btn">Queries</a>
     <a href="/admin/users" class="btn chat-btn">Users</a>
+    <a href="/admin/rashis" class="btn">Rashis</a>
   </div>
 
-  <% if (users.length === 0) { %>
+  <% if (!users.length) { %>
     <p class="empty-note">No users have signed up yet.</p>
   <% } %>
 
   <div class="admin-list">
     <% users.forEach(u => { %>
       <div class="admin-card user-card">
+
         <div>
           <h3><%= u.name %></h3>
           <p class="query-meta-sub"><%= u.email %></p>
           <p class="user-quota-line">
             Questions left: <strong><%= u.questionsLeft %></strong>
             <% if (pendingByUser[u._id.toString()]) { %>
-              • <span class="pending-tag"><%= pendingByUser[u._id.toString()] %> pending</span>
+              · <span class="pending-tag"><%= pendingByUser[u._id.toString()] %> pending</span>
             <% } %>
           </p>
+
+          <details class="user-admin-controls">
+            <summary class="btn">Manage</summary>
+
+            <form action="/admin/users/<%= u._id %>/adjust-quota" method="POST" class="compact-form quota-adjust-form">
+              <label>Amount
+                <input type="number" name="amount" min="1" value="1" required>
+              </label>
+              <div class="quota-adjust-buttons">
+                <button type="submit" name="direction" value="add" class="btn chat-btn">+ Add</button>
+                <button type="submit" name="direction" value="subtract" class="btn delete-btn">− Subtract</button>
+              </div>
+            </form>
+
+            <form action="/admin/users/<%= u._id %>/set-password" method="POST" class="compact-form">
+              <label>Reset password
+                <input type="password" name="newPassword" placeholder="New password (min. 6 characters)" minlength="6" required>
+              </label>
+              <button class="btn">Set new password</button>
+            </form>
+          </details>
         </div>
 
-        <form action="/admin/users/<%= u._id %>/add-quota" method="POST" class="quota-form">
-          <input type="number" name="amount" min="1" value="3" required>
-          <button class="btn chat-btn">Add Quota</button>
-        </form>
       </div>
     <% }) %>
   </div>

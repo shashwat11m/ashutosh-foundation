@@ -6,13 +6,37 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
-    <h1>Discover Your Destiny</h1>
-    <p>Talk to India's Trusted Astrologer</p>
+    <% if (typeof sessionUser !== "undefined" && sessionUser && sessionUser.role === "admin") { %>
+      <h1>Discover Your Destiny</h1>
+      <p>India's Trusted Astrology Platform</p>
+      <div class="hero-buttons">
+        <a href="/admin" class="btn chat-btn">Go to Admin Panel →</a>
+      </div>
 
-    <div class="hero-buttons">
-      <a href="https://wa.me/918707718561" class="btn chat-btn">Whatspp Now</a>
-      <a href="tel:+918707718561" class="btn call-btn">Call Now</a>
-    </div>
+    <% } else if (typeof sessionUser !== "undefined" && sessionUser) { %>
+      <h1>Welcome Back, <%= sessionUser.name %></h1>
+      <% if (typeof currentUser !== "undefined" && currentUser) { %>
+        <p>
+          You have <b><%= currentUser.questionsLeft %></b>
+          question<%= currentUser.questionsLeft === 1 ? "" : "s" %> left.
+          <%= currentUser.questionsLeft > 0 ? "Ask away!" : "Grab more to keep the conversation going." %>
+        </p>
+      <% } else { %>
+        <p>Ready to ask your next question?</p>
+      <% } %>
+      <div class="hero-buttons">
+        <a href="/dashboard" class="btn chat-btn">Ask a Question →</a>
+        <a href="/dashboard/buy" class="btn call-btn">Buy More Questions</a>
+      </div>
+
+    <% } else { %>
+      <h1>Discover Your Destiny</h1>
+      <p>Register & Ask Your First Question Free.</p>
+      <div class="hero-buttons">
+        <a href="/signup" class="btn chat-btn">Create Free Account →</a>
+        <a href="/login" class="btn call-btn">Already a Member? Log In</a>
+      </div>
+    <% } %>
   </div>
 </section>
 
@@ -221,6 +245,55 @@
 </section>
 </div>
 
+<section class="astrologer-bio">
+  <div class="astrologer-bio-card">
+
+    <div class="astrologer-photo-wrap">
+      <img src="/images/ashutosh-mishra1.jpg" alt="Ashutosh Mishra" class="astrologer-photo">
+    </div>
+
+    <div class="astrologer-bio-content">
+      <span class="astrologer-eyebrow">Meet Your Astrologer</span>
+      <h2>Ashutosh Mishra</h2>
+      <p class="astrologer-title">Vedic Astrologer · Numerologist · Career Counselor · Life Coach</p>
+
+      <p>I am a Vedic Astrologer, Numerologist, Career Counselor, and Life Coach with a keen interest in helping people gain clarity and direction in life. Over the years, I have worked with students, professionals, and individuals from different walks of life, guiding them through career choices, personal challenges, relationships, and life decisions.</p>
+
+      <p>My consultations combine traditional Vedic astrology with practical counseling and coaching. I believe astrology serves as a valuable tool for self-understanding and personal growth when applied with the right perspective. My areas of expertise include career guidance, educational counseling, relationship and marriage consultations, numerology, personality analysis, and life coaching.</p>
+
+      <p>My approach is simple, practical, and solution-focused. I aim to provide clear insights and meaningful guidance that help individuals make confident and informed decisions.</p>
+
+      <div class="astrologer-meta-grid">
+        <div>
+          <h4>Skills</h4>
+          <ul class="astrologer-tag-list">
+            <li>Vedic Astrology</li>
+            <li>Relationship Counseling</li>
+            <li>Career Counseling</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Languages</h4>
+          <ul class="astrologer-language-list">
+            <li><span>Hindi</span><span class="lang-level">Expert</span></li>
+            <li><span>English</span><span class="lang-level">Expert</span></li>
+            <li><span>Bengali</span><span class="lang-level lang-basic">Basic</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <% if (typeof sessionUser !== "undefined" && sessionUser) { %>
+        <a href="/dashboard" class="btn chat-btn">Ask Your Question</a>
+      <% } else { %>
+        <a href="/signup" class="btn chat-btn">Sign Up & Ask Your First Question Free</a>
+      <% } %>
+    </div>
+
+  </div>
+</section>
+
+
 <!-- WHITE -->
 <section class="articles">
   <h2>Recent Articles</h2>
@@ -282,9 +355,11 @@ function showHoroscope(rashi){
   section.scrollIntoView({ behavior: "smooth" });
 }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqaYLNzkwWachxqTiORsykPTSocb5YbZU&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= googleMapsApiKey %>&libraries=places"></script>
 
 <script>
+const GOOGLE_MAPS_API_KEY = "<%= googleMapsApiKey %>";
+
 function initAutocomplete() {
   const input = document.getElementById("placeInput");
 
@@ -304,7 +379,7 @@ function initAutocomplete() {
     document.getElementById("longitude").value = lng;
 
     // timezone
-    fetch(`https://maps.googleapis.com/maps/api/timezone/json?location=${lat},${lng}&timestamp=${Math.floor(Date.now()/1000)}&key=AIzaSyBqaYLNzkwWachxqTiORsykPTSocb5YbZU`)
+    fetch(`https://maps.googleapis.com/maps/api/timezone/json?location=${lat},${lng}&timestamp=${Math.floor(Date.now()/1000)}&key=${GOOGLE_MAPS_API_KEY}`)
     .then(res => res.json())
     .then(data => {
       document.getElementById("timezone").value = data.rawOffset / 3600;
@@ -323,6 +398,8 @@ async function submitGetKundali() {
   const name = document.querySelector("[name='name']").value;
   const dob = document.querySelector("[name='dob']").value;
   const tob = document.querySelector("[name='tob']").value;
+  const phone = document.querySelector("[name='phone']").value;
+  const placeOfBirth = document.getElementById("placeInput").value;
 
   const lat = document.getElementById("latitude").value;
   const lon = document.getElementById("longitude").value;
@@ -331,7 +408,7 @@ async function submitGetKundali() {
   const res = await fetch("/api/kundli", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ name, dob, tob, lat, lon, tz })
+    body: JSON.stringify({ name, dob, tob, lat, lon, tz, phone, placeOfBirth })
   });
 
   const data = await res.json();
@@ -376,6 +453,7 @@ function renderKundli(data, name){
     <div class="kundli-card">
       <h3>Planet Details</h3>
 
+      <div class="table-scroll">
       <table class="planet-table">
         <thead>
           <tr>
@@ -403,6 +481,7 @@ function renderKundli(data, name){
         }
         </tbody>
       </table>
+      </div>
     </div>
 
     <!-- ================= BASIC INFO ================= -->
@@ -427,6 +506,7 @@ function renderKundli(data, name){
     <div class="kundli-card">
       <h3>Panchang Details</h3>
 
+      <div class="table-scroll">
       <table class="planet-table">
         <tbody>
           <tr>
@@ -455,6 +535,7 @@ function renderKundli(data, name){
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
 
     <!-- ================= SADE SATI ================= -->
@@ -477,6 +558,7 @@ function renderKundli(data, name){
       <p><b>Start Year:</b> ${dasha.start_year || "-"}</p>
       <p><b>Dasha Start:</b> ${dasha.dasha_start_date || "-"}</p>
 
+      <div class="table-scroll">
       <table class="planet-table">
         <thead>
           <tr>
@@ -496,6 +578,7 @@ function renderKundli(data, name){
         }
         </tbody>
       </table>
+      </div>
     </div>
 
   </div>
