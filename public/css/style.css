@@ -1552,10 +1552,6 @@ footer {
 /* MOBILE */
 @media(max-width:1150px){
 
-  .logoText {
-    display: none;
-  }
-
   .logo img {
     height: 70px;
   }
@@ -1587,13 +1583,14 @@ footer {
 
   /* Buttons - just left of hamburger */
   .nav-buttons {
-    position: absolute;
-    right: 55px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    gap: 5px;
-  }
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      gap: 5px;
+      display: grid;
+      text-align: center;
+    }
 
   .hero{
     max-width: none;
