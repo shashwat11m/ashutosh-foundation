@@ -237,16 +237,11 @@ section {
   flex: 1; /* IMPORTANT */
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-.logo a {
-  font-size: 16px;
-  font-weight: 600;
-  color: #0d3b66;
-  text-decoration: none;
+  gap: 3px;
 }
 .logo img {
   display: block;
+  height: 95px;
 }
 
 .nav-links {
@@ -1559,6 +1554,10 @@ footer {
 
   .logoText {
     display: none;
+  }
+
+  .logo img {
+    height: 70px;
   }
 
   .topbar {
