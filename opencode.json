@@ -1,0 +1,4 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "ignore": [".env", ".env.*", "node_modules/"]
+}

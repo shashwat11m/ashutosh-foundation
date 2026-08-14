@@ -8,6 +8,7 @@ const session = require("express-session");
 const { MongoStore } = require("connect-mongo");
 
 const { attachUser } = require("./middleware/auth");
+const { SITE_URL } = require("./lib/seo");
 
 const app = express();
 
@@ -41,6 +42,18 @@ app.use(session({
 
 // Makes `sessionUser` available in every EJS view (used by header.ejs).
 app.use(attachUser);
+
+// Exposes site-level view locals used by header.ejs for SEO / Open Graph
+// tags. Auth/admin pages are flagged noindex so search engines don't index
+// them.
+app.use((req, res, next) => {
+  res.locals.siteUrl = SITE_URL;
+  res.locals.currentPath = req.originalUrl;
+  if (/^\/(login|signup|dashboard|admin)(\/|$)/.test(req.originalUrl)) {
+    res.locals.noindexPage = true;
+  }
+  next();
+});
 
 // Routes
 const mainRoutes = require("./routes/main");

@@ -6,7 +6,8 @@ const axios = require("axios");
 // Import the Lead model for database saving
 const Lead = require("../models/Lead");
 
-const API_KEY = "2a10acqqgQOrw69cs9IrLNhyaOylGf";
+// Fetch API key from environment variables
+const API_KEY = process.env.JYOTISHAM_API_KEY;
 
 router.post("/kundli", async (req, res) => {
   try {

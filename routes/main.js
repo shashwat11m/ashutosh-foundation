@@ -3,6 +3,7 @@ const router = express.Router();
 const { getPanchangForDate } = require("../services/panchangService");
 const Article = require("../models/Article");
 const Rashi = require("../models/Rashi");
+const { SITE_URL, excerpt } = require("../lib/seo");
 
 const multer = require("multer");
 const path = require("path");
@@ -32,7 +33,15 @@ router.get("/", async (req, res) => {
   const rashiDataAll = {};
   rashiDocs.forEach(r => { rashiDataAll[r.key] = r; });
 
-  res.render("home", { articles, rashiDataAll, panchang, googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || "" });
+  const meta = {
+    title: "Ashutosh Foundation | Vedic Astrology, Numerology, Panchang & Kundli",
+    description: "Get free daily panchang, name numerology, kundli and rashi horoscopes. Consult Vedic astrologer Ashutosh Mishra for career guidance and life counselling.",
+    image: "/images/logo.png",
+    url: SITE_URL + "/",
+    keywords: "free kundli, astrology, numerology, panchang, horoscope, rashi, astrologer in India"
+  };
+
+  res.render("home", { articles, rashiDataAll, panchang, googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || "", meta });
 });
 
 // Panchang Page
@@ -56,47 +65,110 @@ router.get("/panchang", (req, res) => {
   const next = new Date(date);
   next.setDate(next.getDate() + 1);
 
+  const meta = {
+    title: "Daily Panchang | Today's Panchang, Tithi, Nakshatra & Rahu Kaal",
+    description: "Check today's Panchang with tithi, nakshatra, yoga, weekday and Rahu Kaal for any date. Accurate Vedic panchang by Ashutosh Foundation.",
+    image: "/images/logo.png",
+    url: SITE_URL + "/panchang",
+    keywords: "panchang, today panchang, tithi, nakshatra, rahu kaal, hindu calendar"
+  };
+
   res.render("panchang", {
     panchang,
     dateInputValue,
     prevDate: prev.toISOString().slice(0, 10),
-    nextDate: next.toISOString().slice(0, 10)
+    nextDate: next.toISOString().slice(0, 10),
+    meta
   });
 });
 
 // Name Numerology Calculator (Chaldean)
 router.get("/numerology", (req, res) => {
-  res.render("numerology");
+  const meta = {
+    title: "Name Numerology Calculator (Chaldean) | Ashutosh Foundation",
+    description: "Calculate your name numerology number using the Chaldean system. Discover your lucky number, personality traits and life path.",
+    image: "/images/logo.png",
+    url: SITE_URL + "/numerology",
+    keywords: "numerology, name numerology, chaldean numerology, lucky number calculator"
+  };
+  res.render("numerology", { meta });
 });
 
 // Rashi page
 router.get("/rashi/:name", async (req, res) => {
   const key = req.params.name.toLowerCase();
   const rashiData = (await Rashi.findOne({ key })) || (await Rashi.findOne({ key: "aries" }));
+  const rashiName = key.charAt(0).toUpperCase() + key.slice(1);
 
-  res.render("rashi", { rashi: key, rashiData });
+  const meta = {
+    title: rashiName + " Horoscope Today & 2026 | Ashutosh Foundation",
+    description: rashiData ? excerpt(rashiData.today, 160) : "Read " + rashiName + " horoscope, lucky numbers, colors and today's predictions by Ashutosh Foundation.",
+    image: "/images/zodiac/" + key + ".png",
+    url: SITE_URL + "/rashi/" + key,
+    keywords: rashiName.toLowerCase() + " horoscope, rashi, rashifal, today horoscope, 2026 horoscope"
+  };
+
+  res.render("rashi", { rashi: key, rashiData, meta });
 });
 
 router.get("/article/:id", async (req, res) => {
   const article = await Article.findById(req.params.id);
-  res.render("article", { article });
+
+  if (!article) {
+    return res.status(404).send("Article not found");
+  }
+
+  const meta = {
+    title: article.title + " | Ashutosh Foundation",
+    description: excerpt(article.content, 160),
+    image: article.image ? SITE_URL + "/uploads/" + article.image : SITE_URL + "/images/logo.png",
+    url: SITE_URL + "/article/" + article._id,
+    type: "article",
+    keywords: "astrology, vedic astrology, kundli, horoscope, " + article.title
+  };
+
+  res.render("article", { article, meta });
 });
 
 router.get("/articles", async (req, res) => {
   const articles = await Article.find().sort({ date: -1 });
-  res.render("all-articles", { articles });
+
+  const meta = {
+    title: "Articles & Astrology Blogs | Ashutosh Foundation",
+    description: "Read in-depth articles on Vedic astrology, kundli, numerology, panchang and horoscopes by Ashutosh Foundation.",
+    image: "/images/logo.png",
+    url: SITE_URL + "/articles",
+    keywords: "astrology articles, astrology blog, vedic astrology, kundli articles"
+  };
+
+  res.render("all-articles", { articles, meta });
 });
 
 router.get("/contact-us", (req, res) => {
-  res.render("contact-us");
+  const meta = {
+    title: "Contact Us | Ashutosh Foundation",
+    description: "Get in touch with astrologer Ashutosh Mishra for astrology, numerology and career counselling consultations.",
+    url: SITE_URL + "/contact-us"
+  };
+  res.render("contact-us", { meta });
 });
 
 router.get("/terms-and-conditions", (req, res) => {
-  res.render("terms-and-conditions");
+  const meta = {
+    title: "Terms & Conditions | Ashutosh Foundation",
+    description: "Read the terms and conditions for using Ashutosh Foundation's astrology and consultation services.",
+    url: SITE_URL + "/terms-and-conditions"
+  };
+  res.render("terms-and-conditions", { meta });
 });
 
 router.get("/cancellation-and-refund", (req, res) => {
-  res.render("cancellation-and-refund");
+  const meta = {
+    title: "Cancellation & Refund Policy | Ashutosh Foundation",
+    description: "Understand the cancellation and refund policy for consultations and services offered by Ashutosh Foundation.",
+    url: SITE_URL + "/cancellation-and-refund"
+  };
+  res.render("cancellation-and-refund", { meta });
 });
 
 // NOTE: all /admin* routes (article management + queries/users/rashi
