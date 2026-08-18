@@ -82,14 +82,14 @@ router.get("/panchang", (req, res) => {
   });
 });
 
-// Name Numerology Calculator (Chaldean)
+// Personalised Numerology Report
 router.get("/numerology", (req, res) => {
   const meta = {
-    title: "Name Numerology Calculator (Chaldean) | Ashutosh Foundation",
-    description: "Calculate your name numerology number using the Chaldean system. Discover your lucky number, personality traits and life path.",
+    title: "Numerology Report — Personalised Reading | Ashutosh Foundation",
+    description: "Generate your personalised numerology report. Calculate your Radical, Destiny and Name numbers using Chaldean, Pythagorean, Cheiro, Sepherial or Modern systems. Get detailed interpretations, favourable attributes, career guidance, remedies and more.",
     image: "/images/logo.png",
     url: SITE_URL + "/numerology",
-    keywords: "numerology, name numerology, chaldean numerology, lucky number calculator"
+    keywords: "numerology report, numerology calculator, chaldean numerology, pythagorean numerology, radical number, destiny number, name number, numerology reading"
   };
   res.render("numerology", { meta });
 });

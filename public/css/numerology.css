@@ -1,12 +1,12 @@
-/* numerology.css — Name Numerology Calculator page.
-   Additive only: reuses --primary-color / --heading-color / --primary-lite /
-   --text-color from style.css, and .btn / .card / .kundli-container patterns
-   already used across the site so this page matches everything else. */
+/* numerology.css — Personalised Numerology Report
+   Modern, professional design reusing site CSS variables.
+   --primary-color, --heading-color, --text-color, --primary-lite, --white-color */
 
+/* ======================== PAGE LAYOUT ======================== */
 .numerology-page {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 40px 20px 80px 20px;
+  padding: 0 20px 80px 20px;
 }
 
 .numerology-page > section {
@@ -14,353 +14,765 @@
   padding: 0 0 50px 0;
 }
 
-/* ---------- INTRO ---------- */
-.numerology-intro {
-  background: white;
-  border-radius: 18px;
-  padding: 30px 30px 10px 30px;
-  border: 1px solid #eee;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-  margin-bottom: 40px;
-}
-
-.numerology-intro h1 {
+/* ======================== HERO / INPUT HEADER ======================== */
+.numerology-hero {
   text-align: center;
-  font-size: 34px;
-  margin-bottom: 12px;
+  padding: 50px 20px 30px;
 }
 
-.numerology-intro > p {
-  max-width: 780px;
-  margin: 0 auto 20px auto;
-  text-align: center;
-  line-height: 1.7;
-  color: var(--text-color);
+.numerology-hero-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), #f5b301);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  box-shadow: 0 8px 30px rgba(253,197,51,0.3);
 }
 
-.chaldean-chart-wrap {
-  overflow-x: auto;
-  margin-bottom: 20px;
-}
-
-.chaldean-chart {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 520px;
-}
-
-.chaldean-chart th {
-  background: var(--heading-color);
-  color: white;
-  padding: 10px;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.chaldean-chart td {
-  padding: 12px 10px;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-  font-size: 14px;
-}
-
-.chaldean-chart tr:nth-child(even) {
-  background: #fafafa;
-}
-
-.chaldean-chart .num-cell {
-  font-weight: 700;
+.numerology-hero-icon i {
+  font-size: 30px;
   color: var(--heading-color);
+}
+
+.numerology-hero h1 {
+  font-size: 38px;
+  margin-bottom: 12px;
+  color: var(--heading-color);
+}
+
+.numerology-hero p {
+  max-width: 620px;
+  margin: 0 auto;
+  color: var(--text-color);
+  line-height: 1.7;
   font-size: 16px;
 }
 
-.chaldean-chart .letters-cell {
-  letter-spacing: 0.08em;
-  color: var(--text-color);
-}
-
-.sacred-note {
-  background: var(--primary-lite);
-  border: 1px dashed var(--primary-color);
-  border-radius: 10px;
-  padding: 12px 16px;
-  font-size: 13.5px;
-  color: #a0710d;
-  margin-bottom: 10px;
-}
-
-/* ---------- NAME TYPES ---------- */
-.name-types-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.name-type-card {
-  text-align: left;
-}
-
-.name-type-card .name-type-label {
-  display: inline-block;
-  background: var(--primary-color);
-  color: var(--heading-color);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 3px 10px;
-  border-radius: 20px;
-  margin-bottom: 10px;
-}
-
-.name-type-card h3 {
-  margin: 0 0 8px 0;
-  font-size: 18px;
-}
-
-.name-type-card p {
-  font-size: 13.5px;
-  line-height: 1.6;
-  color: var(--text-color);
-  margin: 0;
-}
-
-/* ---------- CALCULATOR ---------- */
+/* ======================== CALCULATOR CARD ======================== */
 .numerology-calc {
   background: white;
   border-radius: 18px;
-  padding: 30px;
+  padding: 36px 32px;
   border: 1px solid #eee;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.07);
 }
 
 .numerology-calc h2 {
   text-align: center;
   margin-bottom: 6px;
+  font-size: 26px;
 }
 
 .numerology-calc-subtitle {
   text-align: center;
   color: #777;
   font-size: 14px;
-  margin-bottom: 25px;
+  margin-bottom: 28px;
 }
 
+/* ---- Form ---- */
 .numerology-form {
   display: grid;
-  gap: 18px;
-  max-width: 620px;
-  margin: 0 auto 10px auto;
+  gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .numerology-field label {
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--heading-color);
   margin-bottom: 6px;
 }
 
-.numerology-field .field-hint {
+.required { color: #e74c3c; }
+
+.field-hint {
   display: block;
   font-weight: 400;
-  color: #888;
+  color: #999;
   font-size: 12px;
   margin-top: 2px;
 }
 
-.numerology-field input {
+.numerology-field input[type="text"],
+.numerology-field select {
   width: 100%;
-  padding: 13px 14px;
+  padding: 13px 16px;
   border-radius: 10px;
-  border: 1px solid #ddd;
+  border: 1.5px solid #ddd;
   font: inherit;
-  transition: 0.3s;
+  font-size: 15px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background: #fafafa;
 }
 
-.numerology-field input:focus {
+.numerology-field input:focus,
+.numerology-field select:focus {
   border-color: var(--primary-color);
   outline: none;
+  box-shadow: 0 0 0 3px rgba(253,197,51,0.15);
+  background: white;
 }
 
+/* DOB Split inputs */
+.dob-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dob-inputs input {
+  width: 70px;
+  text-align: center;
+  padding: 13px 10px;
+  border-radius: 10px;
+  border: 1.5px solid #ddd;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background: #fafafa;
+}
+
+.dob-inputs input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(253,197,51,0.15);
+  background: white;
+}
+
+.dob-sep {
+  font-size: 22px;
+  color: #bbb;
+  font-weight: 300;
+  margin-top: 2px;
+}
+
+.dob-inputs input:nth-child(5) {
+  width: 110px;
+}
+
+/* Select */
+.select-wrap {
+  position: relative;
+}
+
+.select-wrap select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.select-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+  font-size: 12px;
+}
+
+/* Form actions */
 .numerology-form-actions {
   text-align: center;
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 .numerology-error {
   text-align: center;
   color: #c0392b;
   font-size: 13.5px;
-  margin-top: -6px;
+  margin-top: -4px;
   display: none;
 }
 
-/* ---------- RESULTS ---------- */
-.numerology-results {
-  margin-top: 35px;
-  display: none;
+/* ======================== REPORT HEADER ======================== */
+.report-header {
+  text-align: center;
+  padding: 50px 20px 30px;
+  position: relative;
 }
 
+.report-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+}
+
+.report-header-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), #f5b301);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  box-shadow: 0 8px 30px rgba(253,197,51,0.35);
+  animation: reportPulse 3s ease-in-out infinite;
+}
+
+@keyframes reportPulse {
+  0%, 100% { box-shadow: 0 8px 30px rgba(253,197,51,0.35); }
+  50% { box-shadow: 0 8px 50px rgba(253,197,51,0.55); }
+}
+
+.report-header-icon i {
+  font-size: 34px;
+  color: var(--heading-color);
+}
+
+.report-header h1 {
+  font-size: 40px;
+  margin-bottom: 16px;
+  color: var(--heading-color);
+}
+
+.report-personal-info {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.report-personal-info span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.report-personal-info i {
+  color: var(--primary-color);
+  font-size: 13px;
+}
+
+/* ======================== MAIN NUMBER CARDS ======================== */
+.main-numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 50px;
+}
+
+.main-number-card {
+  position: relative;
+  border-radius: 20px;
+  padding: 36px 20px 30px;
+  text-align: center;
+  border: 1px solid #eee;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.main-number-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+}
+
+.main-number-featured {
+  border: 2px solid var(--primary-color);
+}
+
+.main-number-glow {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(253,197,51,0.15) 0%, transparent 70%);
+}
+
+.main-number-value {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: var(--heading-color);
+  color: white;
+  font-size: 42px;
+  font-weight: 700;
+  font-family: 'Philosopher', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  position: relative;
+  box-shadow: 0 6px 20px rgba(15,46,82,0.25);
+}
+
+.main-number-label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #999;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.main-number-sublabel {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--heading-color);
+  font-family: 'Philosopher', sans-serif;
+}
+
+/* ======================== REPORT SECTIONS ======================== */
+.report-section {
+  margin-bottom: 40px;
+}
+
+.report-section-header {
+  text-align: center;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.report-section-header::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: var(--primary-color);
+  border-radius: 3px;
+  margin: 14px auto 0;
+}
+
+.report-section-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary-lite);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  border: 2px solid var(--primary-color);
+}
+
+.report-section-icon i {
+  font-size: 20px;
+  color: var(--heading-color);
+}
+
+.report-section-header h2 {
+  font-size: 26px;
+  color: var(--heading-color);
+  margin-bottom: 6px;
+}
+
+.report-section-header p {
+  color: #888;
+  font-size: 14px;
+}
+
+/* ======================== FAVOURABLE GRID ======================== */
+.favourable-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.fav-card {
+  background: white;
+  border-radius: 14px;
+  padding: 20px 16px;
+  text-align: center;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.fav-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.fav-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary-color), #f5d97a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+}
+
+.fav-icon i {
+  font-size: 16px;
+  color: var(--heading-color);
+}
+
+.fav-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #999;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.fav-value {
+  font-size: 13px;
+  color: var(--heading-color);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* ======================== INTERPRETATION CARDS ======================== */
+.interpretation-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  border: 1px solid #eee;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+}
+
+.interp-field {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.interp-field:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.interp-field h4 {
+  font-size: 16px;
+  color: var(--heading-color);
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.interp-field h4::before {
+  content: "";
+  width: 4px;
+  height: 18px;
+  background: var(--primary-color);
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.interp-field p {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--text-color);
+  margin: 0;
+  padding-left: 12px;
+}
+
+.interp-block {
+  padding: 4px 0;
+}
+
+.interp-block p {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--text-color);
+  margin-bottom: 12px;
+}
+
+.interp-block p:last-child {
+  margin-bottom: 0;
+}
+
+.interp-block h4 {
+  font-size: 16px;
+  color: var(--heading-color);
+  margin: 0 0 10px 0;
+}
+
+/* Name display in Name Number section */
+.interp-name-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--primary-lite);
+  border: 1px solid #f0e0ab;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.interp-name-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+.interp-name-text i {
+  color: var(--primary-color);
+  margin-right: 6px;
+}
+
+.interp-name-number {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.interp-name-number strong {
+  color: var(--heading-color);
+  font-size: 18px;
+  font-family: 'Philosopher', sans-serif;
+}
+
+/* Health note */
+.health-note {
+  background: var(--primary-lite);
+  border-left: 3px solid var(--primary-color);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px !important;
+  font-size: 13px !important;
+  color: #8a6d00 !important;
+}
+
+/* ======================== MASTER NUMBER ======================== */
+.master-header .report-section-icon {
+  background: linear-gradient(135deg, #ffd700, #ffb300);
+  border-color: #ffd700;
+}
+
+.master-header h2 {
+  color: #b8860b;
+}
+
+.master-card {
+  border: 2px solid #ffd700 !important;
+  background: linear-gradient(135deg, #fffdf5, #fff8e1) !important;
+}
+
+.master-notice {
+  background: linear-gradient(135deg, #fff8e1, #fff3c4);
+  border: 1px solid #ffe082;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: #7c6200;
+  line-height: 1.7;
+}
+
+.master-notice i {
+  color: #ffd700;
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+/* ======================== RECALCULATE ======================== */
+.recalculate-wrap {
+  text-align: center;
+  padding: 30px 0 0;
+}
+
+/* ======================== RESPONSIVE ======================== */
+@media (max-width: 900px) {
+  .main-numbers-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .main-number-card {
+    padding: 28px 14px 24px;
+  }
+
+  .main-number-value {
+    width: 72px;
+    height: 72px;
+    font-size: 34px;
+  }
+
+  .favourable-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .numerology-hero h1,
+  .report-header h1 {
+    font-size: 30px;
+  }
+
+  .main-numbers-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .main-number-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 20px;
+    text-align: left;
+  }
+
+  .main-number-glow {
+    display: none;
+  }
+
+  .main-number-value {
+    width: 64px;
+    height: 64px;
+    font-size: 28px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .main-number-label {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+
+  .main-number-sublabel {
+    font-size: 14px;
+  }
+
+  .favourable-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .report-section-header h2 {
+    font-size: 22px;
+  }
+
+  .interpretation-card {
+    padding: 22px 18px;
+  }
+
+  .interp-name-display {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .dob-inputs input {
+    width: 60px;
+    font-size: 14px;
+    padding: 11px 8px;
+  }
+
+  .dob-inputs input:nth-child(5) {
+    width: 85px;
+  }
+}
+
+@media (max-width: 480px) {
+  .numerology-page {
+    padding: 0 14px 60px;
+  }
+
+  .numerology-hero {
+    padding: 30px 10px 20px;
+  }
+
+  .numerology-hero h1 {
+    font-size: 26px;
+  }
+
+  .numerology-hero p {
+    font-size: 14px;
+  }
+
+  .numerology-calc {
+    padding: 24px 18px;
+    border-radius: 14px;
+  }
+
+  .numerology-calc h2 {
+    font-size: 22px;
+  }
+
+  .report-header h1 {
+    font-size: 26px;
+  }
+
+  .report-personal-info {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .favourable-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fav-card {
+    padding: 16px 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-align: left;
+  }
+
+  .fav-icon {
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .fav-label {
+    margin-bottom: 2px;
+    font-size: 10px;
+  }
+
+  .fav-value {
+    font-size: 13px;
+  }
+
+  .report-section-header h2 {
+    font-size: 20px;
+  }
+
+  .interp-field p {
+    font-size: 13.5px;
+    padding-left: 0;
+  }
+
+  .dob-inputs {
+    gap: 6px;
+  }
+
+  .dob-inputs input {
+    width: 54px;
+    font-size: 13px;
+    padding: 10px 6px;
+  }
+
+  .dob-inputs input:nth-child(5) {
+    width: 76px;
+  }
+
+  .dob-sep {
+    font-size: 18px;
+  }
+}
+
+/* ======================== OLD STYLES (kept for backward compat) ======================== */
 .numerology-result-card {
   background: var(--primary-lite);
   border: 1px solid #f0e0ab;
   border-radius: 16px;
   padding: 22px 24px;
   margin-bottom: 20px;
-}
-
-.numerology-result-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.numerology-result-head h3 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.numerology-result-head .result-name {
-  color: var(--heading-color);
-  font-weight: 700;
-}
-
-.numerology-final-number {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.numerology-number-badge {
-  width: 56px;
-  height: 56px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--heading-color);
-  color: white;
-  font-size: 26px;
-  font-weight: 700;
-  font-family: 'Philosopher', sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.numerology-letters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-
-.numerology-letter-chip {
-  background: white;
-  border: 1px solid #f0e0ab;
-  border-radius: 8px;
-  padding: 4px 9px;
-  font-size: 12.5px;
-  color: var(--text-color);
-}
-
-.numerology-letter-chip b {
-  color: var(--heading-color);
-}
-
-.numerology-reduction {
-  font-size: 13.5px;
-  color: var(--text-color);
-  margin-bottom: 14px;
-}
-
-.numerology-meaning {
-  background: white;
-  border-radius: 10px;
-  padding: 14px 16px;
-}
-
-.numerology-meaning h4 {
-  margin: 0 0 6px 0;
-  font-size: 14px;
-  color: var(--heading-color);
-}
-
-.numerology-meaning p {
-  margin: 0;
-  font-size: 13.5px;
-  line-height: 1.6;
-  color: var(--text-color);
-}
-
-/* ---------- NUMBER MEANINGS REFERENCE ---------- */
-.number-meanings-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-
-.number-meaning-card {
-  text-align: left;
-  transition: 0.3s;
-}
-
-.number-meaning-card.is-highlighted {
-  border: 2px solid var(--primary-color);
-  transform: translateY(-4px);
-}
-
-.number-meaning-card .number-meaning-head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-
-.number-meaning-card .number-meaning-num {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  color: var(--heading-color);
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.number-meaning-card h3 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.number-meaning-card .number-meaning-planet {
-  display: block;
-  font-size: 11.5px;
-  color: #999;
-  margin-top: 1px;
-}
-
-.number-meaning-card p {
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--text-color);
-  margin: 0;
-}
-
-/* ---------- RESPONSIVE ---------- */
-@media (max-width: 800px) {
-  .name-types-grid,
-  .number-meanings-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .numerology-result-head {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }

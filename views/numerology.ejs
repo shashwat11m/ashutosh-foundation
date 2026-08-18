@@ -1,288 +1,868 @@
-<!-- numerology.ejs — Chaldean Name Numerology Calculator -->
-
+<!-- numerology.ejs — Personalised Numerology Report -->
 <%- include("partials/header") %>
 
 <div class="numerology-page">
 
-  <!-- INTRO 
-  <section class="numerology-intro">
-    <h1>Chaldean Name Numerology Calculator</h1>
-    <p>
-      Chaldean numerology is one of the oldest known numerology systems, tracing back to ancient
-      Babylon. Instead of assigning numbers in simple alphabetical order, it links each letter to a
-      number based on its sound vibration — how the letter is felt and pronounced rather than where
-      it sits in the alphabet. Because of this, Chaldean numerology is often considered more
-      intuitive and vibration-based than other systems.
-    </p>
-    <p>
-      Every letter is given a value from 1 to 8. The number 9 is treated as sacred and is
-      deliberately left off the letter chart — it's considered complete and powerful enough that it
-      is only ever allowed to appear as a final result, never as a building block.
-    </p>
-
-    <div class="chaldean-chart-wrap">
-      <table class="chaldean-chart">
-        <thead>
-          <tr><th>Number</th><th>Letters</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="num-cell">1</td><td class="letters-cell">A · I · J · Q · Y</td></tr>
-          <tr><td class="num-cell">2</td><td class="letters-cell">B · K · R</td></tr>
-          <tr><td class="num-cell">3</td><td class="letters-cell">C · G · L · S</td></tr>
-          <tr><td class="num-cell">4</td><td class="letters-cell">D · M · T</td></tr>
-          <tr><td class="num-cell">5</td><td class="letters-cell">E · H · N · X</td></tr>
-          <tr><td class="num-cell">6</td><td class="letters-cell">U · V · W</td></tr>
-          <tr><td class="num-cell">7</td><td class="letters-cell">O · Z</td></tr>
-          <tr><td class="num-cell">8</td><td class="letters-cell">F · P</td></tr>
-        </tbody>
-      </table>
+  <!-- ============ INPUT SECTION ============ -->
+  <section id="calcSection">
+    <div class="numerology-hero">
+      <div class="numerology-hero-icon"><i class="fas fa-star-of-david"></i></div>
+      <h1>Numerology Report</h1>
+      <p>Discover the hidden power of your name and birth date. Select your preferred numerology system and receive a comprehensive, personalised reading.</p>
     </div>
 
-    <div class="sacred-note">
-      🔯 <b>9 is sacred:</b> it has no letters of its own, but your final total can still land on 9 —
-      when that happens it's considered an especially powerful result.
-    </div>
-
-    <p>
-      <b>To calculate a name:</b> write the name out, match every letter to its number using the
-      chart above, add all the numbers together, and then reduce the total to a single digit by
-      adding its digits together (for example, 23 → 2 + 3 → 5).
-    </p>
-  </section>
--->
-  <!-- WHICH NAME TO USE -->
-  <section>
-    <h2>Which Name Should You Calculate?</h2>
-    <p style="text-align:center; max-width:760px; margin:-10px auto 30px auto; color:var(--text-color); line-height:1.7;">
-      In Chaldean numerology, different versions of your name reveal different layers of who you are.
-      It's worth calculating all three below to see the fuller picture.
-    </p>
-
-    <div class="name-types-grid">
-      <div class="card name-type-card">
-        <span class="name-type-label">The Blueprint</span>
-        <h3>Legal Full Name</h3>
-        <p>
-          The exact name on your birth certificate. This reveals your destiny, your natural talents,
-          and your life purpose — the core energies you were born with.
-        </p>
-      </div>
-
-      <div class="card name-type-card">
-        <span class="name-type-label">Daily Energy</span>
-        <h3>Common / Everyday Name</h3>
-        <p>
-          The name you actually go by day to day — first name and current last name, or a nickname.
-          This shows how the world sees you right now, and the energy you project to coworkers,
-          friends, and family.
-        </p>
-      </div>
-
-      <div class="card name-type-card">
-        <span class="name-type-label">Inner Self</span>
-        <h3>First Name Only</h3>
-        <p>
-          Just your first name on its own. This reveals your innermost desires, your private habits,
-          and who you are when you're completely alone.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CALCULATOR -->
-  <section>
     <div class="numerology-calc">
       <h2>Calculate Your Numbers</h2>
-      <p class="numerology-calc-subtitle">Fill in as many as you'd like — you don't need all three.</p>
+      <p class="numerology-calc-subtitle">Enter your details below to generate your complete numerology report.</p>
 
       <form id="numerologyForm" class="numerology-form" onsubmit="return false;">
         <div class="numerology-field">
-          <label for="legalName">Legal Full Name
-            <span class="field-hint">Exactly as it appears on your birth certificate</span>
+          <label for="fullName">Full Name <span class="required">*</span>
+            <span class="field-hint">As it appears on your birth certificate</span>
           </label>
-          <input type="text" id="legalName" placeholder="e.g. Ashutosh Kumar Sharma">
+          <input type="text" id="fullName" placeholder="e.g. Ashutosh Mishra" required>
         </div>
 
         <div class="numerology-field">
-          <label for="commonName">Common / Daily Name
-            <span class="field-hint">What you actually go by day to day</span>
+          <label for="dob">Date of Birth <span class="required">*</span>
+            <span class="field-hint">Format: DD / MM / YYYY</span>
           </label>
-          <input type="text" id="commonName" placeholder="e.g. Ashu Sharma">
+          <div class="dob-inputs">
+            <input type="text" id="dobDD" maxlength="2" placeholder="DD" inputmode="numeric" required>
+            <span class="dob-sep">/</span>
+            <input type="text" id="dobMM" maxlength="2" placeholder="MM" inputmode="numeric" required>
+            <span class="dob-sep">/</span>
+            <input type="text" id="dobYYYY" maxlength="4" placeholder="YYYY" inputmode="numeric" required>
+          </div>
         </div>
 
         <div class="numerology-field">
-          <label for="firstName">First Name Only
-            <span class="field-hint">Just your first name</span>
-          </label>
-          <input type="text" id="firstName" placeholder="e.g. Ashutosh">
+          <label for="numSystem">Numerology Type</label>
+          <div class="select-wrap">
+            <select id="numSystem">
+              <option value="chaldean" selected>Chaldean</option>
+              <option value="sepherial">Sepherial</option>
+              <option value="modern">Modern</option>
+              <option value="pythagorean">Pythagorean</option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
         </div>
 
         <div class="numerology-form-actions">
-          <a href="#" class="btn call-btn" onclick="calculateNumerology()">Calculate My Numbers →</a>
+          <a href="#" class="btn chat-btn" onclick="generateReport()"><i class="fas fa-calculator"></i> Generate My Report</a>
         </div>
-        <div class="numerology-error" id="numerologyError">Please enter at least one name to calculate.</div>
+        <div class="numerology-error" id="numerologyError"></div>
       </form>
-
-      <div class="numerology-results" id="numerologyResults"></div>
     </div>
   </section>
 
-  <!-- NUMBER MEANINGS REFERENCE -->
-  <section>
-    <h2>What Each Number Means</h2>
-    <p style="text-align:center; max-width:760px; margin:-10px auto 30px auto; color:var(--text-color); line-height:1.7;">
-      Once you have your number, look it up here to understand what it says about you.
-    </p>
+  <!-- ============ REPORT SECTION (hidden until calculated) ============ -->
+  <section id="reportSection" style="display:none;">
 
-    <div class="number-meanings-grid" id="numberMeaningsGrid"></div>
+    <!-- Report Header -->
+    <div class="report-header">
+      <div class="report-header-icon"><i class="fas fa-star-of-david"></i></div>
+      <h1>Your Numerology Report</h1>
+      <div class="report-personal-info">
+        <span><i class="fas fa-user"></i> <span id="reportName"></span></span>
+        <span><i class="fas fa-calendar-alt"></i> <span id="reportDOB"></span></span>
+        <span><i class="fas fa-book-open"></i> <span id="reportSystem"></span></span>
+      </div>
+    </div>
+
+    <!-- Three Main Numbers -->
+    <div class="main-numbers-grid">
+      <div class="main-number-card" id="cardRadical">
+        <div class="main-number-glow"></div>
+        <div class="main-number-value" id="radicalValue"></div>
+        <div class="main-number-label">Radical Number</div>
+        <div class="main-number-sublabel" id="radicalTitle"></div>
+      </div>
+      <div class="main-number-card main-number-featured" id="cardDestiny">
+        <div class="main-number-glow"></div>
+        <div class="main-number-value" id="destinyValue"></div>
+        <div class="main-number-label">Destiny Number</div>
+        <div class="main-number-sublabel" id="destinyTitle"></div>
+      </div>
+      <div class="main-number-card" id="cardName">
+        <div class="main-number-glow"></div>
+        <div class="main-number-value" id="nameValue"></div>
+        <div class="main-number-label">Name Number</div>
+        <div class="main-number-sublabel" id="nameTitle"></div>
+      </div>
+    </div>
+
+    <!-- Favourable Information -->
+    <div class="report-section" id="favourableSection">
+      <div class="report-section-header">
+        <div class="report-section-icon"><i class="fas fa-gem"></i></div>
+        <h2>Favourable Information</h2>
+        <p>Personalised lucky attributes based on your Radical Number</p>
+      </div>
+      <div class="favourable-grid" id="favourableGrid"></div>
+    </div>
+
+    <!-- Radical Number Interpretation -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <div class="report-section-icon"><i class="fas fa-sun"></i></div>
+        <h2>Radical Number — <span id="radicalSectionTitle"></span></h2>
+        <p>Understanding your core self and inner nature</p>
+      </div>
+      <div class="interpretation-card" id="radicalInterpretation"></div>
+    </div>
+
+    <!-- Destiny Number Interpretation -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <div class="report-section-icon"><i class="fas fa-road"></i></div>
+        <h2>Destiny Number — <span id="destinySectionTitle"></span></h2>
+        <p>Your life purpose, direction, and the path ahead</p>
+      </div>
+      <div class="interpretation-card" id="destinyInterpretation"></div>
+    </div>
+
+    <!-- Name Number Interpretation -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <div class="report-section-icon"><i class="fas fa-signature"></i></div>
+        <h2>Name Number — <span id="nameSectionTitle"></span></h2>
+        <p>What your name reveals about your expression and talents</p>
+      </div>
+      <div class="interpretation-card" id="nameInterpretation"></div>
+    </div>
+
+    <!-- Master Number (hidden by default) -->
+    <div class="report-section" id="masterSection" style="display:none;">
+      <div class="report-section-header master-header">
+        <div class="report-section-icon"><i class="fas fa-crown"></i></div>
+        <h2>Master Number — <span id="masterTitle"></span></h2>
+        <p>A rare and powerful vibration</p>
+      </div>
+      <div class="interpretation-card master-card" id="masterInterpretation"></div>
+    </div>
+
+    <!-- Auspicious Place -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <div class="report-section-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <h2>Auspicious Place</h2>
+        <p>Geographical directions and locations that favour you</p>
+      </div>
+      <div class="interpretation-card" id="auspiciousPlace"></div>
+    </div>
+
+    <!-- Health & Wellbeing -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <div class="report-section-icon"><i class="fas fa-heartbeat"></i></div>
+        <h2>Health &amp; Wellbeing</h2>
+        <p>Physical and emotional tendencies to be aware of</p>
+      </div>
+      <div class="interpretation-card" id="healthSection"></div>
+    </div>
+
+    <!-- Auspicious Time -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <div class="report-section-icon"><i class="fas fa-clock"></i></div>
+        <h2>Auspicious Time</h2>
+        <p>Favourable hours and periods for important activities</p>
+      </div>
+      <div class="interpretation-card" id="auspiciousTime"></div>
+    </div>
+
+    <!-- Career -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <div class="report-section-icon"><i class="fas fa-briefcase"></i></div>
+        <h2>Career &amp; Profession</h2>
+        <p>Fields and work environments aligned with your numbers</p>
+      </div>
+      <div class="interpretation-card" id="careerSection"></div>
+    </div>
+
+    <!-- Fasts & Remedies -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <div class="report-section-icon"><i class="fas fa-pray"></i></div>
+        <h2>Fasts &amp; Remedies</h2>
+        <p>Spiritual practices and remedies to strengthen your numbers</p>
+      </div>
+      <div class="interpretation-card" id="remediesSection"></div>
+    </div>
+
+    <!-- Yantra -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <div class="report-section-icon"><i class="fas fa-om"></i></div>
+        <h2>Yantra</h2>
+        <p>Sacred geometric symbol to meditate upon for alignment</p>
+      </div>
+      <div class="interpretation-card" id="yantraSection"></div>
+    </div>
+
+    <!-- Exclusive Facts -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <div class="report-section-icon"><i class="fas fa-lightbulb"></i></div>
+        <h2>Exclusive Facts</h2>
+        <p>Fascinating insights about your number combination</p>
+      </div>
+      <div class="interpretation-card" id="factsSection"></div>
+    </div>
+
+    <!-- Recalculate -->
+    <div class="recalculate-wrap">
+      <a href="#" class="btn call-btn" onclick="recalculate()"><i class="fas fa-redo"></i> Calculate Again</a>
+    </div>
+
   </section>
-
 </div>
 
 <script>
-/* ================= CHALDEAN NUMEROLOGY ENGINE ================= */
+/* ================================================================
+   NUMEROLOGY ENGINE — 5 Systems, Full Report Generator
+   ================================================================ */
 
-const chaldeanMap = {
-  A:1, I:1, J:1, Q:1, Y:1,
-  B:2, K:2, R:2,
-  C:3, G:3, L:3, S:3,
-  D:4, M:4, T:4,
-  E:5, H:5, N:5, X:5,
-  U:6, V:6, W:6,
-  O:7, Z:7,
-  F:8, P:8
+/* ---------- LETTER-TO-NUMBER MAPS ---------- */
+const maps = {
+  chaldean: { A:1,I:1,J:1,Q:1,Y:1, B:2,K:2,R:2, C:3,G:3,L:3,S:3, D:4,M:4,T:4, E:5,H:5,N:5,X:5, U:6,V:6,W:6, O:7,Z:7, F:8,P:8 },
+  pythagorean: { A:1,J:1,S:1, B:2,K:2,T:2, C:3,L:3,U:3, D:4,M:4,V:4, E:5,N:5,W:5, F:6,O:6,X:6, G:7,P:7,Y:7, H:8,Q:8,Z:8, I:9,R:9 },
+  sepherial: { A:1,J:1,S:1, B:2,K:2,T:2, C:3,L:3,U:3, D:4,M:4,V:4, E:5,N:5,W:5, F:6,O:6,X:6, G:7,P:7,Y:7, H:8,Q:8,Z:8, I:9,R:9 },
+  modern: { A:1,J:1,S:1, B:2,K:2,T:2, C:3,L:3,U:3, D:4,M:4,V:4, E:5,N:5,W:5, F:6,O:6,X:6, G:7,P:7,Y:7, H:8,Q:8,Z:8, I:9,R:9 }
 };
 
-const numberMeanings = {
-  1: { title: "The Leader", planet: "Ruled by the Sun", text: "Independence, originality, courage and self-reliance. A 1 pushes forward with ambition and a pioneering spirit, and prefers to lead rather than follow — though it can be impatient with slower company." },
-  2: { title: "The Diplomat", planet: "Ruled by the Moon", text: "Sensitivity, cooperation and intuition. A 2 works best in partnership, reads moods easily, and brings gentleness and balance to relationships — sometimes at the cost of its own needs." },
-  3: { title: "The Communicator", planet: "Ruled by Jupiter", text: "Creativity, optimism and self-expression. A 3 is drawn to art, words and connection, and radiates warmth wherever it goes — occasionally scattering its energy across too many things at once." },
-  4: { title: "The Builder", planet: "Ruled by Rahu", text: "Discipline, practicality and steady effort. A 4 values order and structure, and builds things — careers, homes, systems — that last, though it can feel rigid or overly cautious at times." },
-  5: { title: "The Adventurer", planet: "Ruled by Mercury", text: "Freedom, change and quick thinking. A 5 thrives on variety, travel and conversation, and adapts fast to new situations — restless if it feels boxed in for too long." },
-  6: { title: "The Nurturer", planet: "Ruled by Venus", text: "Harmony, responsibility and love of beauty. A 6 is drawn to home, family and relationships, and often puts others first — sometimes to the point of self-sacrifice." },
-  7: { title: "The Seeker", planet: "Ruled by Ketu", text: "Introspection, wisdom and a pull toward the spiritual. A 7 is comfortable with solitude, drawn to study and analysis, and often finds answers by looking inward rather than outward." },
-  8: { title: "The Achiever", planet: "Ruled by Saturn", text: "Ambition, authority and material success. An 8 is built for accomplishment and power, and often carries a karmic weight — big rewards paired with equally big lessons in patience and fairness." },
-  9: { title: "The Humanitarian", planet: "Ruled by Mars", text: "Compassion, idealism and a sense of completion. Considered the most powerful and sacred number in Chaldean numerology, a 9 gives generously and thinks in terms of the whole world rather than just itself — though it can run emotionally intense." }
-};
-
-function renderMeaningsGrid() {
-  const grid = document.getElementById("numberMeaningsGrid");
-  grid.innerHTML = Object.keys(numberMeanings).map(num => {
-    const m = numberMeanings[num];
-    return `
-      <div class="card number-meaning-card" id="meaning-card-${num}">
-        <div class="number-meaning-head">
-          <div class="number-meaning-num">${num}</div>
-          <div>
-            <h3>${m.title}</h3>
-            <span class="number-meaning-planet">${m.planet}</span>
-          </div>
-        </div>
-        <p>${m.text}</p>
-      </div>
-    `;
-  }).join("");
-}
-renderMeaningsGrid();
-
-function reduceToSingleDigit(num) {
+/* ---------- REDUCTION HELPERS ---------- */
+function reduceSingle(num, keepMaster) {
   const steps = [num];
-  while (num > 9) {
-    num = String(num).split("").reduce((sum, d) => sum + parseInt(d, 10), 0);
-    steps.push(num);
+  let n = num;
+  while (n > 9) {
+    if (keepMaster && (n === 11 || n === 22)) break;
+    n = String(n).split("").reduce((s, d) => s + parseInt(d, 10), 0);
+    steps.push(n);
   }
-  return { final: num, steps };
+  return { final: n, steps };
 }
 
-function calculateChaldeanName(name) {
+function reduceDatePart(part, keepMaster) {
+  return reduceSingle(part, keepMaster);
+}
+
+/* ---------- CALCULATION FUNCTIONS ---------- */
+function calcNameNumber(name, system) {
+  const m = maps[system];
   const letters = [];
   let total = 0;
-
   name.toUpperCase().split("").forEach(ch => {
-    if (chaldeanMap[ch]) {
-      letters.push({ letter: ch, value: chaldeanMap[ch] });
-      total += chaldeanMap[ch];
-    }
+    if (m[ch]) { letters.push({ letter: ch, value: m[ch] }); total += m[ch]; }
   });
-
-  return { letters, total, reduction: reduceToSingleDigit(total) };
+  const keepMaster = (system === "sepherial" || system === "modern");
+  const reduction = reduceSingle(total, keepMaster);
+  return { letters, total, reduction };
 }
 
-function buildResultCard(label, name, result) {
-  const finalNum = result.reduction.final;
-  const meaning = numberMeanings[finalNum];
-  const reductionText = result.reduction.steps.length > 1
-    ? result.reduction.steps.join(" → ")
-    : `${finalNum}`;
-
-  return `
-    <div class="numerology-result-card">
-      <div class="numerology-result-head">
-        <h3>${label}: <span class="result-name">${name}</span></h3>
-        <div class="numerology-final-number">
-          <div class="numerology-number-badge">${finalNum}</div>
-        </div>
-      </div>
-
-      <div class="numerology-letters">
-        ${result.letters.map(l => `<span class="numerology-letter-chip">${l.letter}<b> ${l.value}</b></span>`).join("")}
-      </div>
-
-      <div class="numerology-reduction">
-        Total: <b>${result.total}</b> &nbsp;→&nbsp; Reduced: <b>${reductionText}</b>
-      </div>
-
-      <div class="numerology-meaning">
-        <h4>Number ${finalNum} — ${meaning.title}</h4>
-        <p>${meaning.text}</p>
-      </div>
-    </div>
-  `;
+function calcRadicalNumber(day) {
+  const d = parseInt(day, 10);
+  return reduceSingle(d, true);
 }
 
-function calculateNumerology() {
-  const legalName = document.getElementById("legalName").value.trim();
-  const commonName = document.getElementById("commonName").value.trim();
-  const firstName = document.getElementById("firstName").value.trim();
+function calcDestinyNumber(day, month, year, system) {
+  const keepMaster = (system === "sepherial" || system === "modern");
+  const d = reduceDatePart(parseInt(day, 10), keepMaster);
+  const m = reduceDatePart(parseInt(month, 10), keepMaster);
+  const y = reduceDatePart(parseInt(year, 10), keepMaster);
+  const subTotal = d.final + m.final + y.final;
+  const steps = [...d.steps, " + ", ...m.steps, " + ", ...y.steps, " = ", subTotal];
+  const reduction = reduceSingle(subTotal, keepMaster);
+  return { dayPart: d, monthPart: m, yearPart: y, subTotal, steps, reduction };
+}
+
+/* ---------- TITLES PER NUMBER ---------- */
+const numberTitles = {
+  1:"The Leader",2:"The Diplomat",3:"The Communicator",4:"The Builder",
+  5:"The Adventurer",6:"The Nurturer",7:"The Seeker",8:"The Achiever",
+  9:"The Humanitarian",11:"The Illuminator",22:"The Master Builder"
+};
+
+/* ---------- FAVOURABLE ATTRIBUTES (by Radical Number) ---------- */
+const favourableData = {
+  1: { sign:"Leo", alphabets:"A, I, J, Q, Y", gemstone:"Ruby", days:"Sunday", numbers:"1, 3, 5, 9", direction:"East", colour:"Gold, Orange, Red", planet:"Sun", god:"Lord Surya (Sun God)", fast:"Sunday Fast (Surya Vrat)", dates:"1st, 10th, 19th, 28th", mantra:"Om Suryaya Namaha / Om Ghrini Suryaya Namaha" },
+  2: { sign:"Cancer", alphabets:"B, K, R", gemstone:"Pearl (Moti)", days:"Monday", numbers:"2, 3, 5, 6", direction:"North-West", colour:"White, Silver, Cream", planet:"Moon", god:"Lord Shiva / Goddess Durga", fast:"Monday Fast (Somvar Vrat)", dates:"2nd, 11th, 20th, 29th", mantra:"Om Namah Shivaya / Om Somaya Namaha" },
+  3: { sign:"Sagittarius / Pisces", alphabets:"C, G, L, S", gemstone:"Yellow Sapphire (Pukhraj)", days:"Thursday", numbers:"3, 5, 6, 9", direction:"North-East", colour:"Yellow, Golden, Cream", planet:"Jupiter (Guru)", god:"Lord Vishnu / Guru Brihaspati", fast:"Thursday Fast (Guruvar Vrat)", dates:"3rd, 12th, 21st, 30th", mantra:"Om Namo Bhagavate Vasudevaya" },
+  4: { sign:"Aquarius", alphabets:"D, M, T", gemstone:"Hessonite (Gomed)", days:"Saturday", numbers:"4, 5, 7, 8", direction:"South-East", colour:"Blue, Grey, Electric Colors", planet:"Rahu (North Node)", god:"Lord Ganesha / Goddess Durga", fast:"Saturday Fast (Shanivar Vrat)", dates:"4th, 13th, 22nd", mantra:"Om Gam Ganapataye Namaha" },
+  5: { sign:"Gemini / Virgo", alphabets:"E, H, N, X", gemstone:"Emerald (Panna)", days:"Wednesday", numbers:"5, 6, 1, 9", direction:"North", colour:"Green, Light Green, Pastels", planet:"Mercury (Budh)", god:"Lord Vishnu / Goddess Lakshmi", fast:"Wednesday Fast (Budhvar Vrat)", dates:"5th, 14th, 23rd", mantra:"Om Namo Narayanaya" },
+  6: { sign:"Taurus / Libra", alphabets:"U, V, W", gemstone:"Diamond (Heera) / White Sapphire", days:"Friday", numbers:"6, 5, 3, 8", direction:"South-East / South-West", colour:"White, Pink, Light Blue", planet:"Venus (Shukra)", goddess:"Goddess Lakshmi / Goddess Mahalakshmi", fast:"Friday Fast (Shukravar Vrat)", dates:"6th, 15th, 24th", mantra:"Om Shreem Mahalakshmiyei Namaha" },
+  7: { sign:"Scorpio / Pisces", alphabets:"O, Z", gemstone:"Cat's Eye (Lehsunia)", days:"Tuesday / Saturday", numbers:"7, 2, 3, 5", direction:"South-West", colour:"White, Grey, Maroon", planet:"Ketu (South Node)", god:"Lord Ganesha / Goddess Durga", fast:"Tuesday / Saturday Fast", dates:"7th, 16th, 25th", mantra:"Om Gam Ganapataye Namaha / Om Dum Durgayei Namaha" },
+  8: { sign:"Capricorn / Aquarius", alphabacts:"F, P", gemstone:"Blue Sapphire (Neelam)", days:"Saturday", numbers:"8, 4, 5, 7", direction:"West", colour:"Black, Dark Blue, Grey", planet:"Saturn (Shani)", god:"Lord Shani / Lord Hanuman", fast:"Saturday Fast (Shanivar Vrat)", dates:"8th, 17th, 26th", mantra:"Om Sham Shanaishcharaya Namaha / Jai Hanuman" },
+  9: { sign:"Aries / Scorpio", alphabets:"All letters", gemstone:"Red Coral (Moonga)", days:"Tuesday", numbers:"9, 3, 5, 1", direction:"South", colour:"Red, Orange, Scarlet", planet:"Mars (Mangal)", god:"Lord Kartikeya / Lord Hanuman", fast:"Tuesday Fast (Mangalvar Vrat)", dates:"9th, 18th, 27th", mantra:"Om Ang Angarakaya Namaha" },
+  11: { sign:"Aquarius", alphabets:"A, I, J, Q, Y", gemstone:"Labradorite / Moldavite", days:"Wednesday / Saturday", numbers:"11, 2, 4, 7", direction:"North-East", colour:"Silver, Violet, Electric Blue", planet:"Neptune / Ketu", god:"Lord Shiva", fast:"Saturday Fast", dates:"11th, 20th, 29th", mantra:"Om Namah Shivaya" },
+  22: { sign:"Capricorn", alphabets:"B, K, R", gemstone:"Black Onyx / Black Diamond", days:"Saturday", numbers:"22, 4, 6, 8", direction:"South-West", colour:"Black, Dark Green, Maroon", planet:"Saturn / Pluto", god:"Lord Hanuman / Lord Shani", fast:"Saturday Fast", dates:"4th, 13th, 22nd, 31st", mantra:"Jai Hanuman / Om Sham Shanaishcharaya Namaha" }
+};
+
+/* Fix: 8 has a typo "alphabacts" → "alphabets" */
+favourableData[8].alphabets = favourableData[8].alphabacts || favourableData[8].alphabets;
+delete favourableData[8].alphabacts;
+/* Fix: 6 uses "goddess" key instead of "god" */
+if (favourableData[6].goddess && !favourableData[6].god) {
+  favourableData[6].god = favourableData[6].goddess;
+  delete favourableData[6].goddess;
+}
+
+/* ---------- DETAILED INTERPRETATIONS ---------- */
+const interpretations = {
+  radical: {
+    1: {
+      personality: "You are a born leader with a strong sense of individuality. Your Radical Number 1 makes you independent, ambitious, and driven by a desire to stand out. You have a natural authority that others respect, even when you are not trying to lead. There is a fire within you that pushes you to take initiative and forge your own path rather than follow the crowd.",
+      character: "Honest and direct, you value truth above diplomacy. You are self-reliant and prefer to rely on your own judgement. When you believe in something, you pursue it with unwavering conviction. Others may sometimes find you stubborn, but this same quality allows you to accomplish what others deem impossible.",
+      strengths: "Exceptional self-confidence, pioneering spirit, originality, and the ability to inspire others. You have an innate talent for starting new ventures and setting trends. Your determination and willpower are among your greatest assets.",
+      weaknesses: "Impatience with those who move slower, tendency to be domineering, and difficulty accepting criticism. You may struggle with delegation and can become frustrated when things do not go according to your plan. Learning to be more flexible will serve you well.",
+      behaviour: "You prefer to work independently and may become restless in hierarchical structures. You are energetic and action-oriented, always the first to take on a challenge. Your direct communication style is appreciated by those who value clarity.",
+      relationships: "In relationships, you need a partner who respects your independence and ambition. You are passionate and protective but may sometimes overshadow your partner with your strong personality. Balance is key — allowing space for others to shine strengthens your bonds.",
+      general: "Your life is marked by periods of bold action and self-discovery. You are likely to achieve recognition in your field through sheer determination. Trust your instincts, but remember that collaboration can amplify your already impressive individual power."
+    },
+    2: {
+      personality: "With Radical Number 2, you are a natural diplomat and peacemaker. You possess deep sensitivity and an extraordinary ability to sense the emotions of those around you. Your intuitive nature draws people to you, and you have a gift for making others feel understood and valued.",
+      character: "Gentle, patient, and accommodating, you prefer harmony over conflict. You are a supportive friend and a loyal companion. Behind your calm exterior lies a deeply perceptive mind that notices details others overlook. You value fairness and justice in all your dealings.",
+      strengths: "Exceptional listening skills, emotional intelligence, patience, and the ability to mediate conflicts. You bring people together and create environments where everyone feels welcome. Your collaborative spirit makes you an invaluable team member.",
+      weaknesses: "Tendency to put others' needs before your own, difficulty making decisions independently, and a sensitivity that can lead to taking things too personally. You may avoid confrontation even when it is necessary, which can lead to bottled-up resentment.",
+      behaviour: "You thrive in partnerships and group settings. You are methodical in your approach and prefer to think carefully before acting. Your gentle persuasion is more effective than forceful argument.",
+      relationships: "You are a devoted and nurturing partner who seeks deep emotional connection. You need reciprocity in your relationships — a partner who gives as much as they receive. Emotional security and trust are paramount for you.",
+      general: "Your life path involves learning to balance your natural giving nature with healthy self-care. You are here to teach others about cooperation and empathy. When you honour your own needs alongside those of others, you unlock extraordinary personal power."
+    },
+    3: {
+      personality: "Radical Number 3 marks you as a creative and expressive soul. You are naturally optimistic, sociable, and magnetic. Your enthusiasm is contagious, and you have a remarkable ability to uplift those around you. Life for you is an adventure meant to be shared and celebrated.",
+      character: "Playful and imaginative, you approach life with curiosity and wonder. You are a natural storyteller and communicator who thrives on social interaction. Your warmth and humour make you the life of any gathering, and you have a gift for making complex ideas accessible.",
+      strengths: "Creativity, charisma, excellent communication skills, and a positive outlook on life. You adapt easily to new situations and bring energy to every project you undertake. Your artistic talents and verbal abilities open doors in many fields.",
+      weaknesses: "Scattered energy, tendency to procrastinate, and difficulty finishing what you start. You may spread yourself too thin across multiple interests. Your optimism, while generally a strength, can sometimes lead you to avoid dealing with difficult realities.",
+      behaviour: "You express yourself freely and enjoy being around people. You are drawn to the arts, entertainment, and any field that allows creative expression. Routine and monotony drain you — you need variety and stimulation.",
+      relationships: "You need a partner who appreciates your vibrant personality and gives you the freedom to express yourself. You are affectionate and fun-loving but may sometimes avoid deeper emotional conversations. Finding depth alongside your natural lightness enriches your relationships.",
+      general: "Your life purpose involves using your creative gifts to inspire and communicate. You are meant to bring beauty and joy into the world. Channel your versatile energy wisely and commit to completing what you start, and your potential is virtually limitless."
+    },
+    4: {
+      personality: "Radical Number 4 gives you a grounded, practical, and systematic approach to life. You are the builder — someone who creates lasting structures through discipline and hard work. You value stability, order, and reliability above all else.",
+      character: "Methodical and detail-oriented, you believe in doing things the right way. You are dependable and trustworthy, the person others turn to when they need something done properly. Your strong work ethic sets an example for those around you.",
+      strengths: "Organization, perseverance, attention to detail, and an unwavering commitment to quality. You are exceptional at long-term planning and execution. Your practical wisdom and ability to manage complex systems make you indispensable in professional settings.",
+      weaknesses: "Rigidity, resistance to change, and a tendency to be overly cautious. You may become so focused on structure that you miss creative opportunities. Learning to be more spontaneous and adaptable will broaden your horizons.",
+      behaviour: "You prefer structured environments with clear rules and expectations. You are a systematic thinker who excels at breaking large goals into manageable steps. Your methodical approach ensures that nothing is overlooked.",
+      relationships: "You are a loyal and dependable partner who values commitment and stability. You express love through actions rather than words. You may need to work on being more emotionally open and spontaneous in your relationships.",
+      general: "Your life path is one of building something meaningful through persistence and dedication. You are here to create foundations that others can build upon. Your patience and discipline will be rewarded with lasting achievements and a legacy of reliability."
+    },
+    5: {
+      personality: "With Radical Number 5, you are a free spirit who craves variety, adventure, and new experiences. You are adaptable, versatile, and endlessly curious about the world. Change is not something you fear — it is something you actively seek.",
+      character: "Energetic and quick-thinking, you have a sharp mind and a restless soul. You love travel, conversation, and meeting new people. Your charm and wit make you magnetic, and you have an uncanny ability to adapt to any situation or environment.",
+      strengths: "Adaptability, curiosity, excellent social skills, and a natural talent for communication. You are quick to learn new skills and thrive in fast-paced environments. Your versatility allows you to wear many hats and excel in diverse fields.",
+      weaknesses: "Restlessness, difficulty with commitment, and a tendency to avoid routine or responsibility. You may struggle with follow-through and can become scattered when trying to do too many things at once. Grounding practices are essential for your wellbeing.",
+      behaviour: "You are happiest when you have freedom to move and explore. You are a multitasker who juggles several interests simultaneously. Your energy is infectious but can be exhausting for those who prefer a steadier pace.",
+      relationships: "You need a partner who shares your love of adventure and gives you freedom. Routine relationships bore you — you need excitement, intellectual stimulation, and space to grow. Stability in love comes for you when you find someone who is both your anchor and your adventure companion.",
+      general: "Your life is a journey of exploration and transformation. You are here to experience life in all its variety and to bring that experience back to others. Embrace change as your greatest teacher, but remember that depth comes from staying long enough to truly know something."
+    },
+    6: {
+      personality: "Radical Number 6 makes you the nurturer of the numerology world. You are deeply drawn to home, family, and creating beautiful, harmonious environments. Love and responsibility are the cornerstones of your existence.",
+      character: "Warm, caring, and generous, you put the needs of others before your own. You have a strong sense of duty and a natural talent for creating comfort and beauty. Your home is your sanctuary, and you extend that warmth to everyone who enters.",
+      strengths: "Compassion, responsibility, artistic sensibility, and an extraordinary ability to heal and comfort others. You are a natural at caregiving, teaching, and creating aesthetically pleasing environments. Your loyalty and dependability are unmatched.",
+      weaknesses: "Self-sacrifice to the point of neglecting your own needs, tendency to be controlling, and difficulty letting go. You may become overly invested in others' problems, leading to emotional exhaustion. Learning healthy boundaries is crucial.",
+      behaviour: "You are dependable and always there for the people you love. You take on responsibilities willingly and often become the backbone of your family or community. You express love through acts of service and creating nurturing spaces.",
+      relationships: "You are a devoted and loving partner who creates deep emotional bonds. You need to feel needed and appreciated. The key to your relationship happiness is finding a balance between caring for others and honouring your own needs.",
+      general: "Your life purpose centres on love, family, and service. You are here to create beauty and harmony in the world. When you learn to extend the same compassion to yourself that you so freely give to others, you find deep and lasting fulfilment."
+    },
+    7: {
+      personality: "With Radical Number 7, you are the seeker of truth and wisdom. Your mind is drawn to the deeper questions of life, and you possess an analytical brilliance that allows you to see beneath the surface of things.",
+      character: "Introspective and thoughtful, you prefer solitude and deep study over superficial socialising. You are drawn to philosophy, science, spirituality, and any field that requires deep thinking. Your intuition is remarkably sharp.",
+      strengths: "Analytical mind, spiritual depth, intuition, and an ability to understand complex subjects. You are a natural researcher and philosopher who can uncover truths that others miss. Your inner wisdom is your greatest guide.",
+      weaknesses: "Tendency toward isolation, overthinking, and emotional guardedness. You may struggle to connect with others on a practical level and can become lost in your own thoughts. Learning to balance introspection with engagement enriches your life.",
+      behaviour: "You prefer quiet environments and meaningful conversations over small talk. You are methodical in your thinking and rarely rush to conclusions. Your analytical approach makes you excellent at research and problem-solving.",
+      relationships: "You need a partner who understands your need for solitude and intellectual depth. You are loyal and deeply committed once you let someone in, but trust takes time. Meaningful, soulful connection matters far more to you than surface-level romance.",
+      general: "Your life path involves the pursuit of higher knowledge and spiritual understanding. You are here to seek truth and share your insights with others. Embrace your introspective nature, but remember that wisdom without connection can become loneliness."
+    },
+    8: {
+      personality: "Radical Number 8 places you in the realm of material mastery and karmic balance. You have a natural head for business and an innate understanding of how the material world operates. Power, authority, and financial success are themes in your life.",
+      character: "Ambitious, authoritative, and goal-oriented, you are driven to achieve tangible results. You are practical and efficient, with a strong sense of justice. You understand the value of hard work and are willing to invest the effort required to succeed.",
+      strengths: "Business acumen, financial intelligence, leadership ability, and an extraordinary capacity for organisation. You can manage large-scale projects and make decisions that impact many people. Your determination and practical wisdom are formidable.",
+      weaknesses: "Materialistic tendencies, workaholic behaviour, and difficulty showing vulnerability. The pursuit of success can sometimes overshadow personal relationships and emotional wellbeing. Learning that true wealth encompasses more than material abundance is your key lesson.",
+      behaviour: "You approach life strategically, always thinking several steps ahead. You are decisive and confident in your business dealings. You carry a natural authority that commands respect in professional settings.",
+      relationships: "You need a partner who understands and supports your ambition. You express love through providing and creating security. Make sure to invest as much energy in your personal relationships as you do in your career — balance is essential.",
+      general: "Your life involves mastering the material plane while maintaining spiritual integrity. You are here to demonstrate that success and ethics can coexist. When you use your power wisely and generously, abundance flows to you in every form."
+    },
+    9: {
+      personality: "Radical Number 9 is the most compassionate and humanitarian of all numbers. You carry a deep sense of empathy and a desire to make the world a better place. Your vision extends beyond personal gain to the welfare of all beings.",
+      character: "Generous, idealistic, and emotionally profound, you feel everything deeply. You are drawn to causes larger than yourself and have a natural ability to inspire others through your compassion and vision. Artistic and creative, you express your inner world through various forms.",
+      strengths: "Empathy, creativity, leadership through service, and a broad perspective that encompasses the whole of humanity. You are a natural teacher and healer who can motivate others to be their best selves.",
+      weaknesses: "Emotional intensity, tendency to carry the weight of the world, and difficulty saying no. You may become overwhelmed by the suffering around you and need to learn healthy emotional boundaries. Practical matters may sometimes be neglected in pursuit of ideals.",
+      behaviour: "You are drawn to helping others and may find yourself in roles of service or advocacy. You are expressive and passionate, bringing energy and conviction to everything you undertake. Your life experience gives you wisdom beyond your years.",
+      relationships: "You need a partner who shares your values and vision for a better world. You love deeply and selflessly, but must ensure your relationships are reciprocal. Your idealism in love can be both a beautiful quality and a source of disappointment.",
+      general: "Your life purpose is to contribute to the greater good and leave a positive legacy. You are here to uplift humanity and bring compassion into action. Embrace your sensitivity as a strength, and use your many gifts in service of something greater than yourself."
+    },
+    11: {
+      personality: "As a Master Number 11, you are a spiritual messenger carrying heightened intuition and psychic sensitivity. You have a direct connection to higher consciousness and an ability to inspire others through your vision and inner light.",
+      character: "Idealistic, visionary, and deeply intuitive, you sense things that others cannot. You are here to channel higher knowledge and bring illumination to those around you. Your sensitivity is both your gift and your greatest challenge.",
+      strengths: "Extraordinary intuition, spiritual insight, creative vision, and the ability to inspire and uplift others. You have the potential to be a powerful healer, teacher, or leader of spiritual movements. Your inner knowing guides you with remarkable accuracy.",
+      weaknesses: "Nervous tension, emotional overwhelm, and a gap between your grand vision and practical reality. You may struggle with self-doubt and the pressure of your own ideals. Grounding yourself is essential for channelling your gifts effectively.",
+      behaviour: "You are drawn to spiritual pursuits and creative expression. You may experience vivid dreams, synchronicities, and a strong pull toward helping others find their own light. You inspire through example rather than words.",
+      relationships: "You need a partner who understands and respects your spiritual nature. Your relationships have a soul-connection quality. You are capable of profound love, but must learn to ground your ideals in practical reality.",
+      general: "Your life path is one of spiritual leadership and inspiration. You are here to raise the vibration of those around you. Embrace your sensitivity, trust your intuition, and know that your unique gifts are needed in this world."
+    },
+    22: {
+      personality: "Master Number 22, the Master Builder, grants you the ability to turn grand visions into tangible reality. You possess the practical skills of the 4 amplified by the spiritual vision of the Master Number, making you uniquely capable of large-scale manifestation.",
+      character: "Ambitious, disciplined, and visionary, you think big and have the discipline to follow through. You are here to build something lasting that benefits many people. Your grounded nature combined with your expansive vision makes you a natural leader of movements and institutions.",
+      strengths: "Extraordinary ability to manifest large-scale projects, organisational genius, practical idealism, and the discipline to see long-term goals through to completion. You can inspire others while simultaneously managing the practical details.",
+      weaknesses: "Pressure to live up to your enormous potential, tendency toward workaholism, and suppression of your emotional needs in pursuit of your mission. The weight of your calling can feel overwhelming at times.",
+      behaviour: "You approach life with both vision and practicality. You are naturally drawn to roles of leadership and institution-building. Your ability to organise people and resources toward a common goal is unmatched.",
+      relationships: "You need a partner who supports your mission and understands the scale of your ambition. You express love through building security and contributing to society. Maintaining work-life balance is your ongoing challenge.",
+      general: "Your life purpose is to build something of lasting significance for humanity. You are here to bridge the spiritual and material worlds. When you align your practical skills with your higher vision, you create transformations that echo through generations."
+    }
+  },
+  destiny: {
+    1: {
+      lifeDirection: "Your Destiny Number 1 points to a life of independence, leadership, and original contribution. You are destined to blaze your own trail and inspire others through your courage and self-reliance. Your path will take you through experiences that strengthen your sense of self.",
+      personality: "You are naturally drawn to positions of authority and influence. Your destiny requires you to develop strong personal initiative and the confidence to stand alone when necessary. Others will look to you for direction.",
+      strengths: "Natural leadership, courage under pressure, and the ability to initiate new projects and ventures. You are destined to make your mark through original thinking and bold action.",
+      challenges: "Learning to balance confidence with humility, managing impatience, and developing tolerance for those who follow different paths. Your biggest challenges involve ego and learning that true leadership serves others.",
+      career: "You thrive in entrepreneurship, management, politics, the military, or any field where you can lead and innovate. You are best suited for roles that give you autonomy and the ability to make independent decisions.",
+      financial: "You have the potential for significant financial success through your own efforts. Money comes when you trust your instincts and take calculated risks. Avoid partnerships where you cannot maintain control of your financial decisions.",
+      relationships: "Your destiny involves learning the balance between independence and partnership. You attract partners who admire your strength but need to learn vulnerability and emotional sharing. Your most fulfilling relationships are with those who support your independence while challenging you to grow emotionally."
+    },
+    2: {
+      lifeDirection: "Destiny Number 2 guides you toward a life of cooperation, diplomacy, and emotional depth. You are meant to be the bridge between people, healing divisions and creating understanding. Your destiny unfolds through partnerships and service to others.",
+      personality: "Your life path requires patience, sensitivity, and the ability to bring opposing forces together. You are destined to develop extraordinary emotional intelligence and to use it in service of harmony.",
+      strengths: "Diplomatic skills, emotional intuition, patience, and the ability to create peace in discordant situations. You are a natural mediator and counsellor whose presence calms and reassures.",
+      challenges: "Standing up for your own needs, developing independence, and avoiding the trap of people-pleasing. Your destiny requires you to find your voice without losing your gentle nature.",
+      career: "You excel in counselling, diplomacy, healthcare, education, customer relations, and any field that requires interpersonal skills and empathy. Team-based environments bring out your best qualities.",
+      financial: "Financial success comes through collaboration and helping others. You may not be the most aggressive earner, but your ability to build lasting professional relationships creates steady, reliable income streams.",
+      relationships: "Your destiny is deeply intertwined with your relationships. You are here to learn about true partnership — giving and receiving in equal measure. Your most fulfilling relationship is one of deep emotional connection and mutual support."
+    },
+    3: {
+      lifeDirection: "Destiny Number 3 places you on a path of creative expression, communication, and joy. You are destined to bring beauty, inspiration, and positivity into the world through your words, art, or social presence.",
+      personality: "Your life is meant to be lived out loud. You are destined to develop your creative gifts and share them generously. Social connection and self-expression are not just preferences — they are your life's purpose.",
+      strengths: "Creative talent, natural charisma, excellent communication skills, and an ability to inspire joy in others. You are destined to use your voice — whether literal or artistic — to make a meaningful impact.",
+      challenges: "Focusing your scattered energy, following through on commitments, and developing depth alongside your natural lightness. Your destiny requires you to master the art of completion.",
+      career: "Writing, acting, music, teaching, marketing, public relations, and social media are natural fits. Any career that allows creative expression and social interaction aligns with your destiny.",
+      financial: "Financial success comes when you channel your creative energy consistently. Multiple income streams from creative endeavours are common for you. Avoid impulsive spending — your generosity can sometimes exceed your means.",
+      relationships: "Your destiny involves learning to balance your social nature with intimate connection. You need a partner who appreciates your creativity and joins you in your joyous approach to life. Depth of emotional connection enriches your already vibrant relationships."
+    },
+    4: {
+      lifeDirection: "Destiny Number 4 leads you on a path of building, organising, and creating lasting foundations. Your life purpose involves bringing order to chaos and establishing structures that stand the test of time.",
+      personality: "You are destined to develop discipline, reliability, and an extraordinary work ethic. Your life teaches you the value of patience and persistence through practical, hands-on experience.",
+      strengths: "Systematic thinking, dependability, attention to detail, and the ability to manage complex projects. You are destined to be the backbone of whatever you build — whether a family, a business, or a community.",
+      challenges: "Remaining open to change, developing flexibility, and learning that not everything needs to be perfect. Your destiny involves finding balance between structure and spontaneity.",
+      career: "Architecture, engineering, accounting, construction, project management, and organisational roles align with your destiny. You thrive in structured environments where your methodical approach is valued.",
+      financial: "You build wealth slowly and steadily through disciplined saving and practical investments. Financial security is important to you and comes naturally when you follow your methodical approach to money management.",
+      relationships: "Your destiny involves learning to express emotions as reliably as you handle practical matters. You are a deeply loyal partner who builds lasting relationships. Open communication about feelings deepens your already strong bonds."
+    },
+    5: {
+      lifeDirection: "Destiny Number 5 sets you on a path of freedom, adventure, and transformation. You are destined to experience life in all its variety and to bring that breadth of experience back to inspire others.",
+      personality: "Your life is meant to be an adventure. You are destined to develop adaptability, courage, and a broad understanding of the world through diverse experiences and encounters.",
+      strengths: "Versatility, adaptability, courage, and a natural talent for communication. You are destined to thrive in change and to teach others the value of flexibility and open-mindedness.",
+      challenges: "Finding stability without sacrificing freedom, developing commitment, and learning that true freedom includes responsibility. Your destiny requires you to ground your restless energy.",
+      career: "Travel, media, sales, marketing, entertainment, and any field that offers variety and movement align with your destiny. You excel in roles that require quick thinking and adaptability.",
+      financial: "Your financial life is characterised by fluctuations. You have the ability to earn well but need to develop discipline in spending and saving. Diversifying your income sources works well for your nature.",
+      relationships: "Your destiny involves learning that deep commitment and personal freedom are not mutually exclusive. You need a partner who gives you space while providing emotional grounding. Your most fulfilling relationships are those built on trust and shared adventure."
+    },
+    6: {
+      lifeDirection: "Destiny Number 6 guides you toward a life centred on love, family, beauty, and service. Your purpose involves creating harmony and nurturing the people and spaces around you.",
+      personality: "You are destined to develop your extraordinary capacity for love and responsibility. Your life teaches you the balance between caring for others and caring for yourself.",
+      strengths: "Nurturing ability, artistic vision, sense of responsibility, and the power to create beauty and comfort wherever you go. You are destined to be a pillar of support for your family and community.",
+      challenges: "Setting healthy boundaries, avoiding self-sacrifice, and learning that you cannot save everyone. Your destiny requires you to extend the same compassion to yourself that you give so freely to others.",
+      career: "Healthcare, teaching, interior design, hospitality, counselling, and any service-oriented career aligns with your destiny. You bring warmth and excellence to roles that involve caring for others.",
+      financial: "You are financially responsible and tend to prioritise family needs. Financial security comes through steady work and wise management. You may sometimes spend generously on creating a beautiful home environment.",
+      relationships: "Your destiny is deeply connected to your family and intimate relationships. You are here to learn about unconditional love and the difference between healthy giving and self-neglect. Your most fulfilling relationships are warm, committed, and deeply nurturing."
+    },
+    7: {
+      lifeDirection: "Destiny Number 7 places you on a quest for truth, wisdom, and spiritual understanding. Your life path involves deep investigation, study, and the development of your remarkable inner knowing.",
+      personality: "You are destined to develop your analytical mind and spiritual sensitivity. Your life is a journey of discovery — both of the outer world and the inner landscape of your soul.",
+      strengths: "Analytical brilliance, intuition, spiritual depth, and the ability to uncover hidden truths. You are destined to make significant contributions through research, philosophy, or spiritual teaching.",
+      challenges: "Connecting with others, overcoming isolation, and learning to trust the material world alongside your spiritual insights. Your destiny requires you to balance solitude with meaningful social engagement.",
+      career: "Research, science, philosophy, spirituality, technology, and analytical fields align with your destiny. You excel in roles that require deep thinking and independent investigation.",
+      financial: "Financial success comes through intellectual endeavours and patient, strategic planning. You are not driven by materialism but tend to attract resources when you follow your authentic interests.",
+      relationships: "Your destiny involves learning to let people into your inner world. You are a deeply loyal partner once trust is established. Your most fulfilling relationships are those that combine intellectual companionship with emotional depth."
+    },
+    8: {
+      lifeDirection: "Destiny Number 8 leads you on a path of material mastery, authority, and karmic balance. You are destined to achieve significant success in the material world while learning the spiritual lessons that come with power.",
+      personality: "Your life teaches you about the responsible use of power and resources. You are destined to develop business acumen, financial intelligence, and the ability to lead large-scale endeavours.",
+      strengths: "Business mastery, financial intelligence, natural authority, and the ability to manifest abundance. You are destined for significant material success when you align your actions with integrity.",
+      challenges: "Balancing material pursuit with spiritual growth, maintaining relationships while chasing success, and learning that true power comes from service, not domination. Your biggest challenge is avoiding workaholism.",
+      career: "Finance, business management, real estate, law, politics, and executive leadership align with your destiny. You are destined for positions of significant authority and influence.",
+      financial: "Financial abundance is a key theme of your destiny. You have the ability to generate significant wealth. The lesson is learning to use money as a tool for good rather than an end in itself.",
+      relationships: "Your destiny involves learning to give your relationships the same attention and dedication you give your career. You are a loyal and providing partner. Balancing work and home life is your ongoing lesson."
+    },
+    9: {
+      lifeDirection: "Destiny Number 9 places you on a humanitarian path of compassion, creativity, and universal service. Your life purpose extends beyond personal achievement to the betterment of humanity.",
+      personality: "You are destined to develop your extraordinary empathy and creative gifts in service of something greater than yourself. Your life teaches you about letting go, forgiveness, and unconditional love.",
+      strengths: "Compassion, creativity, broad perspective, and the ability to inspire positive change. You are destined to make a meaningful difference in the lives of many people.",
+      challenges: "Emotional boundaries, practical self-care, and accepting that you cannot save the world alone. Your destiny requires you to balance your idealism with grounded action.",
+      career: "Social work, charity, teaching, the arts, healing professions, and advocacy align with your destiny. You excel in roles that combine creativity with service to others.",
+      financial: "Financial success is not your primary destiny, but abundance comes when you serve others authentically. You tend to give generously and may need to develop healthier financial habits.",
+      relationships: "Your destiny involves learning to love without losing yourself. You are a deeply compassionate partner who brings emotional depth and generosity to relationships. Your most fulfilling connections are those that share your values and vision."
+    },
+    11: {
+      lifeDirection: "Master Destiny Number 11 calls you to a life of spiritual illumination and inspiration. You are here to channel higher consciousness and help others awaken to their own divine potential.",
+      personality: "Your destiny is to be a beacon of spiritual light. You carry the responsibility of heightened sensitivity and the ability to perceive truths beyond ordinary awareness.",
+      strengths: "Profound intuition, spiritual vision, creative inspiration, and the ability to uplift others through your presence alone. You are destined to lead through spiritual example.",
+      challenges: "Managing your intense sensitivity, grounding your visions in practical reality, and overcoming self-doubt. Your destiny requires you to trust your gifts despite the pressures they bring.",
+      career: "Spiritual teaching, healing arts, creative arts, counselling, and visionary leadership align with your destiny. You are called to roles that inspire and transform.",
+      financial: "Financial matters may be secondary to your spiritual calling, but abundance comes when you trust your intuitive guidance in practical matters.",
+      relationships: "Your destiny involves deep soul connections. You are here to experience and teach the highest forms of love. Your relationships serve as vehicles for spiritual growth and mutual awakening."
+    },
+    22: {
+      lifeDirection: "Master Destiny Number 22, the Master Builder, calls you to build something of lasting significance for humanity. You are here to manifest visionary ideals into practical reality on a grand scale.",
+      personality: "Your destiny combines spiritual vision with practical mastery. You are called to be both dreamer and doer — to conceive grand plans and bring them into being through disciplined effort.",
+      strengths: "Extraordinary ability to manifest large-scale vision, organisational genius, and the discipline to build lasting institutions. You are destined to create transformations that benefit generations.",
+      challenges: "Managing the immense pressure of your potential, balancing work with personal life, and learning that your worth is not solely defined by your achievements. Grounding and self-care are essential.",
+      career: "Institutional leadership, architecture, politics, large-scale business, and humanitarian projects align with your destiny. You are called to roles where your vision can impact the widest possible audience.",
+      financial: "Significant financial resources may flow to you as you pursue your destiny. Your challenge is using wealth wisely and in service of your larger mission.",
+      relationships: "Your destiny requires a partner who understands and supports your grand mission. Your most fulfilling relationships combine deep emotional connection with shared purpose and mutual respect."
+    }
+  },
+  nameNum: {
+    1: {
+      naturalTalents: "Your Name Number 1 endows you with natural leadership, initiative, and the ability to original thought. You have a talent for starting things — projects, businesses, movements — and inspiring others to follow your lead.",
+      personality: "You project confidence and independence. People perceive you as someone who takes charge and makes things happen. Your name carries the energy of authority and self-reliance.",
+      attitudes: "You approach life with a pioneering attitude and a desire to make your mark. You are unafraid of challenges and prefer to tackle problems head-on rather than wait for others.",
+      strengths: "Independent thinking, natural charisma, originality, and the ability to inspire action. Your name amplifies your personal power and magnetism.",
+      challenges: "Learning to collaborate, accepting input from others, and tempering your assertiveness with sensitivity. Your name's strong energy can sometimes overwhelm those around you.",
+      potential: "Your Name Number 1 gives you the potential to become a recognised leader in your field. When you combine your natural authority with genuine service, your impact is extraordinary."
+    },
+    2: {
+      naturalTalents: "Your Name Number 2 blesses you with exceptional interpersonal skills, diplomacy, and emotional sensitivity. You have a natural talent for bringing people together and creating understanding.",
+      personality: "You project warmth, approachability, and genuine care for others. People feel comfortable in your presence and are drawn to your gentle, supportive energy.",
+      attitudes: "You approach life with patience and a desire for harmony. You prefer to find solutions that work for everyone rather than asserting your own will at the expense of others.",
+      strengths: "Emotional intelligence, patience, cooperative spirit, and the ability to create peace. Your name enhances your natural gift for relationship-building.",
+      challenges: "Asserting yourself, making independent decisions, and avoiding the tendency to lose yourself in others' needs. Your name's gentle energy requires conscious strengthening of personal boundaries.",
+      potential: "Your Name Number 2 gives you the potential to excel in any field that requires human connection — counselling, diplomacy, healthcare, education. Your impact comes through the quality of your relationships."
+    },
+    3: {
+      naturalTalents: "Your Name Number 3 amplifies your creative expression, communication skills, and social magnetism. You have a natural talent for words, art, and bringing joy to others.",
+      personality: "You project optimism, charm, and creative energy. People see you as vibrant, expressive, and fun to be around. Your name carries the energy of artistic brilliance.",
+      attitudes: "You approach life with enthusiasm and a desire for self-expression. You believe in the power of words and creativity to transform and inspire.",
+      strengths: "Creative talent, verbal fluency, natural charisma, and an ability to uplift others. Your name amplifies your artistic and communicative gifts.",
+      challenges: "Focusing your creative energy, avoiding superficiality, and developing depth alongside your natural expressiveness. Your name's scattered energy benefits from disciplined channeling.",
+      potential: "Your Name Number 3 gives you the potential to make a significant impact through creative expression — whether in writing, music, performance, or communication. Your voice matters."
+    },
+    4: {
+      naturalTalents: "Your Name Number 4 strengthens your practical abilities, organisational skills, and talent for building lasting structures. You have a natural gift for creating order and reliability.",
+      personality: "You project dependability, competence, and groundedness. People see you as someone who can be trusted to deliver. Your name carries the energy of stability and strength.",
+      attitudes: "You approach life methodically and value quality over speed. You believe that good things are built through patience and consistent effort.",
+      strengths: "Practical wisdom, organisational excellence, reliability, and attention to detail. Your name amplifies your ability to create and maintain lasting structures.",
+      challenges: "Being flexible, embracing change, and allowing creativity into your structured approach. Your name's rigid energy benefits from intentional softening and adaptability.",
+      potential: "Your Name Number 4 gives you the potential to build something truly lasting — whether in business, family, or community. Your name marks you as someone whose work endures."
+    },
+    5: {
+      naturalTalents: "Your Name Number 5 enhances your adaptability, communication skills, and talent for variety. You have a natural gift for connecting with diverse people and navigating change with grace.",
+      personality: "You project energy, versatility, and an adventurous spirit. People see you as exciting, knowledgeable, and full of life. Your name carries the energy of freedom and transformation.",
+      attitudes: "You approach life with curiosity and a desire for new experiences. You believe that growth comes through exposure to different ideas, places, and people.",
+      strengths: "Versatility, quick learning, excellent communication, and magnetic charm. Your name amplifies your ability to adapt and thrive in any environment.",
+      challenges: "Commitment, follow-through, and grounding your restless energy. Your name's dynamic energy benefits from intentional focus and stability practices.",
+      potential: "Your Name Number 5 gives you the potential to excel in fields that require adaptability and communication. Your name opens doors through its natural magnetism and versatility."
+    },
+    6: {
+      naturalTalents: "Your Name Number 6 amplifies your nurturing abilities, artistic sensibility, and talent for creating beauty and harmony. You have a natural gift for healing and caretaking.",
+      personality: "You project warmth, care, and a sense of responsibility. People see you as dependable, loving, and aesthetically sensitive. Your name carries the energy of beauty and service.",
+      attitudes: "You approach life with a sense of duty and a desire to create comfort for those you love. You believe in the power of love and beauty to heal the world.",
+      strengths: "Nurturing ability, artistic vision, sense of responsibility, and healing presence. Your name amplifies your natural gifts for care and creation.",
+      challenges: "Setting boundaries, avoiding self-sacrifice, and maintaining your own wellbeing alongside your care for others. Your name's giving energy requires conscious self-care.",
+      potential: "Your Name Number 6 gives you the potential to create profound beauty and comfort in the world — through art, home, healing, or service. Your name marks you as a pillar of love."
+    },
+    7: {
+      naturalTalents: "Your Name Number 7 deepens your analytical mind, spiritual sensitivity, and talent for uncovering hidden truths. You have a natural gift for research, introspection, and wisdom.",
+      personality: "You project depth, intelligence, and an air of mystery. People sense that there is more to you than meets the eye. Your name carries the energy of wisdom and inner knowing.",
+      attitudes: "You approach life thoughtfully and with a desire for understanding. You believe that true knowledge comes from looking beneath the surface.",
+      strengths: "Analytical brilliance, spiritual depth, intuition, and the ability to perceive what others miss. Your name amplifies your gifts for investigation and insight.",
+      challenges: "Social engagement, practical matters, and sharing your inner world with others. Your name's introspective energy benefits from intentional connection and openness.",
+      potential: "Your Name Number 7 gives you the potential to make significant discoveries — whether in science, philosophy, or spirituality. Your name marks you as a seeker and a sage."
+    },
+    8: {
+      naturalTalents: "Your Name Number 8 strengthens your business acumen, financial intelligence, and talent for managing resources. You have a natural gift for creating abundance and wielding authority.",
+      personality: "You project power, competence, and material confidence. People see you as someone who gets results. Your name carries the energy of achievement and abundance.",
+      attitudes: "You approach life strategically and with a focus on tangible outcomes. You understand the value of hard work and smart planning.",
+      strengths: "Business mastery, financial intelligence, natural authority, and organisational power. Your name amplifies your ability to manifest material success.",
+      challenges: "Balancing work and personal life, maintaining spiritual integrity alongside material pursuit, and avoiding the trap of defining yourself solely through achievement.",
+      potential: "Your Name Number 8 gives you the potential for significant material success and influence. Your name marks you as someone who can build empires — just remember to build relationships too."
+    },
+    9: {
+      naturalTalents: "Your Name Number 9 amplifies your humanitarian spirit, creative vision, and talent for inspiring others. You have a natural gift for compassion, artistic expression, and universal service.",
+      personality: "You project compassion, wisdom, and a broad perspective. People see you as inspiring, generous, and emotionally profound. Your name carries the energy of completion and universal love.",
+      attitudes: "You approach life with idealism and a desire to make the world better. You believe in the power of compassion and creativity to transform lives.",
+      strengths: "Empathy, creativity, visionary thinking, and the ability to inspire positive change. Your name amplifies your natural gifts for service and expression.",
+      challenges: "Emotional boundaries, practical self-care, and channelling your broad vision into focused action. Your name's expansive energy benefits from grounded, practical steps.",
+      potential: "Your Name Number 9 gives you the potential to make a lasting positive impact on the world. Your name marks you as a humanitarian, an artist, and a beacon of compassion."
+    },
+    11: {
+      naturalTalents: "Your Name Number 11 amplifies your spiritual intuition, creative vision, and capacity for inspiration. You have a natural gift for channeling higher wisdom and awakening others to their potential.",
+      personality: "You project an aura of spiritual depth and magnetic charisma. People sense your heightened awareness and are drawn to your illuminating presence.",
+      attitudes: "You approach life with idealism and a desire to uplift. You believe in the transformative power of spiritual awareness and creative vision.",
+      strengths: "Profound intuition, spiritual magnetism, creative inspiration, and the ability to elevate others. Your name carries the powerful energy of the Master Number.",
+      challenges: "Grounding your spiritual gifts, managing sensitivity, and translating vision into practical action. Your name's ethereal energy benefits from disciplined, practical application.",
+      potential: "Your Name Number 11 gives you the potential to be a powerful spiritual leader and creative visionary. Your name marks you as someone who channels the extraordinary."
+    },
+    22: {
+      naturalTalents: "Your Name Number 22 grants you the rare combination of spiritual vision and practical mastery. You have a natural talent for building large-scale projects that benefit humanity.",
+      personality: "You project quiet power, competence, and visionary depth. People sense your extraordinary potential and are drawn to your ability to make things happen on a grand scale.",
+      attitudes: "You approach life with both idealism and pragmatism. You believe that the highest ideals can be built into lasting reality through disciplined effort.",
+      strengths: "Manifestation power, organisational genius, practical idealism, and the ability to lead large endeavours. Your name carries the immense energy of the Master Builder.",
+      challenges: "Managing pressure, maintaining personal wellbeing, and avoiding workaholism in pursuit of your mission. Your name's powerful energy requires conscious balance and self-care.",
+      potential: "Your Name Number 22 gives you the potential to create transformative institutions and movements. Your name marks you as someone who builds the foundations for a better world."
+    }
+  }
+};
+
+/* ---------- SECTION DATA ---------- */
+const sectionData = {
+  career: {
+    1: "Your number favours careers where you can lead and innovate — entrepreneurship, management, politics, creative direction, or any field requiring independent decision-making. You thrive when you are the one setting the agenda rather than following someone else's. Environments that offer autonomy and recognition bring out your best work.",
+    2: "You excel in careers involving people — counselling, diplomacy, healthcare, human resources, teaching, and customer relations. Team-based environments bring out your collaborative strengths. You are the person who holds teams together through empathy and understanding.",
+    3: "Creative fields are your natural home — writing, music, acting, design, marketing, public relations, and social media. Any career that allows you to communicate, create, and express yourself will bring you fulfilment and success.",
+    4: "You thrive in structured, systematic careers — engineering, architecture, accounting, project management, banking, and quality assurance. Your attention to detail and reliability make you invaluable in roles that demand precision and consistency.",
+    5: "Careers involving travel, communication, and variety suit you best — journalism, sales, marketing, travel, media, and consulting. You need a career that keeps you engaged and prevents stagnation. Monotony is your enemy.",
+    6: "Healing, teaching, design, hospitality, and caregiving roles align with your nurturing nature. Interior design, fashion, counselling, nursing, and education are all excellent fits. You bring warmth and beauty to whatever you do.",
+    7: "Research, technology, philosophy, spirituality, and analytical fields are your calling. You excel in roles that require deep thinking, investigation, and independent work. Scientific research, IT, astrology, and academia suit you well.",
+    8: "Business, finance, law, real estate, and executive leadership are natural domains for you. You are built for positions of authority and financial management. Corporate environments and entrepreneurship both offer paths to your success.",
+    9: "Social work, charity, teaching, the arts, healing professions, and humanitarian work align with your compassionate nature. You are at your best when your work serves a cause larger than yourself.",
+    11: "Spiritual teaching, healing arts, creative arts, counselling, and visionary leadership suit your illuminated nature. You are called to roles that inspire spiritual growth and creative awakening in others.",
+    22: "Institutional leadership, large-scale business, architecture, politics, and humanitarian projects are your domain. You are built for roles where your vision can impact the widest possible audience."
+  },
+  health: {
+    1: "Your body is closely linked to your willpower and independence. Pay attention to your heart, spine, and head. Regular physical activity is essential for channelling your abundant energy. Headaches and stress-related tension are common — meditation and exercise help immensely. Avoid bottling up frustration.",
+    2: "Your sensitive nature makes you susceptible to emotional and digestive issues. Take care of your stomach, breasts, and nervous system. Gentle exercise like yoga and swimming suits you. Avoid accumulating stress from others — regular emotional release through journaling or therapy is beneficial.",
+    3: "Your lively energy keeps you generally healthy, but watch for respiratory issues, throat problems, and nervous exhaustion from overstimulation. Regular moderation in food and activities is key. Your乐观 nature sometimes leads you to ignore health warnings — pay attention to your body's signals.",
+    4: "Your robust constitution is a strength, but your tendency toward routine and stress can affect your bones, joints, and skin. Regular exercise, a balanced diet, and attention to posture are important. You may hold tension physically — regular stretching and bodywork help.",
+    5: "Your active lifestyle keeps you fit, but your restless nature can lead to accidents, nervous exhaustion, and respiratory issues. Regular sleep patterns and grounding activities like walking or gardening help stabilise your energy. Avoid overindulgence in food, drink, or stimulants.",
+    6: "Your health is closely tied to your emotional state and relationships. Skin conditions, heart issues, and back problems are areas to watch. Creating a beautiful, harmonious living environment directly benefits your health. You tend to absorb others' stress — regular alone time is therapeutic.",
+    7: "Your mental intensity can manifest as nervous system issues, insomnia, and stress-related ailments. Regular time in nature, meditation, and adequate sleep are essential. You may neglect physical health in pursuit of intellectual goals — balance mind and body.",
+    8: "Work-related stress is your primary health concern. Watch for heart disease, joint problems, and the effects of overwork. Regular exercise, balanced nutrition, and dedicated rest periods are crucial. Learning to switch off from work protects your long-term health.",
+    9: "Your emotional depth can manifest as heart and circulatory issues. You may take on others' health problems empathically. Regular emotional clearing practices, physical exercise, and healthy boundaries protect your wellbeing. Avoid suppressing your sensitive nature.",
+    11: "Your heightened sensitivity makes you susceptible to nervous exhaustion, anxiety, and stress-related conditions. Regular meditation, grounding exercises, and time in nature are essential. Protect your energy by limiting exposure to negative environments.",
+    22: "The pressure of your mission can manifest as physical tension, back problems, and burnout. Regular physical activity, adequate rest, and work-life balance are crucial. Your body needs as much attention as your ambitions."
+  },
+  remedies: {
+    1: "<b>Sunday Fast:</b> Observe a fast on Sundays, offering water to the rising Sun. Chant <i>'Om Suryaya Namaha'</i> 7 times while facing the Sun.<br><b>Ruby Gemstone:</b> Wear a Ruby set in gold on the ring finger of your right hand on a Sunday morning.<br><b>Donation:</b> Donate wheat, jaggery, or copper items on Sundays.<br><b>Mantra:</b> Recite the Aditya Hridayam or Surya mantra daily at sunrise for strength and clarity.",
+    2: "<b>Monday Fast:</b> Observe a fast on Mondays, offering milk and water to a Shiva Linga. Chant <i>'Om Namah Shivaya'</i> 108 times.<br><b>Pearl:</b> Wear a Pearl set in silver on the little finger of your right hand on a Monday.<br><b>Donation:</b> Donate rice, milk, or white cloth on Mondays.<br><b>Mantra:</b> Recite the Shiv Tandav Stotra or Moon mantra for emotional stability.",
+    3: "<b>Thursday Fast:</b> Observe a fast on Thursdays, offering yellow lentils and turmeric to a temple. Chant <i>'Om Namo Bhagavate Vasudevaya'</i> 108 times.<br><b>Yellow Sapphire:</b> Wear on the index finger of the right hand in gold.<br><b>Donation:</b> Donate yellow sweets, bananas, or saffron on Thursdays.<br><b>Mantra:</b> Recite the Vishnu Sahasranama for wisdom and prosperity.",
+    4: "<b>Saturday Fast:</b> Observe a fast on Saturdays, offering blue flowers and sesame to a Shani temple. Chant <i>'Om Gam Ganapataye Namaha'</i> 108 times.<br><b>Hessonite:</b> Wear in silver or panchdhatu on the middle finger of the right hand.<br><b>Donation:</b> Donate black sesame, iron items, or blue cloth on Saturdays.<br><b>Mantra:</b> Recite the Ganesh Atharvashirsha for removing obstacles.",
+    5: "<b>Wednesday Fast:</b> Observe a fast on Wednesdays, offering green moong dal and green cloth. Chant <i>'Om Namo Narayanaya'</i> 108 times.<br><b>Emerald:</b> Wear on the little finger of the right hand in gold.<br><b>Donation:</b> Donate green vegetables, moong dal, or green cloth on Wednesdays.<br><b>Mantra:</b> Recite the Vishnu Sahasranama for communication and wisdom.",
+    6: "<b>Friday Fast:</b> Observe a fast on Fridays, offering white sweets and flowers to Goddess Lakshmi. Chant <i>'Om Shreem Mahalakshmiyei Namaha'</i> 108 times.<br><b>Diamond:</b> Wear on the ring finger of the right hand in platinum or silver.<br><b>Donation:</b> Donate white sweets, rice, or white cloth on Fridays.<br><b>Mantra:</b> Recite the Lakshmi Ashtakshara or Kanakadhara Stotra.",
+    7: "<b>Saturday/Tuesday Fast:</b> Observe a fast on Saturdays or Tuesdays, offering red flowers and red lentils to a Ganesh or Durga temple. Chant <i>'Om Gam Ganapataye Namaha'</i> 108 times.<br><b>Cat's Eye:</b> Wear on the middle finger of the right hand in silver.<br><b>Donation:</b> Donate brown items, sesame, or iron on Saturdays.<br><b>Mantra:</b> Recite the Ganesh Atharvashirsha or Durga Chalisa for removing obstacles.",
+    8: "<b>Saturday Fast:</b> Observe a strict fast on Saturdays, offering black sesame and mustard oil to a Shani temple. Chant <i>'Om Sham Shanaishcharaya Namaha'</i> 108 times.<br><b>Blue Sapphire:</b> Wear in silver or panchdhatu on the middle finger of the right hand only after testing.<br><b>Donation:</b> Donate iron, black sesame, or blankets on Saturdays.<br><b>Mantra:</b> Recite the Shani Stotra or Hanuman Chalisa every Saturday.",
+    9: "<b>Tuesday Fast:</b> Observe a fast on Tuesdays, offering red lentils and jaggery to a Hanuman or Kartikeya temple. Chant <i>'Om Ang Angarakaya Namaha'</i> 108 times.<br><b>Red Coral:</b> Wear in gold or copper on the ring finger of the right hand.<br><b>Donation:</b> Donate red lentils, copper items, or red cloth on Tuesdays.<br><b>Mantra:</b> Recite the Hanuman Chalisa or Subramanya Bhujangam for courage.",
+    11: "<b>Saturday Fast:</b> Observe a fast on Saturdays with meditation and spiritual practice. Chant <i>'Om Namah Shivaya'</i> 108 times in meditation.<br><b>Labradorite:</b> Wear as a pendant close to the heart centre.<br><b>Donation:</b> Donate to spiritual institutions and educational charities.<br><b>Practice:</b> Daily meditation, pranayama, and spiritual study are your most powerful remedies.",
+    22: "<b>Saturday Fast:</b> Observe a fast on Saturdays with focused intention on your life mission. Chant <i>'Jai Hanuman'</i> 108 times.<br><b>Black Onyx:</b> Wear as a ring or pendant for grounding and protection.<br><b>Donation:</b> Donate to causes that build lasting institutions — schools, hospitals, community centres.<br><b>Practice:</b> Regular meditation, physical exercise, and service work keep your powerful energy grounded and productive."
+  },
+  yantra: {
+    1: "<b>Surya Yantra (Sun Yantra)</b> — Meditate upon the Surya Yantra while facing the rising Sun on Sunday mornings. This yantra amplifies your leadership qualities, confidence, and vitality. Draw or print the yantra, place it in your prayer area, and offer red flowers and water while chanting the Surya mantra.",
+    2: "<b>Chandra Yantra (Moon Yantra)</b> — Meditate upon the Chandra Yantra on Monday evenings by moonlight. This yantra enhances your intuition, emotional balance, and inner peace. Place it in your bedroom or meditation space. Offer white flowers, milk, and rice while chanting the Chandra mantra.",
+    3: "<b>Guru Yantra (Jupiter Yantra)</b> — Meditate upon the Guru Yantra on Thursday mornings. This yantra amplifies your wisdom, creativity, and communicative power. Place it in your study or creative workspace. Offer yellow flowers and turmeric while chanting the Guru mantra.",
+    4: "<b>Rahu Yantra</b> — Meditate upon the Rahu Yantra on Saturdays. This yantra helps channel your structured energy and removes obstacles. Place it in your workspace for enhanced focus and organisation. Offer blue flowers and sesame while chanting the Rahu mantra.",
+    5: "<b>Budh Yantra (Mercury Yantra)</b> — Meditate upon the Budh Yantra on Wednesday mornings. This yantra enhances your communication, adaptability, and intellectual sharpness. Place it in your communication area or office. Offer green moong dal and green cloth while chanting the Budh mantra.",
+    6: "<b>Shukra Yantra (Venus Yantra)</b> — Meditate upon the Shukra Yantra on Friday evenings. This yantra amplifies love, beauty, and artistic expression. Place it in your living space or creative area. Offer white flowers, sweets, and camphor while chanting the Shukra mantra.",
+    7: "<b>Ketu Yantra</b> — Meditate upon the Ketu Yantra on Saturdays. This yantra deepens your spiritual insight and analytical abilities. Place it in your meditation or study space. Offer brown cloth and sesame while chanting the Ketu mantra.",
+    8: "<b>Shani Yantra (Saturn Yantra)</b> — Meditate upon the Shani Yantra on Saturdays. This yantra brings discipline, structure, and material stability. Place it in your workspace or prayer area. Offer black sesame, mustard oil, and iron while chanting the Shani mantra.",
+    9: "<b>Mangal Yantra (Mars Yantra)</b> — Meditate upon the Mangal Yantra on Tuesday mornings. This yantra amplifies your courage, energy, and humanitarian drive. Place it in your active workspace. Offer red lentils, jaggery, and red cloth while chanting the Mangal mantra.",
+    11: "<b>Om Yantra / Sri Yantra</b> — Meditate upon the Sri Yantra daily, especially during the early morning hours. This master yantra aligns your heightened spiritual energy and amplifies your intuitive gifts. Place it in your meditation space. Offer flowers, incense, and silent meditation while chanting Om.",
+    22: "<b>Sri Yantra</b> — The Sri Yantra is the most powerful yantra for the Master Builder. Meditate upon it daily with focused intention on your life mission. This yantra aligns cosmic energy with your practical goals. Place it in your most sacred space. Offer flowers, incense, and devotion while chanting the Sri Vidya mantra."
+  },
+  facts: {
+    1: "People with Radical Number 1 are born on the 1st, 10th, 19th, or 28th of any month. Notable leaders born under Number 1 include Mahatma Gandhi (born 2nd October, reducing to 2, but strongly influenced by Sun energy) and Abraham Lincoln. Number 1 individuals are said to carry the purest solar energy and are often pioneers in their fields. The Sun, as the ruling planet, gives them natural warmth and the ability to illuminate any situation they enter.",
+    2: "People with Radical Number 2 are born on the 2nd, 11th, 20th, or 29th. The number 11 is considered a master number, so those born on the 11th may experience amplified intuitive gifts. Number 2 individuals are deeply connected to lunar energy, making them highly sensitive to moon phases and emotional tides. They often have an uncanny ability to know what others are feeling before being told.",
+    3: "People with Radical Number 3 are born on the 3rd, 12th, 21st, or 30th. Jupiter's expansive influence gives them natural optimism and a broad worldview. Number 3 individuals are often gifted writers, speakers, or artists. They have a youthful energy that persists throughout life and are known for bringing joy and laughter to any gathering they attend.",
+    4: "People with Radical Number 4 are born on the 4th, 13th, 22nd, or 31st. The number 22 is a master number, so those born on the 22nd may experience the amplified Master Builder energy. Number 4 individuals have an extraordinary connection to the Earth's rhythms and often feel most alive in nature. They are the most reliable of all numbers and are known for their unwavering dedication.",
+    5: "People with Radical Number 5 are born on the 5th, 14th, or 23rd. Mercury's influence makes them quick-witted, versatile, and naturally curious. Number 5 individuals are often the most adventurous travellers and are known for their ability to adapt to any culture or situation. They have a natural talent for languages and communication.",
+    6: "People with Radical Number 6 are born on the 6th, 15th, or 24th. Venus's influence gives them an innate sense of beauty, harmony, and love. Number 6 individuals are often the heart of their families and communities. They have a natural talent for creating beautiful spaces and are known for their unconditional love and support.",
+    7: "People with Radical Number 7 are born on the 7th, 16th, or 25th. Ketu's spiritual influence gives them a deep connection to the unseen world. Number 7 individuals are often drawn to mysticism, science, and philosophy. They have a natural talent for meditation and are known for their ability to perceive what others cannot see.",
+    8: "People with Radical Number 8 are born on the 8th, 17th, or 26th. Saturn's karmic influence gives them a powerful connection to material manifestation. Number 8 individuals are often drawn to business, finance, and leadership. They have a natural talent for managing resources and are known for their ability to create abundance through disciplined effort.",
+    9: "People with Radical Number 9 are born on the 9th, 18th, or 27th. Mars's passionate influence gives them extraordinary courage and compassion. Number 9 individuals are often the most humanitarian of all numbers. They have a natural talent for healing and are known for their selfless dedication to making the world a better place.",
+    11: "Master Number 11 individuals are born on the 11th or 29th (which reduces to 11). This is the most intuitive of all numbers and is associated with spiritual illumination. People with Master Number 11 often experience vivid dreams, prophetic visions, and a deep connection to the spiritual realm. They are here to channel higher wisdom and inspire others.",
+    22: "Master Number 22 individuals are born on the 22nd. This is the most powerful number for manifesting large-scale visions. People with Master Number 22 have the rare ability to combine spiritual vision with practical execution. They are here to build something of lasting significance — institutions, movements, or structures that benefit humanity for generations."
+  }
+};
+
+/* ================================================================
+   REPORT GENERATION
+   ================================================================ */
+
+function generateReport() {
+  const name = document.getElementById("fullName").value.trim();
+  const dd = document.getElementById("dobDD").value.trim();
+  const mm = document.getElementById("dobMM").value.trim();
+  const yyyy = document.getElementById("dobYYYY").value.trim();
+  const system = document.getElementById("numSystem").value;
   const errorBox = document.getElementById("numerologyError");
-  const resultsBox = document.getElementById("numerologyResults");
 
-  if (!legalName && !commonName && !firstName) {
-    errorBox.style.display = "block";
-    resultsBox.style.display = "none";
-    return;
+  /* Validate */
+  if (!name) { errorBox.textContent = "Please enter your full name."; errorBox.style.display = "block"; return; }
+  if (!dd || !mm || !yyyy) { errorBox.textContent = "Please enter your complete date of birth."; errorBox.style.display = "block"; return; }
+  const day = parseInt(dd, 10), month = parseInt(mm, 10), year = parseInt(yyyy, 10);
+  if (isNaN(day) || isNaN(month) || isNaN(year) || day < 1 || day > 31 || month < 1 || month > 12 || year < 1000) {
+    errorBox.textContent = "Please enter a valid date of birth (DD/MM/YYYY)."; errorBox.style.display = "block"; return;
   }
   errorBox.style.display = "none";
 
-  let html = "";
-  let lastFinalNum = null;
+  /* Calculate */
+  const radical = calcRadicalNumber(dd);
+  const destiny = calcDestinyNumber(dd, mm, yyyy, system);
+  const nameNum = calcNameNumber(name, system);
 
-  if (legalName) {
-    const result = calculateChaldeanName(legalName);
-    lastFinalNum = result.reduction.final;
-    html += buildResultCard("Legal Full Name (Blueprint)", legalName, result);
-  }
-  if (commonName) {
-    const result = calculateChaldeanName(commonName);
-    lastFinalNum = result.reduction.final;
-    html += buildResultCard("Common Name (Daily Energy)", commonName, result);
-  }
-  if (firstName) {
-    const result = calculateChaldeanName(firstName);
-    lastFinalNum = result.reduction.final;
-    html += buildResultCard("First Name (Inner Self)", firstName, result);
+  const radicalNum = radical.final;
+  const destinyNum = destiny.reduction.final;
+  const nameNumber = nameNum.reduction.final;
+
+  const hasMaster = (radicalNum === 11 || radicalNum === 22 || destinyNum === 11 || destinyNum === 22 || nameNumber === 11 || nameNumber === 22);
+  const masterNumber = radicalNum === 11 || radicalNum === 22 ? radicalNum : destinyNum === 11 || destinyNum === 22 ? destinyNum : nameNumber === 11 || nameNumber === 22 ? nameNumber : null;
+
+  /* Populate Report */
+  document.getElementById("reportName").textContent = name;
+  document.getElementById("reportDOB").textContent = dd + "/" + mm + "/" + yyyy;
+  document.getElementById("reportSystem").textContent = system.charAt(0).toUpperCase() + system.slice(1) + " Numerology";
+
+  /* Main number cards */
+  document.getElementById("radicalValue").textContent = radicalNum;
+  document.getElementById("radicalTitle").textContent = numberTitles[radicalNum] || "";
+  document.getElementById("destinyValue").textContent = destinyNum;
+  document.getElementById("destinyTitle").textContent = numberTitles[destinyNum] || "";
+  document.getElementById("nameValue").textContent = nameNumber;
+  document.getElementById("nameTitle").textContent = numberTitles[nameNumber] || "";
+
+  /* Card colours */
+  const cardColours = { 1:"#fff3e0", 2:"#e8eaf6", 3:"#fff8e1", 4:"#e0f2f1", 5:"#e8f5e9", 6:"#fce4ec", 7:"#f3e5f5", 8:"#ebebeb", 9:"#fbe9e7", 11:"#ede7f6", 22:"#efebe9" };
+  document.getElementById("cardRadical").style.background = cardColours[radicalNum] || "#f5f5f5";
+  document.getElementById("cardDestiny").style.background = cardColours[destinyNum] || "#f5f5f5";
+  document.getElementById("cardName").style.background = cardColours[nameNumber] || "#f5f5f5";
+
+  /* Favourable Information */
+  const fav = favourableData[radicalNum] || favourableData[1];
+  const favGrid = document.getElementById("favourableGrid");
+  const favItems = [
+    { icon:"fa-star", label:"Favourable Sign", value: fav.sign },
+    { icon:"fa-font", label:"Favourable Alphabets", value: fav.alphabets },
+    { icon:"fa-gem", label:"Gemstone", value: fav.gemstone },
+    { icon:"fa-calendar-day", label:"Favourable Day(s)", value: fav.days },
+    { icon:"fa-hashtag", label:"Favourable Number(s)", value: fav.numbers },
+    { icon:"fa-compass", label:"Direction", value: fav.direction },
+    { icon:"fa-palette", label:"Auspicious Colour(s)", value: fav.colour },
+    { icon:"fa-globe", label:"Ruling Planet", value: fav.planet },
+    { icon:"fa-pray", label:"God / Goddess", value: fav.god },
+    { icon:"fa-utensils", label:"Fast", value: fav.fast },
+    { icon:"fa-calendar-check", label:"Favourable Date(s)", value: fav.dates },
+    { icon:"fa-audio-description", label:"Mantra", value: fav.mantra }
+  ];
+  favGrid.innerHTML = favItems.map(item => `
+    <div class="fav-card">
+      <div class="fav-icon"><i class="fas ${item.icon}"></i></div>
+      <div class="fav-label">${item.label}</div>
+      <div class="fav-value">${item.value}</div>
+    </div>
+  `).join("");
+
+  /* Radical Interpretation */
+  const radData = interpretations.radical[radicalNum] || interpretations.radical[1];
+  document.getElementById("radicalSectionTitle").textContent = `Number ${radicalNum} — ${numberTitles[radicalNum]}`;
+  document.getElementById("radicalInterpretation").innerHTML = buildInterpretationHTML(radData, [
+    ["Personality", "personality"], ["Character", "character"], ["Strengths", "strengths"],
+    ["Weaknesses", "weaknesses"], ["Behaviour", "behaviour"], ["Relationships", "relationships"], ["General Tendencies", "general"]
+  ]);
+
+  /* Destiny Interpretation */
+  const destData = interpretations.destiny[destinyNum] || interpretations.destiny[1];
+  document.getElementById("destinySectionTitle").textContent = `Number ${destinyNum} — ${numberTitles[destinyNum]}`;
+  document.getElementById("destinyInterpretation").innerHTML = buildInterpretationHTML(destData, [
+    ["Life Direction", "lifeDirection"], ["Personality Tendencies", "personality"], ["Strengths", "strengths"],
+    ["Challenges", "challenges"], ["Career Tendencies", "career"], ["Financial Tendencies", "financial"], ["Relationships", "relationships"]
+  ]);
+
+  /* Name Interpretation */
+  const nameData = interpretations.nameNum[nameNumber] || interpretations.nameNum[1];
+  document.getElementById("nameSectionTitle").textContent = `Number ${nameNumber} — ${numberTitles[nameNumber]}`;
+  document.getElementById("nameInterpretation").innerHTML = `
+    <div class="interp-name-display">
+      <div class="interp-name-text"><i class="fas fa-user"></i> ${name}</div>
+      <div class="interp-name-number">Name Number: <strong>${nameNumber}</strong></div>
+    </div>
+    ${buildInterpretationHTML(nameData, [
+      ["Natural Talents", "naturalTalents"], ["Personality", "personality"], ["Attitudes", "attitudes"],
+      ["Strengths", "strengths"], ["Challenges", "challenges"], ["Potential", "potential"]
+    ])}
+  `;
+
+  /* Master Number Section */
+  if (masterNumber && interpretations.radical[masterNumber]) {
+    document.getElementById("masterSection").style.display = "block";
+    document.getElementById("masterTitle").textContent = `Number ${masterNumber} — ${numberTitles[masterNumber]}`;
+    const mData = interpretations.radical[masterNumber];
+    document.getElementById("masterInterpretation").innerHTML = `
+      <div class="master-notice"><i class="fas fa-crown"></i> You carry Master Number ${masterNumber} — a rare and powerful vibration found in only about 4% of the population. This number amplifies all associated energies and brings heightened spiritual awareness and responsibility.</div>
+      ${buildInterpretationHTML(mData, [
+        ["Spiritual Significance", "personality"], ["Core Character", "character"], ["Extraordinary Strengths", "strengths"],
+        ["Challenges of Mastery", "weaknesses"], ["Life Expression", "behaviour"], ["Soul Connections", "relationships"], ["Your Master Purpose", "general"]
+      ])}
+    `;
+  } else {
+    document.getElementById("masterSection").style.display = "none";
   }
 
-  resultsBox.innerHTML = html;
-  resultsBox.style.display = "block";
-  resultsBox.scrollIntoView({ behavior: "smooth", block: "start" });
+  /* Auspicious Place */
+  document.getElementById("auspiciousPlace").innerHTML = `
+    <div class="interp-block"><h4><i class="fas fa-location-arrow"></i> Directions &amp; Locations</h4>
+    <p>Based on your Radical Number ${radicalNum}, your most auspicious direction is <strong>${fav.direction}</strong>. When making important decisions, travelling, or setting up your workspace, try to face or position yourself toward this direction.</p>
+    <p>You tend to thrive in locations that resonate with your ruling planet <strong>${fav.planet}</strong>. ${radicalNum === 1 ? "East-facing cities and places associated with the Sun — warm, bright, and authoritative environments — favour you." : radicalNum === 2 ? "North-West regions, places near water, and moonlit environments have a calming and positive effect on you." : radicalNum === 3 ? "North-East regions, places of learning and spiritual significance, and Jupiter-ruled areas of expansion and abundance favour you." : radicalNum === 4 ? "South-East regions and places associated with technology, innovation, and structured development favour you." : radicalNum === 5 ? "Northern regions, places of movement and change, and Mercury-ruled urban environments suit your dynamic nature." : radicalNum === 6 ? "South-East and South-West regions, places of beauty and culture, and Venus-ruled luxurious environments favour you." : radicalNum === 7 ? "South-West regions, places of spiritual significance, and quiet, contemplative environments suit your introspective nature." : radicalNum === 8 ? "Western regions and Saturn-ruled industrial or organisational environments favour your ambitious nature." : radicalNum === 9 ? "Southern regions and Mars-ruled environments of action and passion favour your humanitarian spirit." : "Your direction brings heightened spiritual awareness and alignment with your life mission."}</p>
+    <p><strong>Avoid:</strong> Position yourself away from your unfavourable directions when possible, especially during important events or decisions.</p></div>
+  `;
 
-  document.querySelectorAll(".number-meaning-card").forEach(el => el.classList.remove("is-highlighted"));
-  if (lastFinalNum !== null) {
-    const card = document.getElementById(`meaning-card-${lastFinalNum}`);
-    if (card) card.classList.add("is-highlighted");
-  }
+  /* Health */
+  document.getElementById("healthSection").innerHTML = `<div class="interp-block"><p>${sectionData.health[radicalNum] || sectionData.health[1]}</p>
+    <p class="health-note"><i class="fas fa-info-circle"></i> <strong>Note:</strong> These insights are based on numerological tendencies. Always consult a qualified healthcare professional for medical advice.</p></div>`;
+
+  /* Auspicious Time */
+  const favHours = { 1:"5:00 AM – 7:00 AM (Sunrise hour)", 2:"6:00 PM – 8:00 PM (Moonrise)", 3:"6:00 AM – 8:00 AM (Jupiter hour)", 4:"2:00 PM – 4:00 PM (Rahu kaal, use cautiously)", 5:"10:00 AM – 12:00 PM (Mercury hour)", 6:"6:00 AM – 8:00 PM (Venus evening hour)", 7:"8:00 PM – 10:00 PM (Ketu hour)", 8:"3:00 PM – 5:00 PM (Saturn hour)", 9:"12:00 PM – 2:00 PM (Mars midday)", 11:"4:00 AM – 6:00 AM (Brahma muhurta)", 22:"4:00 AM – 6:00 AM (Brahma muhurta)" };
+  document.getElementById("auspiciousTime").innerHTML = `<div class="interp-block"><h4><i class="fas fa-clock"></i> Your Auspicious Hours</h4>
+    <p>Your most favourable time of day is <strong>${favHours[radicalNum] || favHours[1]}</strong>. This is when your personal energy is at its peak and important decisions or actions are most likely to succeed.</p>
+    <p><strong>${radicalNum <= 2 ? "Early morning" : radicalNum <= 4 ? "Morning to midday" : radicalNum <= 6 ? "Midday to afternoon" : "Evening"}</strong> hours are generally most productive for you. ${radicalNum === 1 ? "The sunrise hour is especially powerful for new beginnings." : radicalNum === 7 ? "Night-time solitude is when your intuition is strongest." : radicalNum === 8 ? "The Saturn hours demand discipline — use this time for serious work." : "Use this time for important tasks and spiritual practices."}</p>
+    <p><strong>Days that favour important events:</strong> ${fav.days}. Whenever possible, schedule significant activities on your favourable days.</p></div>`;
+
+  /* Career */
+  document.getElementById("careerSection").innerHTML = `<div class="interp-block"><p>${sectionData.career[radicalNum] || sectionData.career[1]}</p>
+    <p><strong>Fields to avoid:</strong> ${radicalNum === 1 ? "Highly bureaucratic environments where you have no autonomy." : radicalNum === 2 ? "Highly competitive, aggressive, or solitary work environments." : radicalNum === 3 ? "Repetitive, detail-only work with no creative outlet." : radicalNum === 4 ? "Highly chaotic, unstructured, or constantly changing environments." : radicalNum === 5 ? "Rigid, monotonous jobs with no variety or travel." : radicalNum === 6 ? "Cut-throat competitive environments that disregard people." : radicalNum === 7 ? "Highly social, superficial, or noisy work environments." : radicalNum === 8 ? "Low-impact, underpaid roles that don't match your ambition." : "Environments that suppress your compassion and idealism."}</p></div>`;
+
+  /* Remedies */
+  document.getElementById("remediesSection").innerHTML = `<div class="interp-block">${sectionData.remedies[radicalNum] || sectionData.remedies[1]}</div>`;
+
+  /* Yantra */
+  document.getElementById("yantraSection").innerHTML = `<div class="interp-block">${sectionData.yantra[radicalNum] || sectionData.yantra[1]}</div>`;
+
+  /* Exclusive Facts */
+  document.getElementById("factsSection").innerHTML = `<div class="interp-block">${sectionData.facts[radicalNum] || sectionData.facts[1]}</div>`;
+
+  /* Show report, hide calculator */
+  document.getElementById("calcSection").style.display = "none";
+  document.getElementById("reportSection").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
+
+function buildInterpretationHTML(data, fields) {
+  return fields.map(([label, key]) => {
+    if (!data[key]) return "";
+    return `<div class="interp-field"><h4>${label}</h4><p>${data[key]}</p></div>`;
+  }).join("");
+}
+
+function recalculate() {
+  document.getElementById("reportSection").style.display = "none";
+  document.getElementById("calcSection").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ---------- DOB Auto-tab ---------- */
+(function() {
+  const dd = document.getElementById("dobDD");
+  const mm = document.getElementById("dobMM");
+  const yyyy = document.getElementById("dobYYYY");
+  [dd, mm].forEach(el => {
+    el.addEventListener("input", function() {
+      if (this.value.length === 2) {
+        const next = this === dd ? mm : yyyy;
+        next.focus();
+      }
+    });
+  });
+})();
 </script>
 
 <%- include("partials/footer") %>
